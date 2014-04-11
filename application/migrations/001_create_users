@@ -1,0 +1,102 @@
+<?php defined('BASEPATH') OR exit('No direct script access allowed');
+
+/*
+ * 001_create_users
+ * 
+ * Copyright 2014 metamorph <metamorph@code-machine>
+ * 
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+ * MA 02110-1301, USA.
+ * 
+ * 
+ */
+
+
+
+class Migration_Create_users extends CI_Migration
+{
+
+	public function up()
+	{
+		$this->dbforge->add_field(array(
+			'users_id' => array(
+				'type' => 'INT',
+				'constraint' => 11,
+				'unsigned' => TRUE,
+				'null' => FALSE,
+				'auto_increment' => TRUE
+			),
+			'role_id' => array(
+				'type' => 'SMALLINT',
+				'constraint' => 5,
+				'unsigned' => TRUE,
+				'null' => FALSE,
+				'default' => 4
+			),
+			'email' => array(
+				'type' => 'VARCHAR',
+				'null' => FALSE,
+				'constraint' => '120'
+			),
+			'username' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '30',
+				'null' => FALSE,
+				'default' => ''
+			),
+			'password' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '128',
+				'null' => FALSE
+			),
+			'last_login' => array(
+				'type' => 'DATETIME',
+				'null' => FALSE,
+				'default' => 'now()'
+			),
+			'last_ip' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '40',
+				'null' => FALSE,
+				'default' => ''
+			),
+			'display_name' => array(
+				'type' => 'VARCHAR',
+				'default' => '',
+				'constraint' => '255'
+			),
+			'language' => array(
+				'type' => 'VARCHAR',
+				'constraint' => '20',
+				'null' => FALSE,
+				'default' => 'english'
+			),
+			'active' => array(
+				'type' => 'BOOLEAN',
+				'null' => FALSE,
+				'default' => 'FALSE'
+			)
+		));
+		
+		$this->dbforge->add_key('users_id', TRUE);
+		$this->dbforge->create_table('users');
+	}
+
+	public function down()
+	{
+		$this->dbforge->drop_table('users');
+	}
+
+}
