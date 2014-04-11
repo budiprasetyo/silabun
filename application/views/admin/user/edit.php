@@ -22,7 +22,7 @@
 			</div>
 			<div style="margin-top:10px" class="form-group">
 				<div class="col-sm-12 controls">
-					<input type="submit" value="Save" id="btn-login" class="btn btn-success" />
+					<input type="submit" value="Save" id="btn-login" class="btn btn-primary" />
 				</div>
 				
 			</div>
