@@ -34,7 +34,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>	
-			<a class="navbar-brand" rel="home" href="#">Murvien </a>
+			<a class="navbar-brand" rel="home" href="<?php echo base_url() . 'companies.php/admin/dashboard/home'; ?>">Murvien </a>
 		</div>
 		<div class="collapse navbar-collapse">
 			<ul class="nav navbar-nav">
