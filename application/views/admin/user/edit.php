@@ -13,13 +13,29 @@
 		<form method="post" action="" id="loginform" class="form-horizontal" role="form">
 			<div style="margin-bottom: 25px" class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-					<input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">                                        
+					<input id="login-username" type="text" class="form-control" name="username" placeholder="username">                                        
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				<input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+				<input id="login-password" type="password" class="form-control" name="password_hash" placeholder="password">
 			</div>
+										
+			<div style="margin-bottom: 25px" class="input-group">
+				<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				<input id="login-password" type="password" class="form-control" name="password_conf" placeholder="password confirmation">
+			</div>
+										
+			<div style="margin-bottom: 25px" class="input-group">
+				<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+					<input id="login-email" type="text" class="form-control" name="email" placeholder="email">                             
+			</div>
+										
+			<div style="margin-bottom: 25px" class="input-group">
+				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+					<input id="login-role_id" type="text" class="form-control" name="role_id" placeholder="role user">                                        
+			</div>
+			
 			<div style="margin-top:10px" class="form-group">
 				<div class="col-sm-12 controls">
 					<input type="submit" value="Save" id="btn-login" class="btn btn-primary" />
