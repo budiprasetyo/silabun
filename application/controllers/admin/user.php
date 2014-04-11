@@ -76,7 +76,23 @@ class User extends Admin_Controller
 	
 	public function edit($id = NULL)
 	{
+		if ($id) {
+			$this->data['user'] = $this->m_user->get($id);
+			count($this->data['user']) || $this->data['errors'][] = 'user could not be found';
+		}
+		else {
+			$this->data['user'] = $this->m_user->get_new();
+		}
+		
 		$id == NULL || $this->data['users'] = $this->m_user->get($id);
+		// rules section
+		$rules = $this->m_user->rules_admin;
+		$id || $rules['password'] = '|required';
+		$this->form_validation->set_rules($rules);
+		
+		if ( $this->form_validation->run() == TRUE ) {
+		}
+		
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/edit';
 		$this->load->view('admin/template/_layout_admin', $this->data);
@@ -87,5 +103,22 @@ class User extends Admin_Controller
 		
 	}
 
-	
+	public function _unique_email($string)
+	{
+		$id = $this->uri->segment(4);
+		$this->db->where('email', $this->input->post('email'));
+		// if not getting id, choose another id
+		!$id || $this->db->where('id !=' , $id);
+		$user = $this->m_user->get();
+		
+		if (count($user)) 
+		{
+			$this->form_validation->set_message('_unique_email', '%s should be unique');
+			return FALSE;
+		}
+		else
+		{
+			return TRUE;
+		}
+	}
 }
