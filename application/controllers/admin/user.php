@@ -91,6 +91,7 @@ class User extends Admin_Controller
 		$this->form_validation->set_rules($rules);
 		
 		if ( $this->form_validation->run() == TRUE ) {
+			
 		}
 		
 		// path to user folder view
