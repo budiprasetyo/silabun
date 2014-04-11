@@ -1,7 +1,6 @@
 <div class="panel panel-default" id="admin-page">
 	<div class="panel-heading">
-		<div class="panel-title">Sign In</div>
-		<div style="float:right; font-size: 80%; position: relative; top:-10px"><a href="#">Forgot password?</a></div>
+		<div class="panel-title"><?php echo empty($user->users_id) ? 'Add User' : 'Edit User'; ?></div>
 	</div><!--/panel-heading-->     
 
 	<div style="padding-top:30px" class="panel-body" >
@@ -23,7 +22,7 @@
 			</div>
 			<div style="margin-top:10px" class="form-group">
 				<div class="col-sm-12 controls">
-					<input type="submit" value="login" id="btn-login" class="btn btn-success" />
+					<input type="submit" value="Save" id="btn-login" class="btn btn-success" />
 				</div>
 				
 			</div>
