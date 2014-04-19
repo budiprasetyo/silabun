@@ -45,6 +45,7 @@ class User extends Admin_Controller
 		$rules = $this->m_user->rules;
 		$this->form_validation->set_rules($rules);
 		
+		// process form
 		if ( $this->form_validation->run() == TRUE ) {
 			
 			if($this->m_user->login() == TRUE)
@@ -53,9 +54,10 @@ class User extends Admin_Controller
 			}
 			else
 			{
-				$this->session->set_flashdata('error', 'Kombinasi antara username dan password Anda tidak sesuai');
+				$this->session->set_flashdata('error', 'Combination of username or password may be wrong');
 			}
 		}
+		// load login view
 		$this->data['subview'] = 'admin/user/login';
 		$this->load->view('admin/template/_layout_modal', $this->data);
 	}
@@ -68,6 +70,7 @@ class User extends Admin_Controller
 	
 	public function home()
 	{	
+		// fetch all users
 		$this->data['users'] = $this->m_user->get();
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/index';
@@ -76,6 +79,7 @@ class User extends Admin_Controller
 	
 	public function edit($id = NULL)
 	{
+		// check existing users or create one
 		if ($id) {
 			$this->data['user'] = $this->m_user->get($id);
 			count($this->data['user']) || $this->data['errors'][] = 'user could not be found';
@@ -85,15 +89,22 @@ class User extends Admin_Controller
 		}
 		
 		$id == NULL || $this->data['users'] = $this->m_user->get($id);
+		
 		// rules section
 		$rules = $this->m_user->rules_admin;
-		$id || $rules['password'] = '|required';
+		// additional rules
+		$id || $rules['password_hash']['rules'] .= '|required';
 		$this->form_validation->set_rules($rules);
 		
 		if ( $this->form_validation->run() == TRUE ) {
-			
+			// populate fields
+			$data = $this->m_user->array_from_post(array('role_id','username','password_hash','email'));
+			// specific action for password hash
+			$data['password_hash'] = $this->m_user->hash($data['password_hash']);
+			$this->m_user->save($data, $id);
+			// redirect to users home
+			redirect('admin/user/home');
 		}
-		
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/edit';
 		$this->load->view('admin/template/_layout_admin', $this->data);
@@ -101,15 +112,19 @@ class User extends Admin_Controller
 	
 	public function delete($id)
 	{
-		
+		$this->m_user->delete($id);
+		redirect('admin/user/home');
 	}
 
 	public function _unique_email($string)
 	{
+		// don't validate if email already exists
+		// unless it's the email for current user
+		
 		$id = $this->uri->segment(4);
 		$this->db->where('email', $this->input->post('email'));
-		// if not getting id, choose another id
-		!$id || $this->db->where('id !=' , $id);
+		// if not getting id, choose another id, and be careful of id's name
+		!$id || $this->db->where('users_id !=' , $id);
 		$user = $this->m_user->get();
 		
 		if (count($user)) 
