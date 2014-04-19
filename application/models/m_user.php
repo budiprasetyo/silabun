@@ -193,15 +193,12 @@ class M_user extends MY_Model
 	{
 		$user = new stdClass();
 		
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		$user->role_id	= '';
-		
+		$user->role_id			= '';
+		$user->username			= '';
+		$user->password_hash	= '';
+		$user->password_conf	= '';
+		$user->email			= '';
+		return $user;
 	}
 	
 	public function hash($string)
