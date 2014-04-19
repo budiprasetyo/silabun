@@ -1,6 +1,6 @@
-<div class="panel panel-default" id="admin-page">
+<div class="panel panel-default bootstrap-admin-no-table-panel">
 	<div class="panel-heading">
-		<div class="panel-title"><?php echo empty($page->static_page_id) ? 'Add Page' : 'Edit Page ' . $page->static_page_title; ?></div>
+		<div class="text-muted bootstrap-admin-box-title"><?php echo empty($page->static_page_id) ? 'Add Page' : 'Edit Page ' . $page->static_page_title; ?></div>
 	</div><!--/panel-heading-->     
 
 	<div style="padding-top:30px" class="panel-body" >
@@ -12,12 +12,12 @@
 		
 		<form method="post" action="" id="loginform" class="form-horizontal" role="form">
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-tag"></i></span>
 					<input id="static-page-title" type="text" class="form-control" name="static_page_title" value="<?php echo set_value('static_page_title', $page->static_page_title); ?>" placeholder="Static Page Title">                                        
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-link"></i></span>
 				<input id="static-page-url" type="text" class="form-control" name="static_page_url" value="<?php echo set_value('static_page_url', $page->static_page_url); ?>" placeholder="Static Page URL">
 			</div>
 										
@@ -27,12 +27,12 @@
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-th-list"></i></span>
 					<input id="categories-id" type="text" class="form-control" name="categories_id" value="<?php echo set_value('categories_id', $page->categories_id); ?>" placeholder="Categories">                             
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-list-alt"></i></span>
 					<input id="description" type="text" class="form-control" name="description" value="<?php echo set_value('description', $page->description); ?>" placeholder="Description">                                        
 			</div>
 														
@@ -42,12 +42,12 @@
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-picture"></i></span>
 					<input id="image" type="text" class="form-control" name="image" value="<?php echo set_value('image', $page->image); ?>" placeholder="image">                                        
 			</div>
 										
 			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+				<span class="input-group-addon"><i class="glyphicon glyphicon-edit"></i></span>
 <!--
 					<textarea id="content" class="form-control" name="content" placeholder="content">
 						 <?php //echo set_value('content', $page->content); ?>

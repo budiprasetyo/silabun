@@ -1,8 +1,9 @@
-	<section id="admin-page">
 	<?php echo anchor('admin/page/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Add Page'); ?>
 	<hr />
-	<div class="panel panel-default">
-		<div class="panel-heading"><h4>Page Management</h4></div>
+	<div class="panel panel-default bootstrap-admin-no-table-panel">
+		<div class="panel-heading">
+			<div class="text-muted bootstrap-admin-box-title">Page Management</div>
+		</div>
 		<div class="panel-body">
 			<div class="table-responsive">
 				<table class="table table-striped">
@@ -47,4 +48,3 @@
 			</div><!--/table-responsive-->
 		</div><!--panel-body-->
 	</div><!--/panel panel-default-->
-	</section>
