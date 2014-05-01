@@ -1,55 +1,5 @@
 [
     {
-        "name": "twitter/bootstrap",
-        "version": "dev-docs_zeroclipboard",
-        "version_normalized": "dev-docs_zeroclipboard",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/twbs/bootstrap.git",
-            "reference": "89ff68633dc01adbe3e98de201c11d21071f5c9f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/89ff68633dc01adbe3e98de201c11d21071f5c9f",
-            "reference": "89ff68633dc01adbe3e98de201c11d21071f5c9f",
-            "shasum": ""
-        },
-        "time": "2014-03-22 06:33:53",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Jacob Thornton",
-                "email": "jacobthornton@gmail.com"
-            },
-            {
-                "name": "Mark Otto",
-                "email": "markdotto@gmail.com"
-            }
-        ],
-        "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
-        "homepage": "http://getbootstrap.com",
-        "keywords": [
-            "JS",
-            "css",
-            "framework",
-            "front-end",
-            "less",
-            "mobile-first",
-            "responsive",
-            "web"
-        ]
-    },
-    {
         "name": "symfony/process",
         "version": "v2.4.2",
         "version_normalized": "2.4.2.0",
@@ -260,5 +210,126 @@
             "OFL-1.1"
         ],
         "description": "The iconic font designed for use with Twitter Bootstrap."
+    },
+    {
+        "name": "twitter/bootstrap",
+        "version": "dev-docs_zeroclipboard",
+        "version_normalized": "dev-docs_zeroclipboard",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/twbs/bootstrap.git",
+            "reference": "89ff68633dc01adbe3e98de201c11d21071f5c9f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/twbs/bootstrap/zipball/89ff68633dc01adbe3e98de201c11d21071f5c9f",
+            "reference": "89ff68633dc01adbe3e98de201c11d21071f5c9f",
+            "shasum": ""
+        },
+        "time": "2014-03-22 06:33:53",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.0.x-dev"
+            }
+        },
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Jacob Thornton",
+                "email": "jacobthornton@gmail.com"
+            },
+            {
+                "name": "Mark Otto",
+                "email": "markdotto@gmail.com"
+            }
+        ],
+        "description": "The most popular front-end framework for developing responsive, mobile first projects on the web.",
+        "homepage": "http://getbootstrap.com",
+        "keywords": [
+            "JS",
+            "css",
+            "framework",
+            "front-end",
+            "less",
+            "mobile-first",
+            "responsive",
+            "web"
+        ]
+    },
+    {
+        "name": "components/modernizr",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/components/modernizr.git",
+            "reference": "6a325d591e2bdf7b33fa99a15db73501d5796f67"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/components/modernizr/zipball/6a325d591e2bdf7b33fa99a15db73501d5796f67",
+            "reference": "6a325d591e2bdf7b33fa99a15db73501d5796f67",
+            "shasum": ""
+        },
+        "require": {
+            "robloach/component-installer": "*"
+        },
+        "time": "2013-05-14 05:59:02",
+        "type": "component",
+        "extra": {
+            "component": {
+                "scripts": [
+                    "modernizr.js"
+                ],
+                "shim": {
+                    "exports": "window.Modernizr"
+                }
+            }
+        },
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Modernizr",
+                "homepage": "http://modernizr.com"
+            },
+            {
+                "name": "Faruk Ates"
+            },
+            {
+                "name": "Paul Irish"
+            },
+            {
+                "name": "Alex Sexton"
+            },
+            {
+                "name": "Ryan Seddon"
+            },
+            {
+                "name": "Alexander Farkas"
+            },
+            {
+                "name": "Ben Alman"
+            },
+            {
+                "name": "Stu Cox"
+            }
+        ],
+        "description": "Modernizr is a JavaScript library that detects HTML5 and CSS3 features in the user's browser.",
+        "homepage": "http://modernizr.com",
+        "keywords": [
+            "CSS3",
+            "HTML5",
+            "browser",
+            "feature detection"
+        ]
     }
 ]

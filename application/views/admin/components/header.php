@@ -4,11 +4,13 @@
 <head>
 	<meta charset="utf-8" />
 	<title><?php echo $meta_title; ?></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/bootstrap/dist/css/bootstrap.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/font-awesome/css/font-awesome.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/style.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/bootstrap-admin-theme.css" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/main.min.css" />	
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/theme.css" />
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.css">
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->

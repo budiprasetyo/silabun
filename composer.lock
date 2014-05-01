@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "ac3c0b0e4c721eb68b5616f41ecd9005",
+    "hash": "64dc9ed544c23fca7f0061766829e80c",
     "packages": [
         {
             "name": "components/font-awesome",
@@ -44,6 +44,75 @@
             ],
             "description": "The iconic font designed for use with Twitter Bootstrap.",
             "time": "2013-11-10 21:30:36"
+        },
+        {
+            "name": "components/modernizr",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/components/modernizr.git",
+                "reference": "6a325d591e2bdf7b33fa99a15db73501d5796f67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/components/modernizr/zipball/6a325d591e2bdf7b33fa99a15db73501d5796f67",
+                "reference": "6a325d591e2bdf7b33fa99a15db73501d5796f67",
+                "shasum": ""
+            },
+            "require": {
+                "robloach/component-installer": "*"
+            },
+            "type": "component",
+            "extra": {
+                "component": {
+                    "scripts": [
+                        "modernizr.js"
+                    ],
+                    "shim": {
+                        "exports": "window.Modernizr"
+                    }
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Modernizr",
+                    "homepage": "http://modernizr.com"
+                },
+                {
+                    "name": "Faruk Ates"
+                },
+                {
+                    "name": "Paul Irish"
+                },
+                {
+                    "name": "Alex Sexton"
+                },
+                {
+                    "name": "Ryan Seddon"
+                },
+                {
+                    "name": "Alexander Farkas"
+                },
+                {
+                    "name": "Ben Alman"
+                },
+                {
+                    "name": "Stu Cox"
+                }
+            ],
+            "description": "Modernizr is a JavaScript library that detects HTML5 and CSS3 features in the user's browser.",
+            "homepage": "http://modernizr.com",
+            "keywords": [
+                "CSS3",
+                "HTML5",
+                "browser",
+                "feature detection"
+            ],
+            "time": "2013-05-14 05:59:02"
         },
         {
             "name": "kriswallsmith/assetic",
@@ -267,7 +336,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "twitter/bootstrap": 20,
-        "components/font-awesome": 20
+        "components/font-awesome": 20,
+        "components/modernizr": 20
     },
     "platform": [
 

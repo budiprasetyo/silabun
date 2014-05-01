@@ -23,8 +23,6 @@
  */
 
 
-
-
 class M_page extends MY_Model
 {
 	protected $_table_name 		= 'cms_static_page';

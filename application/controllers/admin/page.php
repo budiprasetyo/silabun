@@ -40,7 +40,7 @@ class Page extends Admin_Controller
 
 	public function index()
 	{	
-		// fetch all users
+		// fetch all pages
 		$this->data['pages'] = $this->m_page->get();
 		
 		// path to page folder view
@@ -51,7 +51,7 @@ class Page extends Admin_Controller
 
 	public function edit($id = NULL)
 	{
-		// check existing users or create one
+		// check existing pages or create one
 		if ($id) {
 			$this->data['page'] = $this->m_page->get($id);
 			count($this->data['page']) || $this->data['errors'][] = 'page could not be found';

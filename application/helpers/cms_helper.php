@@ -29,7 +29,7 @@ function btn_edit($uri)
 
 function btn_delete($uri) 
 {
-	return anchor($uri, '<i class="glyphicon glyphicon-remove"></i>', array('onclick'=>"return confirm('Apakah Anda yakin akan menghapus data ini?')")); 
+	return anchor($uri, '<i class="glyphicon glyphicon-remove"></i>', array('onclick'=>"return confirm('Are you sure want to delete this record?')")); 
 }
 
 /**

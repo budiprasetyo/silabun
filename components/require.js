@@ -2018,6 +2018,17 @@ var requirejs, require, define;
     req(cfg);
 }(this));
 var components = {
+    "packages": [
+        {
+            "name": "modernizr",
+            "main": "modernizr-built.js"
+        }
+    ],
+    "shim": {
+        "modernizr": {
+            "exports": "window.Modernizr"
+        }
+    },
     "baseUrl": "components"
 };
 if (typeof require !== "undefined" && require.config) {

@@ -2,6 +2,7 @@
 	"require": 
 		{
 			"twitter/bootstrap": "dev-docs_zeroclipboard",
-			"components/font-awesome": "4.0.*@dev"
+			"components/font-awesome": "4.0.*@dev",
+			"components/modernizr": "dev-master"
 		}
 }
