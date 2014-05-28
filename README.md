@@ -14,7 +14,7 @@ git clone https://user_anda@bitbucket.org/trustytahr/dsp-lpj.git [nama_folder]
 #!git
 
 git add path/pekerjaan/yang/akan/di/commit
-git commit -m "berikan comment atas pekerjaan yang Anda sudah pekerjaan tersebut, meliputi source code baru, modifying code, atau yang lain"
+git commit -m "berikan comment atas pekerjaan yang Anda sudah kerjakan tersebut, meliputi source code baru, modifying code, atau yang lain"
 git fetch origin
 git merge origin/master # dengan asumsi remote branch bernama master
 git push -u origin master
