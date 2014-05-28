@@ -25,6 +25,15 @@
 
 
 
+/**
+ * @brief 		MY_Model
+ * 
+ * @package 
+ * @subpackage
+ * @license 	MIT
+ * @author 		Budi Prasetyo modified from Joost Van Veen
+ * 
+ */
 class MY_Model extends CI_Model
 {
 	protected $_table_name 		= '';
@@ -74,6 +83,7 @@ class MY_Model extends CI_Model
 		{
 			$this->db->order_by($this->_order_by);
 		}
+		
 		return $this->db->get($this->_table_name)->$method();
 	}
 	
@@ -123,5 +133,58 @@ class MY_Model extends CI_Model
 		$this->db->where($this->_primary_key, $id);
 		$this->db->limit(1);
 		$this->db->delete($this->_table_name);
+	}
+	
+	/**
+	 * @brief 		dropdown_get_name
+	 * @description	make easier when generating dropdown, whether edit module or insert module
+	 * @param 		str	$table_name 
+	 * @param 		int	$id
+	 * @param 		str	$primary_field
+	 * @param 		str	$select_name is used for select name and should be same with name field in table reference
+	 * @param 		str	$option_empty
+	 * @param 		str	$table_reference
+	 * @returns 	$dropdown
+	 * 
+	 * 
+	 */
+	public function dropdown_get_name($table_name 	= NULL, 
+									$id 			= NULL, 
+									$primary_field 	= NULL, 
+									$field_name 	= NULL,
+									$select_name 	= NULL,
+									$option_empty 	= NULL,
+									$table_reference= NULL)
+	{
+		$dropdown = "<select class='form-control autotab' name='tabs1_7' tabindex='14' name=".$select_name.">";
+		
+		
+		
+		$query_row = $this->db->where($primary_field, $id)
+								->get($table_name)->row();
+		
+		if ($query_row->$field_name == null)
+		{
+			$dropdown .= "<option value='' selected='selected'>".$option_empty."</option>";
+		}
+		
+		$query_results = $this->db->get($table_reference)->result();
+		
+		foreach ($query_results as $query_result) 
+		{
+			if($query_result->$field_name === $query_row->$field_name) 
+			{
+				$dropdown .= "<option value='".$query_result->$field_name."' selected='selected'>".$query_result->$select_name."</option>";
+			}
+			else 
+			{
+				$dropdown .= "<option value='".$query_result->$field_name."'>".$query_result->$select_name."</option>";
+			}
+			
+		}
+		
+		$dropdown .= "</select>";
+		
+		echo $dropdown;
 	}
 }
