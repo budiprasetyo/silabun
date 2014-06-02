@@ -157,7 +157,7 @@ class MY_Model extends CI_Model
 									$option_empty 	= NULL,
 									$table_reference= NULL)
 	{
-		$dropdown = "<select class='form-control autotab' name='tabs1_7' tabindex='14' name=".$select_name.">";
+		$dropdown = "<select class='form-control autotab' tabindex='14' name=".$field_name.">";
 		
 		
 		
