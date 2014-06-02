@@ -156,7 +156,7 @@
 				  
 				  
 				  <li>
-					<a href="">
+					<a href="<?php echo base_url(); ?>companies.php/admin/upload">
 					  <i class="glyphicon glyphicon-upload"></i>
 					  <span class="link-title"> Upload</span> 
 					</a> 
