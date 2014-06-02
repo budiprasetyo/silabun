@@ -51,9 +51,9 @@ class M_categories extends MY_Model
 						'label'	=> 'Language',
 						'rules'	=> 'trim|required|is_natural|max_length[3]|xss_clean'
 					),
-					'active'	=> array(
-						'field'	=> 'active',
-						'label'	=> 'active',
+					'status_code'	=> array(
+						'field'	=> 'status_code',
+						'label'	=> 'status_code',
 						'rules'	=> 'trim|required|is_natural|max_length[1]|xss_clean'
 					)
 	);
@@ -68,7 +68,7 @@ class M_categories extends MY_Model
 		$categories->description	= '';
 		$categories->page_type_id	= '';
 		$categories->language_id	= '';
-		$categories->active			= '';
+		$categories->status_code	= '';
 		return $categories;
 	}
 }

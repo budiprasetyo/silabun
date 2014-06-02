@@ -51,7 +51,6 @@ class Categories extends Admin_Controller
 	
 	public function edit($id = NULL)
 	{
-		//~ $this->m_categories->dropdown_get_name('cms_page_type', $id, 'page_type_id', 'page_type', 'page_type', '- choose categories -');
 		
 		$back_link = $this->uri->segment(2);
 		// check existing categories or create one
@@ -60,13 +59,13 @@ class Categories extends Admin_Controller
 			$this->data['categories'] 	= $this->m_categories->get($id);
 			$this->data['back_link'] 	= $back_link;
 			count($this->data['categories']) || $this->data['errors'][] = 'categories could not be found';
-			$this->data['page_type'] 	= $this->m_categories;
+			$this->data['dropdown'] 	= $this->m_categories;
 		}
 		else {
 			$this->data['id']			= null;
-			$this->data['categories'] = $this->m_categories->get_new();
-			$this->data['back_link'] = $back_link;
-			$this->data['page_type'] = $this->m_categories;
+			$this->data['categories'] 	= $this->m_categories->get_new();
+			$this->data['back_link'] 	= $back_link;
+			$this->data['dropdown'] 	= $this->m_categories;
 		}
 		
 		$id == NULL || $this->data['categories'] = $this->m_categories->get($id);
@@ -77,13 +76,13 @@ class Categories extends Admin_Controller
 		
 		if ( $this->form_validation->run() == TRUE ) {
 			// populate fields
-			$data = $this->m_categories->array_from_post(array('static_page_title','static_page_url','keyword','categories_id','description','author','image','content'));
+			$data = $this->m_categories->array_from_post(array('categories','description','page_type_id','language_id','status_code'));
 			// save data
 			$this->m_categories->save($data, $id);
-			// redirect to users home
+			// redirect to users categories
 			redirect('admin/categories');
 		}
-		// path to user folder view
+		// path to categories folder view
 		$this->data['subview'] = 'admin/categories/edit';
 		$this->load->view('admin/template/_layout_admin', $this->data);
 		

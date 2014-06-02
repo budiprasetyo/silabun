@@ -46,7 +46,7 @@
 							  <td><?php echo $category->description; ?></td>
 							  <td><?php echo $category->page_type_id; ?></td>
 							  <td><?php echo $category->language_id; ?></td>
-							  <td><?php echo $category->active; ?></td>
+							  <td><?php echo $category->status_code; ?></td>
 							  <td><?php echo btn_edit('admin/categories/edit/' . $category->categories_id); ?></td>
 							  <td><?php echo btn_delete('admin/categories/edit/' . $category->categories_id); ?></td>
 							</tr>
