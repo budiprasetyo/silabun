@@ -47,4 +47,11 @@ class M_upload extends MY_Model
 		$upload->upload_lpj		= '';
 		return $upload;
 	}
+	
+	public function import_csv($path, $tables)
+	{
+		$query = $this->db->query("LOAD DATA LOCAL INFILE ? INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
+		
+		return $query;
+	}
 }

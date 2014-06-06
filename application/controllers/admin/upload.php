@@ -125,8 +125,12 @@ class Upload extends Admin_Controller
 				// after user management modul is finished
 				if(strlen(substr(strrchr($_FILES['upload_lpj']['name'],'.'),1)) === 3)
 				{
+					$adk_filename = $_FILES['upload_lpj']['name'];
+					
 					// Specified upload path and name
-					$filepath = $config['upload_path'] . '/' . $_FILES['upload_lpj']['name'];
+					$filepath = $config['upload_path'] . '/' . $adk_filename;
+					// Specified compressed path and name
+					$compressedpath = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/data_lpj/';
 					// Specified extracting path and name
 					$extractpath = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/extract_lpj/';
 					
@@ -140,24 +144,28 @@ class Upload extends Admin_Controller
 					$this->unzip->extract($filepath, $extractpath);
 					
 					$this->data['extractpaths'] = $extractpath;
-					//~ foreach (glob($extractpath . '*.*') as $filename) 
-					//~ {
-						//~ 
-						//~ $this->data['lines'] = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-						
-						//~ foreach ($lines as $line_num => $line) {
-							//~ echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
-						//~ }
-						
-						//~ readfile($filename) . '<br />';
-						
-						//~ $oldname = basename($filename);
-						//~ $newname = basename(substr(strrchr($filename,'\\'),1));
-						//~ rename($oldname, $newname);
-					//~ }
 					
-					// Delete all footprints, consider to use this or not
-					unlink($filepath);
+					
+					foreach (glob($extractpath . '*.*') as $filename) 
+					{
+						$oldname = $extractpath . basename($filename);
+						$newname = $extractpath . basename(substr(strrchr($filename,'\\'),1));
+						// rename function should be included path
+						rename($oldname, $newname);
+						
+						$import = $this->m_upload->import_csv($newname, 'd_lpjk');
+						
+						var_dump($import);
+						//~ var_dump(chmod($extractpath, 0777)) . '<br />';
+						//~ $current_user = get_current_user();
+						//~ var_dump(chown($extractpath . '*', $current_user));
+					}
+					
+					// Delete all footprints
+					if(file($compressedpath . $adk_filename))
+					{
+						unlink($compressedpath . $adk_filename);
+					}
 				}
 			}
 
