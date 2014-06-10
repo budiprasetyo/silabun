@@ -46,13 +46,21 @@
 					  <div class="form-group">
 						<div class="col-lg-12 controls">
 							<?php 
-								$attributes = 'class = "btn btn-primary"';
+								if($movingpaths == null)
+								{
+									$attributes = 'class = "btn btn-primary"';
+								}
+								else
+								{
+									$attributes = 'class = "btn btn-primary" disabled = "disabled"';
+								}
 								echo form_submit('submit', 'Upload', $attributes);
 							?>
 						</div>
 					  </div><!--/.form-group -->
 					  
 					</form><!--/form-horizontal-->
+					
 				  </div><!--/div-1-->
 				
 			</div><!--/box-dark-->
@@ -66,7 +74,7 @@
 					
                   <header>
                     <div class="icons">
-                      <i class="fa fa-edit"></i>
+                      <i class="glyphicon glyphicon-list-alt"></i>
                     </div>
                     <h5>Output File</h5>
 
@@ -86,21 +94,62 @@
                     </div><!-- /.toolbar -->
                   </header>
                   
+                  <header>
+                      <nav style="padding: 4px;">
+						<form class="form-horizontal" method="post" action="<?php echo base_url(); ?>companies.php/admin/upload/approve">
+						  <div class="form-group">
+							  
+						  <?php 
+								foreach ($newnames as $newname) 
+								{
+									//~ $filetemps[] = basename($newname);
+									//~ echo form_hidden('filetemps', $filetemps);
+									$filetemps[] = basename($newname);
+									echo form_hidden('filetemps', $filetemps);
+								}
+						  ?>
+						  
+							<div class="col-lg-12 controls">
+								<?php 
+									if($movingpaths == null)
+									{
+										$attributes = 'class = "btn btn-default" disabled = "disabled"';
+									}
+									else
+									{
+										$attributes = 'class = "btn btn-success"';
+									}
+									echo form_submit('submit', 'Approve', $attributes);
+								?>
+							</div>
+						  </div><!--/.form-group -->
+						</form><!--/form-horizontal-->
+					  </nav>
+				  </header>
+                  
                   <div id="div-1" class="body">
+					
                     <form class="form-horizontal">
 						
                       <div class="form-group">
                       </div><!-- /.form-group -->
 						<?php 
-							
-							foreach (glob($extractpaths . '*.*') as $filename) 
+					
+							if($movingpaths == null)
 							{
-								
-								$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-								//~ 
-								foreach ($lines as $line_num => $line) 
+								// show nothing
+								echo $message;
+							}
+							else
+							{
+								foreach (glob($movingpaths . '*.*') as $filename) 
 								{
-									echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
+									$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+
+									foreach ($lines as $line_num => $line) 
+									{
+										echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
+									}
 								}
 							}
 						?>

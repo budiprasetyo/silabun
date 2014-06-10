@@ -50,7 +50,7 @@ class M_upload extends MY_Model
 	
 	public function import_csv($path, $tables)
 	{
-		$query = $this->db->query("LOAD DATA LOCAL INFILE ? INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
+		$query = $this->db->query("LOAD DATA INFILE ? INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
 		
 		return $query;
 	}

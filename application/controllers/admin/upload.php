@@ -56,7 +56,7 @@ class Upload extends Admin_Controller
 		// check existing upload or create one
 		if ($id) {
 			$this->data['id']			= $id;
-			$this->data['upload'] 	= $this->m_upload->get($id);
+			$this->data['upload'] 		= $this->m_upload->get($id);
 			$this->data['back_link'] 	= $back_link;
 			count($this->data['upload']) || $this->data['errors'][] = 'upload could not be found';
 			$this->data['dropdown'] 	= $this->m_upload;
@@ -66,6 +66,7 @@ class Upload extends Admin_Controller
 			$this->data['upload'] 		= $this->m_upload->get_new();
 			$this->data['back_link'] 	= $back_link;
 			$this->data['dropdown'] 	= $this->m_upload;
+			$this->data['message']		= 'nothing to see here';
 		}
 		
 		$id == NULL || $this->data['upload'] = $this->m_upload->get($id);
@@ -86,12 +87,6 @@ class Upload extends Admin_Controller
 		$this->data['subview'] = 'admin/upload/edit';
 		$this->load->view('admin/template/_layout_admin', $this->data);
 		
-	}
-	
-	public function delete($id)
-	{
-		$this->m_page->delete($id);
-		redirect('admin/page');
 	}
 	
 	public function sent()
@@ -133,6 +128,8 @@ class Upload extends Admin_Controller
 					$compressedpath = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/data_lpj/';
 					// Specified extracting path and name
 					$extractpath = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/extract_lpj/';
+					// Specified moving extracted file path
+					$movingpath = realpath() . sys_get_temp_dir() . '/';
 					
 					// Upload the file
 					$data = $this->upload->data();
@@ -143,22 +140,19 @@ class Upload extends Admin_Controller
 					// Extracting to specified folder
 					$this->unzip->extract($filepath, $extractpath);
 					
-					$this->data['extractpaths'] = $extractpath;
-					
 					
 					foreach (glob($extractpath . '*.*') as $filename) 
 					{
 						$oldname = $extractpath . basename($filename);
-						$newname = $extractpath . basename(substr(strrchr($filename,'\\'),1));
+						$newname = $movingpath . basename(substr(strrchr($filename,'\\'),1));
+						// array newnames for hidden value
+						$this->data['newnames'][] = $movingpath . basename(substr(strrchr($filename,'\\'),1));
 						// rename function should be included path
 						rename($oldname, $newname);
+						$this->data['movingpaths'] = $movingpath;
 						
-						$import = $this->m_upload->import_csv($newname, 'd_lpjk');
+						//~ $import = $this->m_upload->import_csv($newname, 'd_lpjk');
 						
-						var_dump($import);
-						//~ var_dump(chmod($extractpath, 0777)) . '<br />';
-						//~ $current_user = get_current_user();
-						//~ var_dump(chown($extractpath . '*', $current_user));
 					}
 					
 					// Delete all footprints
@@ -173,5 +167,23 @@ class Upload extends Admin_Controller
 		// path to upload folder view
 		$this->data['subview'] = 'admin/upload/edit';
 		$this->load->view('admin/template/_layout_admin', $this->data);
+	}
+	
+	public function approve()
+	{
+		var_dump($this->input->post());
+		// Specified moving extracted file path
+		$movingpath = realpath() . sys_get_temp_dir() . '/';
+		
+		foreach (glob($movingpath . '*.*') as $filename) 
+		{
+			//~ echo basename(substr(strrchr($filename,'\\'),1));
+		}
+	}
+	
+	public function delete($id)
+	{
+		$this->m_page->delete($id);
+		redirect('admin/page');
 	}
 }
