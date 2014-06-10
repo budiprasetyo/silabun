@@ -151,7 +151,7 @@ class Upload extends Admin_Controller
 						rename($oldname, $newname);
 						$this->data['movingpaths'] = $movingpath;
 						
-						//~ $import = $this->m_upload->import_csv($newname, 'd_lpjk');
+						
 						
 					}
 					
@@ -171,9 +171,38 @@ class Upload extends Admin_Controller
 	
 	public function approve()
 	{
-		var_dump($this->input->post());
-		// Specified moving extracted file path
-		$movingpath = realpath() . sys_get_temp_dir() . '/';
+		$data = $this->input->post();
+		
+		$filetemps = $data['filetemps'];
+		
+		foreach ($filetemps as $filetemp) 
+		{
+			foreach ($filetemp as $filename) 
+			{
+				// Specified moving extracted file path
+				$movingpath = realpath() . sys_get_temp_dir() . '/';
+				// Get only filenames, used for unlink file from tmp :)
+				$file = substr(strrchr($filename,'/'),1);
+				
+				if (substr($file,0,1) === 'K') {
+					$importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
+					if($importlpjk) echo 'load data lpjk berhasil';
+					else echo 'load data lpjk gagal';
+				}
+				else if (substr($file,0,5) === 'REF_K') {
+					$importrefk = $this->m_upload->import_csv($movingpath . $file, 't_lpjk_refrek');
+					if($importrefk) echo 'load data ref berhasil';
+					else echo 'load data ref gagal';
+				}
+				else {
+					echo 'lainnya';
+				}
+				
+			}
+			
+		}
+		
+		
 		
 		foreach (glob($movingpath . '*.*') as $filename) 
 		{

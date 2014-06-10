@@ -100,13 +100,9 @@
 						  <div class="form-group">
 							  
 						  <?php 
-								foreach ($newnames as $newname) 
-								{
-									//~ $filetemps[] = basename($newname);
-									//~ echo form_hidden('filetemps', $filetemps);
-									$filetemps[] = basename($newname);
-									echo form_hidden('filetemps', $filetemps);
-								}
+								// send filenames to approval method
+								$filetemps[] = $newnames;
+								echo form_hidden('filetemps', $filetemps);
 						  ?>
 						  
 							<div class="col-lg-12 controls">
