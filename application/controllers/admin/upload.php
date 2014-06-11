@@ -150,9 +150,6 @@ class Upload extends Admin_Controller
 						// rename function should be included path
 						rename($oldname, $newname);
 						$this->data['movingpaths'] = $movingpath;
-						
-						
-						
 					}
 					
 					// Delete all footprints
@@ -183,7 +180,7 @@ class Upload extends Admin_Controller
 				$movingpath = realpath() . sys_get_temp_dir() . '/';
 				// Get only filenames, used for unlink file from tmp :)
 				$file = substr(strrchr($filename,'/'),1);
-				
+				// Define type of file, K for pengeluaran and P for penerimaan
 				if (substr($file,0,1) === 'K') {
 					$importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
 					if($importlpjk) echo 'load data lpjk berhasil';
@@ -202,12 +199,6 @@ class Upload extends Admin_Controller
 			
 		}
 		
-		
-		
-		foreach (glob($movingpath . '*.*') as $filename) 
-		{
-			//~ echo basename(substr(strrchr($filename,'\\'),1));
-		}
 	}
 	
 	public function delete($id)
