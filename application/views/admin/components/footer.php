@@ -30,6 +30,11 @@
 <script src="<?php echo base_url(); ?>assets/lib/cleditor/jquery.cleditor.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/pagedown-bootstrap/js/jquery.pagedown-bootstrap.combined.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/epiceditor/js/epiceditor.min.js"></script>
+<!-- upload -->
+<script src="<?php echo base_url(); ?>assets/lib/plupload/plupload.full.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery.uniform/jquery.uniform.min.js"></script>
 <script>
       $('.list-inline li > a').click(function() {
         var activeForm = $(this).attr('href') + ' > form';
@@ -70,7 +75,11 @@
 	formGeneral();
   });
 </script>
-    
+<script type="text/javascript">
+            $(function () {
+                $('#datetimepicker1').datetimepicker();
+            });
+</script>
 </body>
 
 </html>

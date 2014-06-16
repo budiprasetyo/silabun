@@ -17,6 +17,15 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/cleditor/jquery.cleditor.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/magic/magic.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.cleditor-hack.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/inputlimiter/jquery.inputlimiter.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/chosen/chosen.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/colorpicker/css/colorpicker.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/colorpicker_hack.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/tagsinput/jquery.tagsinput.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/daterangepicker/daterangepicker-bs3.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datepicker/css/datepicker.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/timepicker/css/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/jasny-bootstrap/css/jasny-bootstrap.min.css">
 	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -25,6 +34,7 @@
       <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     
+<!--
     <script type="text/javascript">
       (function(i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -40,4 +50,5 @@
       ga('create', 'UA-1669764-16', 'onokumus.com');
       ga('send', 'pageview');
     </script>
+-->
 </head>
