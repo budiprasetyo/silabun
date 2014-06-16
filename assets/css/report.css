@@ -1,0 +1,72 @@
+/**
+ * header layout
+ * */
+
+.container {
+   overflow: auto;
+}
+.logo{
+   float: left;
+   width: 20%;
+   padding: 0 0 0 30px;
+/*
+   background-color: #0099ff;
+*/
+}
+#header-mod {
+	width: 90%;
+	margin: -90px 0 0 0;
+	padding: 0 0 0 -50px;
+	display: inline;
+	float: right;
+	text-align: center;
+	text-transform: uppercase;
+	font-size:15px;
+	font-weight: bold;
+/*
+	background-color: #0044cc;
+*/
+}
+#header-mod #header-mod-child{
+	font-size:13px;
+}
+#header-mod #header-mod-subchild{
+	font-weight: normal;
+	text-transform: capitalize;
+	font-size:9px;
+}
+#body-head{
+	width: 100%;
+	text-align: center;
+	border-collapse: collapse;
+	font-size:12px;
+}
+#body-head table, th, td{
+	border: 0px solid black;
+}
+.return-address {
+	margin: 40px 0 25px 0;
+	text-align: left;
+	font-size:12px;
+	font-weight: bold;
+}
+.content{
+	text-align: justify;
+	font-size: 12px;
+}
+.content p{
+	text-indent: 40px;
+}
+#footer {
+	float: left;
+	font-size: 12px;
+}
+#footer #signature{
+	margin: 150px 0 70px 450px ;
+}
+#footer #name{
+	margin: 0 0 0 450px;
+}
+#footer #copy-letter {
+	margin: 120px 0 0 0;
+}
