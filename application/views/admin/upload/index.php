@@ -27,37 +27,27 @@
 							<tr>
 								<th>No.</th>
 								<th>Satker</th>
-								<th>Jan</th>
-								<th>Feb</th>
-								<th>Mar</th>
-								<th>Apr</th>
-								<th>Mei</th>
-								<th>Jun</th>
-								<th>Jul</th>
-								<th>Ags</th>
-								<th>Sep</th>
-								<th>Okt</th>
-								<th>Nov</th>
-								<th>Des</th>
-								<th>Edit</th>
-								<th>Delete</th>
+								<th>Tahun</th>
+								<th>Bulan</th>
+								<th>Timestamp Pengiriman</th>
+								<th>Pos Data</th>
 							</tr>
 						</thead>
                       <tbody>
 						<?php 
-							if (count($upload)) 
+							if (count($uploads)) 
 							{
-								foreach ($upload as $upload) 
+								$i = 0;
+								foreach ($uploads->result() as $upload) 
 								{
 						?>
 							<tr>
-							  <td><?php echo anchor('admin/upload/edit/' . $upload->upload_id, $upload->upload); ?></td>
-							  <td><?php echo $upload->description; ?></td>
-							  <td><?php echo $upload->page_type_id; ?></td>
-							  <td><?php echo $upload->language_id; ?></td>
-							  <td><?php echo $upload->status_code; ?></td>
-							  <td><?php echo btn_edit('admin/upload/edit/' . $upload->upload_id); ?></td>
-							  <td><?php echo btn_delete('admin/upload/edit/' . $upload->upload_id); ?></td>
+							  <td><?php echo ++$i; ?></td>
+							  <td><?php echo $upload->kdsatker; ?></td>
+							  <td><?php echo $upload->tahun; ?></td>
+							  <td><?php echo $upload->bulan; ?></td>
+							  <td><?php echo $upload->timestamp; ?></td>
+							  <td><?php echo $upload->pos_kirim; ?></td>
 							</tr>
 						<?php 
 								}

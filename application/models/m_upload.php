@@ -1,4 +1,6 @@
 <?php
+
+
 /*
  * m_upload.php
  * 
@@ -23,15 +25,14 @@
  */
 
 
-
 class M_upload extends MY_Model
 {
 
-	protected $_table_name 		= 'd_lpjk';
-	protected $_primary_key 	= 'lpjk_id';
-	protected $_order_by 		= 'lpjk_id';
+	protected $_table_name 		= 'status_kirim_row';
+	protected $_primary_key 	= 'id_status_kirim_row';
+	protected $_order_by 		= 'id_status_kirim_row';
 	public $rules				= array(
-					'categories'	=> array(
+					'upload'	=> array(
 						'field'	=> 'upload_lpj',
 						'label'	=> 'Upload Data',
 						'rules'	=> 'trim|required|max_length[11]'
@@ -46,6 +47,29 @@ class M_upload extends MY_Model
 		
 		$upload->upload_lpj		= '';
 		return $upload;
+	}
+	
+	public function get_uploaded($kd_kppn)
+	{
+		$query = $this->db->select('t_satker.kddept')
+						  ->select('t_satker.kdunit')
+						  ->select('t_satker.kdsatker')
+						  ->select('t_satker.nokarwas')
+						  ->select('status_kirim_row.id_status_kirim_row')
+						  ->select('status_kirim_row.tahun')
+						  ->select('status_kirim_row.bulan')
+						  ->select('status_kirim_row.timestamp')
+						  ->select('status_kirim_row.pos_kirim')
+						  ->from('t_satker')
+						  ->join('status_kirim_row', 't_satker.kdsatker = status_kirim_row.kd_satker', 'left')
+						  ->where('t_satker.kdkppn', $kd_kppn)
+						  ->get();
+		
+		if ($query->num_rows() > 0) 
+		{
+			return $query;
+			$query->free_result();
+		}
 	}
 	
 	public function import_csv($path, $tables)

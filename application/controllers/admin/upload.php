@@ -23,8 +23,6 @@
  */
 
 
-
-
 class Upload extends Admin_Controller
 {
 
@@ -41,8 +39,11 @@ class Upload extends Admin_Controller
 
 	public function index()
 	{
+		// temporary data for entry --dont forget to remove this one
+		$kd_kppn = '182';
 		// fetch all upload
 		//~ $this->data['upload'] = $this->m_upload->get();
+		$this->data['uploads'] = $this->m_upload->get_uploaded($kd_kppn);
 		
 		// path to page folder view
 		$this->data['subview'] = 'admin/upload/index';
@@ -77,7 +78,7 @@ class Upload extends Admin_Controller
 		
 		if ( $this->form_validation->run() == TRUE ) {
 			// populate fields
-			$data = $this->m_upload->array_from_post(array('upload','description','page_type_id','language_id','status_code'));
+			$data = $this->m_upload->array_from_post(array('upload'));
 			// save data
 			$this->m_upload->save($data, $id);
 			// redirect to upload
@@ -149,6 +150,9 @@ class Upload extends Admin_Controller
 						$this->data['newnames'][] = $movingpath . basename(substr(strrchr($filename,'\\'),1));
 						// rename function should be included path
 						rename($oldname, $newname);
+						// load library from CSVReader by Pierre-Jean Turpeau
+						$this->load->library('csvreader');
+						$this->data['csvdatas'] = $this->csvreader;
 						$this->data['movingpaths'] = $movingpath;
 					}
 					
@@ -181,23 +185,55 @@ class Upload extends Admin_Controller
 				// Get only filenames, used for unlink file from tmp :)
 				$file = substr(strrchr($filename,'/'),1);
 				// Define type of file, K for pengeluaran and P for penerimaan
-				if (substr($file,0,1) === 'K') {
+				if (substr($file,0,1) === 'K') 
+				{
 					$importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
-					if($importlpjk) echo 'load data lpjk berhasil';
-					else echo 'load data lpjk gagal';
+					if($importlpjk) 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data pengeluaran LPJ berhasil';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					else 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data pengeluaran LPJ gagal';
+						$this->load->view('admin/components/message', $this->data);
+					}
 				}
-				else if (substr($file,0,5) === 'REF_K') {
+				else if (substr($file,0,5) === 'REF_K') 
+				{
 					$importrefk = $this->m_upload->import_csv($movingpath . $file, 't_lpjk_refrek');
-					if($importrefk) echo 'load data ref berhasil';
-					else echo 'load data ref gagal';
+					
+					if($importrefk) 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data referensi bank berhasil';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					else 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data referensi bank gagal';
+						$this->load->view('admin/components/message', $this->data);
+					}
 				}
-				else {
+				else 
+				{
 					echo 'lainnya';
 				}
 				
+				// Delete all footprints
+				if(file($movingpath . $file))
+				{
+					unlink($movingpath . $file);
+				}
 			}
 			
 		}
+		
+		// redirect to index page
+		$this->output->set_header('refresh:3; url=index');
 		
 	}
 	

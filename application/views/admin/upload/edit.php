@@ -138,14 +138,26 @@
 							}
 							else
 							{
-								foreach (glob($movingpaths . '*.*') as $filename) 
+								foreach (glob($movingpaths . '*.*') as $filenames) 
 								{
-									$lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-
-									foreach ($lines as $line_num => $line) 
+									
+									if( substr(basename($filenames),0,1) === 'K' )
 									{
-										echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
+										//~ echo count($filenames);
+										var_dump($csvdatas->parse_file($filenames));
 									}
+									else if (substr(basename($filenames),0,5) === 'REF_K') 
+									{
+										$files = $csvdatas->parse_file($filenames);
+										var_dump($files);
+									}
+									//~ var_dump($csvdatas->parse_file($filename));
+									//~ $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+//~ 
+									//~ foreach ($lines as $line_num => $line) 
+									//~ {
+										//~ echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
+									//~ }
 								}
 							}
 						?>
