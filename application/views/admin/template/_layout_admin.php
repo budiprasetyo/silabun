@@ -135,22 +135,6 @@
 						<a href="button.html">
 						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Pengguna</a> 
 					  </li>
-					  <li class="">
-						<a href="progress.html">
-						  <i class="fa fa-angle-right"></i>&nbsp;Progress</a> 
-					  </li>
-					  <li class="">
-						<a href="pricing.html">
-						  <i class="fa fa-credit-card"></i>&nbsp;Pricing Table</a> 
-					  </li>
-					  <li class="">
-						<a href="bgimage.html">
-						  <i class="fa fa-angle-right"></i>&nbsp;Bg Image</a> 
-					  </li>
-					  <li class="">
-						<a href="bgcolor.html">
-						  <i class="fa fa-angle-right"></i>&nbsp;Bg Color</a> 
-					  </li>
 					</ul>
 				  </li>
 				  
@@ -161,6 +145,23 @@
 					  <span class="link-title"> Upload</span> 
 					</a> 
 				  </li>
+				  
+				  <li class="">
+					<a href="javascript:;">
+					  <i class="glyphicon glyphicon-print"></i>
+					  <span class="link-title">
+					  Report
+					</span> 
+					  <span class="fa arrow"></span> 
+					</a> 
+					<ul style="height: inherit;">
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/report">
+						  <i class="fa fa-angle-right"></i>&nbsp;Surat Teguran</a> 
+					  </li>
+					</ul>
+				  </li>
+				  
 				  <li>
 					<a href="maps.html">
 					<span class="link-title">
