@@ -1,6 +1,6 @@
 <div class="panel panel-default" id="admin-page">
 	<div class="panel-heading">
-		<div class="panel-title"><?php echo empty($user->users_id) ? 'Add User' : 'Edit User'; ?></div>
+		<div class="panel-title"><?php echo empty($user->id_users) ? 'Add User' : 'Edit User'; ?></div>
 	</div><!--/panel-heading-->     
 
 	<div style="padding-top:30px" class="panel-body" >
@@ -29,11 +29,6 @@
 			<div style="margin-bottom: 25px" class="input-group">
 				<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
 					<input id="login-email" type="text" class="form-control" name="email" value="<?php echo set_value('email', $user->email); ?>" placeholder="email">                             
-			</div>
-										
-			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-					<input id="login-role_id" type="text" class="form-control" name="role_id" value="<?php echo set_value('role_id', $user->role_id); ?>" placeholder="role user">                                        
 			</div>
 			
 			<div style="margin-top:10px" class="form-group">

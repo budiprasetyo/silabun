@@ -47,7 +47,6 @@ class Dashboard extends Admin_Controller
 
 	public function home()
 	{	
-		$this->data['users'] = $this->m_user->get();
 		$this->data['subview'] = 'admin/dashboard/index';
 		$this->load->view('admin/template/_layout_admin', $this->data);
 	}

@@ -190,6 +190,15 @@ span.pull-right{
 .fa .fa-twitter { background-image: url(images/icon.twitter.gif) no-repeat; }
 .fa .fa-google-plus { background-image: url(images/icon.gplus.gif) no-repeat; }
 .fa .fa-linkedin { background-image: url(images/icon.linkedin.gif) no-repeat; }
-
-
+/* retina display */
+/*
+@media 
+(-webkit-min-device-pixel-ratio: 1.25), 
+(min-resolution: 120dpi) { 
+    /* Retina-specific stuff here 
+    .navbar-brand{
+    
+    }
+}
+*/
 

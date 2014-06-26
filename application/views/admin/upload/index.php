@@ -22,6 +22,35 @@
 					  <!-- add upload -->
 					  <?php echo anchor('admin/upload/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Upload Data'); ?>
 					  
+					  <hr />	  
+					  <form class="form-horizontal" method="post" action="">
+					  
+					  <div class="form-group">
+						<label for="text1" class="control-label col-lg-2">Tahun</label>
+						<div class="col-lg-3">
+						  <input type="text" id="text1" placeholder="Tahun" class="form-control" name="tahun" maxlength="4" value="<?php echo $tahun; ?>"/>
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<label for="text1" class="control-label col-lg-2">Bulan</label>
+						<div class="col-lg-3">
+						  <input type="text" id="text1" placeholder="Bulan" class="form-control" name="bulan" maxlength="2" autofocus="autofocus" />
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<div class="col-lg-2 controls">
+							<?php 
+								$attributes = 'class = "btn btn-primary"';
+								echo form_submit('submit', 'Tampilkan', $attributes);
+							?>
+						</div>
+					  </div><!--/.form-group -->
+					  
+					  </form>
+					  <hr />
+					  
                     <table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 						<thead>
 							<tr>

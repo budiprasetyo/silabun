@@ -49,6 +49,23 @@ class M_upload extends MY_Model
 		return $upload;
 	}
 	
+	public function get_kppn($id_ref_satker)
+	{
+		$query = $this->db->select('ref_satker.id_ref_satker')
+							->select('ref_satker.kd_satker')
+							->select('ref_kppn.kd_kppn')
+							->from('ref_satker')
+							->join('ref_kppn', 'ref_satker.kd_satker = ref_kppn.kd_satker_kppn')
+							->where('ref_satker.id_ref_satker', $id_ref_satker)
+							->get();
+							
+		if($query->num_rows() > 0)
+		{
+			return $query->row();
+			$query->free_result();
+		}
+	}
+	
 	public function get_uploaded($kd_kppn)
 	{
 		$query = $this->db->select('t_satker.kddept')

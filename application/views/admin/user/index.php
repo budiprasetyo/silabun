@@ -22,9 +22,9 @@
 								
 						?>
 						<tr>
-							<td><?php echo anchor('admin/user/edit/' . $user->users_id, $user->username ); ?></td>
-							<td><?php echo btn_edit('admin/user/edit/' . $user->users_id); ?></td>
-							<td><?php echo btn_delete('admin/user/delete/' . $user->users_id); ?></td>
+							<td><?php echo anchor('admin/user/edit/' . $user->id_users, $user->username ); ?></td>
+							<td><?php echo btn_edit('admin/user/edit/' . $user->id_users); ?></td>
+							<td><?php echo btn_delete('admin/user/delete/' . $user->id_users); ?></td>
 						</tr>
 						<?php 
 								}

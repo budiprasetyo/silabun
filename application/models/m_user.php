@@ -23,12 +23,10 @@
  */
 
 
-
-
 class M_user extends MY_Model
 {
-	protected $_table_name 		= 'cms_users';
-	protected $_primary_key 	= 'users_id';
+	protected $_table_name 		= 'users';
+	protected $_primary_key 	= 'id_users';
 	protected $_order_by 		= 'username';
 	public $rules 				= array(
 						'username' => array( 
@@ -43,11 +41,6 @@ class M_user extends MY_Model
 						)
 	);
 	public $rules_admin			= array(
-						'role_id' => array( 
-							'field' => 'role_id', 
-							'label' => 'role', 
-							'rules' => 'trim|required|is_natural|max_length[5]|xss_clean'
-						),
 						'email' => array( 
 							'field' => 'email', 
 							'label' => 'email', 
@@ -158,22 +151,26 @@ class M_user extends MY_Model
 	public function login()
 	{
 		// get data from cms_users table
-		$user = $this->get_by(array(
+		$user = $this->get_join(array(
 							'username' => $this->input->post('username'),
 							'password_hash' => $this->hash($this->input->post('password'))
 							), TRUE);
+		
 		if (count($user)) 
 		{
+			// remove [0] array
+			$user = array_shift($user);
+			
 			// login user
 			$data = array(
-					'users_id' 		=> $user->users_id,
-					'role_id' 		=> $user->role_id,
-					'email' 		=> $user->email,
+					'id_users' 		=> $user->id_users,
 					'username' 		=> $user->username,
-					'password_hash' => $user->password_hash,
 					'display_name' 	=> $user->display_name,
+					'id_ref_satker' => $user->id_ref_satker,
+					'id_entities'	=> $user->id_entities,
 					'loggedin'		=> TRUE,
 					);
+			var_dump($data);
 			$this->session->set_userdata($data);
 			return TRUE;
 		}
@@ -189,11 +186,41 @@ class M_user extends MY_Model
 		return (bool) $this->session->userdata('loggedin');
 	}
 	
+	public function get_join($key, $val = FALSE, $single = FALSE)
+	{
+		$query = $this->db->select('users.id_users')
+							->select('users.username')
+							->select('users.display_name')
+							->select('user_entity.id_ref_satker')
+							->select('user_entity.id_entities')
+							->from('users')
+							->join('user_entity', 'users.id_users = user_entity.id_users', 'left');
+							
+		// Limit results with conditional where
+        if (! is_array($key)) {
+			
+            $query = $this->db->where(htmlentities($key), htmlentities($val));
+            
+        }
+        else {
+            $key = array_map('htmlentities', $key); 
+            $where_method = $orwhere == TRUE ? 'or_where' : 'where';
+            
+            $query = $this->db->$where_method($key);
+        }
+		
+		$query = $this->db->get();
+		
+		// Return results
+        $single == FALSE || $this->db->limit(1);
+        $method = $single ? 'row' : 'result';
+		return $query->$method();
+	}
+	
 	public function get_new()
 	{
 		$user = new stdClass();
 		
-		$user->role_id			= '';
 		$user->username			= '';
 		$user->password_hash	= '';
 		$user->password_conf	= '';

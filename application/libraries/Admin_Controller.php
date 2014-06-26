@@ -47,7 +47,11 @@ class Admin_Controller extends MY_Controller
 		);
 		
 		// user logged in
-		$this->data['username'] = $this->session->userdata('username');
+		$this->data['id_users'] 		= $this->session->userdata('id_users');
+		$this->data['id_ref_satker'] 	= $this->session->userdata('id_ref_satker');
+		$this->data['id_entities'] 		= $this->session->userdata('id_entities');
+		$this->data['username'] 		= $this->session->userdata('username');
+		$this->data['display_name'] 	= $this->session->userdata('display_name');
 		
 		if(in_array(uri_string(), $exception_uris) == FALSE)
 		{

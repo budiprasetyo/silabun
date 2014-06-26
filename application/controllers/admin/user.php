@@ -61,6 +61,7 @@ class User extends Admin_Controller
 				$this->session->set_flashdata('error', 'Combination of username or password may be wrong');
 			}
 		}
+		
 		// load login view
 		$this->data['subview'] = 'admin/user/login';
 		$this->load->view('admin/template/_layout_modal', $this->data);
@@ -102,7 +103,7 @@ class User extends Admin_Controller
 		
 		if ( $this->form_validation->run() == TRUE ) {
 			// populate fields
-			$data = $this->m_user->array_from_post(array('role_id','username','password_hash','email'));
+			$data = $this->m_user->array_from_post(array('username','password_hash','email'));
 			// specific action for password hash
 			$data['password_hash'] = $this->m_user->hash($data['password_hash']);
 			$this->m_user->save($data, $id);
@@ -128,7 +129,7 @@ class User extends Admin_Controller
 		$id = $this->uri->segment(4);
 		$this->db->where('email', $this->input->post('email'));
 		// if not getting id, choose another id, and be careful of id's name
-		!$id || $this->db->where('users_id !=' , $id);
+		!$id || $this->db->where('id_users !=' , $id);
 		$user = $this->m_user->get();
 		
 		if (count($user)) 

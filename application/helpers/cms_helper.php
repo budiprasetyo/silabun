@@ -29,12 +29,12 @@ function btn_edit($uri)
 
 function btn_delete($uri) 
 {
-	return anchor($uri, '<i class="glyphicon glyphicon-remove"></i>', array('onclick'=>"return confirm('Are you sure want to delete this record?')")); 
+	return anchor($uri, '<i class="glyphicon glyphicon-remove"></i>', array('onclick'=>"return confirm('Apakah Anda ingin menghapus data ini?')")); 
 }
 
 function btn_back($uri, $page = NULL) 
 {
-	return anchor($uri, '<i class="glyphicon glyphicon-chevron-left"></i> Back to ' . $page, ''); 
+	return anchor($uri, '<i class="glyphicon glyphicon-chevron-left"></i> Kembali ke ' . $page, ''); 
 }
 
 /**

@@ -36,7 +36,7 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 							</button>	
-							<a class="navbar-brand" rel="home" href="<?php echo base_url() . 'companies.php/admin/dashboard/home'; ?>"><img src="<?php echo base_url(); ?>assets/css/images/kemenkeu.png" alt="logo" height="50px" /></a>
+							<a class="navbar-brand" rel="home" href="<?php echo base_url() . 'companies.php/admin/dashboard/home'; ?>"><img src="<?php echo base_url(); ?>assets/css/images/kemenkeu.png" alt="logo" height="50px" style="padding:3px 0 3px 20px;"/></a>
 						</header>
 						
 						<div class="topnav">
@@ -95,13 +95,14 @@
 							<img class="media-object img-thumbnail user-img" alt="User Picture" src="<?php echo base_url(); ?>assets/css/images/user.gif">
 						</a><!--/user-link-->
 						<div class="media-body">
-							<h5 class="media-heading"><?php echo ucfirst(strtolower($username)); ?></h5>
+							<h5 class="media-heading"><?php echo strtoupper($username); ?></h5>
 							<ul class="list-unstyled user-info">
-								<li> <a href="">Administrator</a>  </li>
-								<li>Last Access :
+								<li> <a href=""><?php echo $username; ?></a>  </li> <!-- role id -->
+								<li>Last Access:
 								  <br>
 								  <small>
-									<i class="fa fa-calendar"></i>&nbsp;get from database</small> 
+									<i class="fa fa-calendar"></i>&nbsp;get from database
+								  </small> 
 								</li>
 							  </ul>
 						</div><!--/media-body-->
@@ -128,23 +129,29 @@
 					</a> 
 					<ul style="height: inherit;">
 					  <li class="">
-						<a href="icon.html">
-						  <i class="fa fa-angle-right"></i>&nbsp;Persetujuan Pengguna</a> 
+						<a href="<?php echo base_url(); ?>companies.php/admin/roles">
+						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Entitas</a> 
 					  </li>
 					  <li class="">
-						<a href="button.html">
+						<a href="<?php echo base_url(); ?>companies.php/admin/roles">
 						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Pengguna</a> 
+					  </li>
+					  <li class="">
+						<a href="icon.html">
+						  <i class="fa fa-angle-right"></i>&nbsp;Persetujuan Pengguna</a> 
 					  </li>
 					</ul>
 				  </li>
 				  
-				  
+				  <!-- if entity is kppn -->
+				  <?php if($id_entities === '1') { ?>
 				  <li>
 					<a href="<?php echo base_url(); ?>companies.php/admin/upload">
 					  <i class="glyphicon glyphicon-upload"></i>
 					  <span class="link-title"> Upload</span> 
 					</a> 
 				  </li>
+				  <?php } ?>
 				  
 				  <li class="">
 					<a href="javascript:;">

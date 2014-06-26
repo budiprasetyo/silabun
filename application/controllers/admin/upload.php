@@ -39,15 +39,21 @@ class Upload extends Admin_Controller
 
 	public function index()
 	{
-		// temporary data for entry --dont forget to remove this one
-		$kd_kppn = '182';
-		// fetch all upload
-		//~ $this->data['upload'] = $this->m_upload->get();
-		$this->data['uploads'] = $this->m_upload->get_uploaded($kd_kppn);
+		// if entity is kppn
+		if($this->data['id_entities'] === '1')
+		{
+			$this->data['tahun'] = date('Y');
+			// get kode kppn
+			$kppn = $this->m_upload->get_kppn($this->data['id_ref_satker']);
+			
+			// fetch all upload
+			$this->data['uploads'] = $this->m_upload->get_uploaded($kppn->kd_kppn);
+			
+			// path to page folder view
+			$this->data['subview'] = 'admin/upload/index';
+			$this->load->view('admin/template/_layout_admin', $this->data);
+		}
 		
-		// path to page folder view
-		$this->data['subview'] = 'admin/upload/index';
-		$this->load->view('admin/template/_layout_admin', $this->data);
 	}
 	
 	public function edit($id = NULL)

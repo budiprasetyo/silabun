@@ -36,10 +36,33 @@
  */
 class MY_Model extends CI_Model
 {
+	/**
+	* The database table to use.
+	* @var string
+	*/
 	protected $_table_name 		= '';
+	
+	/**
+	* Primary key field
+	* @var string
+	*/
 	protected $_primary_key 	= '';
-	protected $_primary_filter 	= 'intval';
+	
+	/**
+	* The filter that is used on the primary key. Since most primary keys are
+	* autoincrement integers, this defaults to intval. On non-integers, you would
+	* typically use something like xss_clean of htmlentities.
+	* @var string
+	*/
+	protected $_primary_filter 	= 'intval'; // htmlentities for string
+	
+	/**
+	* Order by fields. Default order for this model.
+	* @var string
+	*/
 	protected $_order_by 		= '';
+	
+
 	public $_rules 				= array();
 	protected $_timestamps 		= FALSE;
 	
@@ -62,7 +85,8 @@ class MY_Model extends CI_Model
 		}
 		return $data;
 	}
-
+	
+	/*
 	public function get($id = NULL, $single = FALSE)
 	{
 		if ($id != NULL)
@@ -92,6 +116,58 @@ class MY_Model extends CI_Model
 		$this->db->where($where);
 		return $this->get(NULL, $single);
 	}
+	*/
+	
+	public function get ($ids = FALSE, $order_by = FALSE){
+        
+        // Set flag - if we passed a single ID we should return a single record
+        $single = $ids == FALSE || is_array($ids) ? FALSE : TRUE;
+        
+        // Limit results to one or more ids
+        if ($ids !== FALSE) {
+            
+            // $ids should always be an array
+            is_array($ids) || $ids = array($ids); 
+            
+            // Sanitize ids
+            $filter = $this->_primary_filter;
+            $ids = array_map($filter, $ids); 
+            
+            $this->db->where_in($this->_primary_key, $ids);
+        }
+        
+        $this->_order_by;
+        // Set order by if it was not already set
+        count($this->db->ar_orderby) || $this->db->order_by($this->_order_by);
+        
+        $this->_table_name;
+        // Return results
+        $single == FALSE || $this->db->limit(1);
+        $method = $single ? 'row' : 'result';
+        return $this->db->get($this->_table_name)->$method();
+    }
+    
+    public function get_by ($key, $val = FALSE, $orwhere = FALSE, $single = FALSE, $table_name = FALSE) {
+        
+        // Limit results with conditional where
+        if (! is_array($key)) {
+            $this->db->where(htmlentities($key), htmlentities($val));
+        }
+        else {
+            $key = array_map('htmlentities', $key); 
+            $where_method = $orwhere == TRUE ? 'or_where' : 'where';
+            $this->db->$where_method($key);
+        }
+        
+        // Get data with method row or result
+        //~ $this->_table_name || $table_name == TRUE;
+        $table = $table_name == TRUE ? $table_name : $this->_table_name;
+        // Return results
+        $single == FALSE || $this->db->limit(1);
+        $method = $single ? 'row' : 'result';
+        return $this->db->get($table)->$method();
+    }
+	
 	
 	public function save($data, $id = NULL)
 	{
@@ -187,5 +263,29 @@ class MY_Model extends CI_Model
 		$dropdown .= "</select>";
 		
 		echo $dropdown;
+	}
+	
+	public function get_another($id = NULL, $single = FALSE)
+	{
+		if ($id != NULL)
+		{
+			$filter = $this->_primary_filter;
+			$id = $filter($id);
+			$this->db->where($this->_primary_key, $id);
+			$method = 'row';
+		}
+		elseif ($single == TRUE) {
+			$method = 'row';
+		}
+		else {
+			$method = 'result';
+		}
+		
+		if (!count($this->db->ar_orderby)) 
+		{
+			$this->db->order_by($this->_order_by);
+		}
+		
+		return $this->db->get($this->_table_name)->$method();
 	}
 }
