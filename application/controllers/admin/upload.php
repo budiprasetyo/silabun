@@ -169,9 +169,12 @@ class Upload extends Admin_Controller
 					foreach (glob($extractpath . '*.*') as $filename) 
 					{
 						$oldname = $extractpath . basename($filename);
-						$newname = $movingpath . basename(substr(strrchr($filename,'\\'),1));
+						$newname = $movingpath . basename($filename);
+						//~ $newname = $movingpath . basename(substr(strrchr($filename,'\\'),1)); -- old setting before tamp1 was removed
+						
 						// array newnames for hidden value
-						$this->data['newnames'][] = $movingpath . basename(substr(strrchr($filename,'\\'),1));
+						$this->data['newnames'][] = $movingpath . basename($filename);
+
 						// rename function should be included path
 						rename($oldname, $newname);
 						// load library from CSVReader by Pierre-Jean Turpeau
@@ -208,6 +211,7 @@ class Upload extends Admin_Controller
 				$movingpath = realpath() . sys_get_temp_dir() . '/';
 				// Get only filenames, used for unlink file from tmp :)
 				$file = substr(strrchr($filename,'/'),1);
+				
 				// Define type of file, K for pengeluaran and P for penerimaan
 				if (substr($file,0,1) === 'K') 
 				{
@@ -252,6 +256,7 @@ class Upload extends Admin_Controller
 				{
 					unlink($movingpath . $file);
 				}
+				
 			}
 			
 		}
