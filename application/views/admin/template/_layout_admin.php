@@ -153,6 +153,23 @@
 				  </li>
 				  <?php } ?>
 				  
+				  <!-- if entity is kanwil or pkn -->
+				  <?php if($id_entities === '1' || $id_entities === '2' || $id_entities === '3') { ?>
+				  <li>
+					<a href="javascript:;">
+					  <i class="glyphicon glyphicon-th-large"></i>
+					  <span class="link-title"> Monitoring</span>
+					  <span class="fa arrow"></span>  
+					</a> 
+					<ul style="height: inherit;">
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/monitoring/monitor_data_terkirim">
+						  <i class="fa fa-angle-right"></i>&nbsp;Kiriman LPJ</a> 
+					  </li>
+					</ul>
+				  </li>
+				  <?php } ?>
+				  
 				  <li class="">
 					<a href="javascript:;">
 					  <i class="glyphicon glyphicon-print"></i>
@@ -162,29 +179,36 @@
 					  <span class="fa arrow"></span> 
 					</a> 
 					<ul style="height: inherit;">
+					  <!-- if entity is kppn -->
+					  <?php if ($id_entities === '1') { ?>
 					  <li class="">
-						<a href="<?php echo base_url(); ?>companies.php/admin/report">
+						<a href="<?php echo base_url(); ?>companies.php/admin/report/form_report_teguran">
 						  <i class="fa fa-angle-right"></i>&nbsp;Surat Teguran</a> 
+					  </li>
+					  <?php } ?>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekap_lpj_pengeluaran">
+						  <i class="fa fa-angle-right"></i>&nbsp;Rekap LPJ Pengeluaran</a> 
 					  </li>
 					</ul>
 				  </li>
 				  
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
 					</a> 
 				  </li>
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
 					</a> 
 				  </li>
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
@@ -192,14 +216,14 @@
 				  </li>
 				  
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
 					</a> 
 				  </li>
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
@@ -207,14 +231,14 @@
 				  </li>
 				  <li class="nav-divider"></li>
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>
 					</a>  
 				  </li>
 				  <li>
-					<a href="maps.html">
+					<a href="javascript:;">
 					<span class="link-title">
 					&nbsp;
 					</span>

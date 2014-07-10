@@ -16,11 +16,11 @@
 				kementerian keuangan republik indonesia<br />
 				direktorat jenderal perbendaharaan
 					<div id="header-mod-child">
-					kantor wilayah provinsi <br />
-					kantor pelayanan perbendaharaan negara <br />
+					kantor wilayah provinsi <?php echo $satker->nm_kanwil; ?><br />
+					kantor pelayanan perbendaharaan negara <?php echo $satker->nm_kppn; ?><br />
 						<div id="header-mod-subchild">
-						Jalan <br />
-						Telp. Fax. <br />
+						Jalan <?php echo $satker->almt_kppn; ?><br />
+						Telp. <?php echo $satker->telp_kppn; ?> Fax. <?php echo $satker->fax_kppn; ?><br />
 						Website <br />
 						</div>
 					</div>

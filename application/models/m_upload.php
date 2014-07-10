@@ -28,9 +28,9 @@
 class M_upload extends MY_Model
 {
 
-	protected $_table_name 		= 'status_kirim_row';
-	protected $_primary_key 	= 'id_status_kirim_row';
-	protected $_order_by 		= 'id_status_kirim_row';
+	protected $_table_name 		= 'dsp_status_kirim_pengeluaran';
+	protected $_primary_key 	= 'id_status_kirim_pengeluaran';
+	protected $_order_by 		= 'id_status_kirim_pengeluaran';
 	public $rules				= array(
 					'upload'	=> array(
 						'field'	=> 'upload_lpj',
@@ -49,37 +49,24 @@ class M_upload extends MY_Model
 		return $upload;
 	}
 	
-	public function get_kppn($id_ref_satker)
-	{
-		$query = $this->db->select('ref_satker.id_ref_satker')
-							->select('ref_satker.kd_satker')
-							->select('ref_kppn.kd_kppn')
-							->from('ref_satker')
-							->join('ref_kppn', 'ref_satker.kd_satker = ref_kppn.kd_satker_kppn')
-							->where('ref_satker.id_ref_satker', $id_ref_satker)
-							->get();
-							
-		if($query->num_rows() > 0)
-		{
-			return $query->row();
-			$query->free_result();
-		}
-	}
 	
-	public function get_uploaded($kd_kppn)
+	public function get_uploaded($id_ref_kppn, $year, $month)
 	{
-		$query = $this->db->select('t_satker.kddept')
-						  ->select('t_satker.kdunit')
-						  ->select('t_satker.kdsatker')
-						  ->select('t_satker.nokarwas')
-						  ->select('status_kirim_row.id_status_kirim_row')
-						  ->select('status_kirim_row.tahun')
-						  ->select('status_kirim_row.bulan')
-						  ->select('status_kirim_row.timestamp')
-						  ->select('status_kirim_row.pos_kirim')
-						  ->from('t_satker')
-						  ->join('status_kirim_row', 't_satker.kdsatker = status_kirim_row.kd_satker', 'left')
-						  ->where('t_satker.kdkppn', $kd_kppn)
+		$query = $this->db->select('ref_satker.id_ref_unit')
+						  ->select('ref_satker.kd_satker')
+						  ->select('ref_satker.no_karwas')
+						  ->select('dsp_status_kirim_pengeluaran.id_status_kirim_pengeluaran')
+						  ->select('dsp_status_kirim_pengeluaran.tahun')
+						  ->select('dsp_status_kirim_pengeluaran.bulan')
+						  ->select('dsp_status_kirim_pengeluaran.timestamp')
+						  ->select('dsp_status_kirim_pengeluaran.pos_kirim')
+						  ->from('ref_satker')
+						  ->join('dsp_status_kirim_pengeluaran', 'ref_satker.id_ref_satker = dsp_status_kirim_pengeluaran.id_ref_satker', 'left')
+						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
+						  ->where('dsp_status_kirim_pengeluaran.tahun', $year)
+						  ->where('dsp_status_kirim_pengeluaran.bulan', $month)
+						  ->order_by('dsp_status_kirim_pengeluaran.id_ref_satker')
+						  ->order_by('dsp_status_kirim_pengeluaran.pos_kirim')
 						  ->get();
 		
 		if ($query->num_rows() > 0) 
@@ -91,8 +78,45 @@ class M_upload extends MY_Model
 	
 	public function import_csv($path, $tables)
 	{
-		$query = $this->db->query("LOAD DATA INFILE ? INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
 		
 		return $query;
+	}
+	
+	public function get_status_sent_satker($id_ref_kppn, $year, $month, $pos_kirim)
+	{
+		$query_unsent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
+					`dsp_status_kirim_pengeluaran`.`bulan`,`dsp_status_kirim_pengeluaran`.`pos_kirim`,
+					 count(*) as jml_lpj
+				FROM `ref_satker`
+				LEFT JOIN `dsp_status_kirim_pengeluaran` 
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
+				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				AND `dsp_status_kirim_pengeluaran`.`tahun` is null
+				AND `dsp_status_kirim_pengeluaran`.`bulan` is null
+				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` is null
+				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
+					`dsp_status_kirim_pengeluaran`.`bulan`");
+					
+		$query_sent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
+					`dsp_status_kirim_pengeluaran`.`bulan`, count(*) as jml_lpj
+				FROM `ref_satker`
+				LEFT JOIN `dsp_status_kirim_pengeluaran` 
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
+				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				AND `dsp_status_kirim_pengeluaran`.`tahun` = '".$year."'
+				AND `dsp_status_kirim_pengeluaran`.`bulan` = '".$month."'
+				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` = '".$pos_kirim."'
+				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
+					`dsp_status_kirim_pengeluaran`.`bulan`");
+		
+		$query_unsent->num_rows > 0 ? $query_unsent_row = $query_unsent->row() : $query_unsent_row = 0;
+		$query_sent->num_rows > 0 ? $query_sent_row = $query_sent->row() : $query_sent_row = 0;
+		
+		return array(
+			'query_unsent' => $query_unsent_row,
+			'query_sent' => $query_sent_row,
+		);
+		
 	}
 }

@@ -42,12 +42,30 @@ class Upload extends Admin_Controller
 		// if entity is kppn
 		if($this->data['id_entities'] === '1')
 		{
-			$this->data['tahun'] = date('Y');
-			// get kode kppn
-			$kppn = $this->m_upload->get_kppn($this->data['id_ref_satker']);
+			// get id_ref_kppn
+			$this->load->model('m_referensi');
+			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+			
+			// get year
+			$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
+			// get month
+			$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 			
 			// fetch all upload
-			$this->data['uploads'] = $this->m_upload->get_uploaded($kppn->kd_kppn);
+			$this->data['uploads'] = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
+			
+			// get sent and unsent pos kirim = K
+			$status_data_k = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'K');
+			$this->data['data_sent_k'] = $status_data_k['query_sent'];
+			$this->data['data_unsent_k'] = $status_data_k['query_unsent'];
+			// get sent and unsent pos kirim = P
+			$status_data_p = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'P');
+			$this->data['data_sent_p'] = $status_data_p['query_sent'];
+			$this->data['data_unsent_p'] = $status_data_p['query_unsent'];
+			//~ // load m_monitoring
+			//~ $this->load->model('m_monitoring');
+			//~ $this->data['data_sent_k'] = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'K');
+			//~ var_dump($this->data['data_sent_k']);
 			
 			// path to page folder view
 			$this->data['subview'] = 'admin/upload/index';
@@ -239,7 +257,7 @@ class Upload extends Admin_Controller
 		}
 		
 		// redirect to index page
-		$this->output->set_header('refresh:3; url=index');
+		$this->output->set_header('refresh:2; url=index');
 		
 	}
 	

@@ -35,6 +35,20 @@
 	text-transform: capitalize;
 	font-size:9px;
 }
+#header-report{
+	width: 50%;
+	margin: 0 0 0 0;
+	padding: 0 0 0 0;
+	display: inline;
+	float: left;
+	text-align: left;
+	text-transform: uppercase;
+	font-size:11px;
+	font-weight: bold;
+/*
+	background-color: #0044cc;
+*/
+}
 #body-head{
 	width: 100%;
 	text-align: center;
@@ -57,6 +71,17 @@
 .content p{
 	text-indent: 40px;
 }
+.content-report{
+	font-size:11px;
+	width: 100%;
+	border: 1px #000000;
+	border-collapse:collapse;
+}
+.content-report .title{
+	text-align: center;
+	font-size: 11px;
+	font-weight: bold;
+}
 #footer {
 	float: left;
 	font-size: 12px;
@@ -69,4 +94,10 @@
 }
 #footer #copy-letter {
 	margin: 120px 0 0 0;
+}
+#footer #report{
+	margin: 40px 0 0 700px;
+}
+#footer #report #name{
+	margin: 40px 0 0 700px;
 }

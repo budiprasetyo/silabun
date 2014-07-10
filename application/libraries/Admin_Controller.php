@@ -63,6 +63,7 @@ class Admin_Controller extends MY_Controller
 		
 		//CKEditor section
 		// load ckeditor helper
+		/*
 		$this->load->helper('ckeditor');
  
  
@@ -106,7 +107,7 @@ class Admin_Controller extends MY_Controller
 				)				
 			)
 		);
- 
+		*/
 		
 	}
 

@@ -48,11 +48,11 @@
 							<?php 
 								if($movingpaths == null)
 								{
-									$attributes = 'class = "btn btn-primary"';
+									$attributes = 'class = "btn btn-primary btn-grad"';
 								}
 								else
 								{
-									$attributes = 'class = "btn btn-primary" disabled = "disabled"';
+									$attributes = 'class = "btn btn-primary btn-grad" disabled = "disabled"';
 								}
 								echo form_submit('submit', 'Upload', $attributes);
 							?>
@@ -109,11 +109,11 @@
 								<?php 
 									if($movingpaths == null)
 									{
-										$attributes = 'class = "btn btn-default" disabled = "disabled"';
+										$attributes = 'class = "btn btn-default btn-grad" disabled = "disabled"';
 									}
 									else
 									{
-										$attributes = 'class = "btn btn-success"';
+										$attributes = 'class = "btn btn-success btn-grad"';
 									}
 									echo form_submit('submit', 'Approve', $attributes);
 								?>
@@ -144,12 +144,13 @@
 									if( substr(basename($filenames),0,1) === 'K' )
 									{
 										//~ echo count($filenames);
-										var_dump($csvdatas->parse_file($filenames));
+										$file_k = $csvdatas->parse_file($filenames);
+										//~ var_dump($file_k);
 									}
-									else if (substr(basename($filenames),0,5) === 'REF_K') 
+									if (substr(basename($filenames),0,5) === 'REF_K') 
 									{
 										$files = $csvdatas->parse_file($filenames);
-										var_dump($files);
+										//~ var_dump($files);
 									}
 									//~ var_dump($csvdatas->parse_file($filename));
 									//~ $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

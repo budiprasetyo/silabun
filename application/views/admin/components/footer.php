@@ -35,6 +35,11 @@
 <script src="<?php echo base_url(); ?>assets/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.uniform/jquery.uniform.min.js"></script>
+<!-- dashboard -->
+<script src="<?php echo base_url(); ?>assets/lib/jquery.sparkline/jquery.sparkline.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.selection.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.resize.js"></script>
 <script>
       $('.list-inline li > a').click(function() {
         var activeForm = $(this).attr('href') + ' > form';

@@ -3,8 +3,8 @@
 		<tr>
 			<td width="13%" align="left">Nomor</td>
 			<td width="2%" align="left">:</td>
-			<td width="15%" align="left">&nbsp;S-</td>
-			<td align="right">Tanggal</td>
+			<td width="15%" align="left"><?php echo $data_surat['no_surat_teguran']; ?></td>
+			<td align="right">Tanggal <?php echo $now; ?></td>
 		</tr>
 		<tr>
 			<td width="13%" align="left">Sifat</td>
@@ -14,7 +14,7 @@
 		<tr>
 			<td width="13%" align="left">Lampiran</td>
 			<td width="2%" align="left">:</td>
-			<td colspan="2" align="left">&nbsp;lembar</td>
+			<td colspan="2" align="left"><?php echo $data_surat['jml_lampiran']; ?> lembar</td>
 		</tr>
 		<tr>
 			<td width="13%" align="left">Hal</td>
@@ -25,12 +25,12 @@
 	</table>
 	<address class="return-address">
 		Yth. Bendahara Penerimaan/Pengeluaran<br />
-		Kantor/Satker<br />
+		Kantor/Satker <?php echo ucwords(strtolower($satker->nm_satker)); ?><br />
 		di
 	</address>
 	<div class="content">
 		<p>
-			Berdasarkan Laporan Pertanggungjawaban Saudara Nomor ... tanggal ... yang telah kami verifikasi tanggal ... dengan nomor ... diketahui bahwa saldo akhir penerimaan negara/pajak bulan yang lalu belum Saudara setorkan ke kas negara seluruhnya.
+			Berdasarkan Laporan Pertanggungjawaban Saudara Nomor <?php echo $data_surat['no_lpj']; ?> tanggal <?php echo date_convert($data_surat['tgl_lpj']); ?> yang telah kami verifikasi tanggal <?php echo date_convert($data_surat['tgl_verifikasi']); ?> dengan nomor <?php echo $data_surat['no_verifikasi']; ?> diketahui bahwa saldo akhir penerimaan negara/pajak bulan yang lalu belum Saudara setorkan ke kas negara seluruhnya.
 		</p>
 		<p>
 			Sehubungan dengan hal tersebut di atas kami mengingatkan Saudara untuk segera menyetorkan seluruh penerimaan/pajak sesuai peraturan yang berlaku.
@@ -44,12 +44,12 @@
 			Kepala Kantor,
 		</div>
 		<div id="name">
-			Joko Widodo<br />
-			NIP
+			<?php echo $data_surat['nm_pejabat']; ?><br />
+			NIP <?php echo $data_surat['nip_pejabat']; ?>
 		</div> 
 		<div id="copy-letter">
 			Tembusan Yth.<br />
-			Kuasa Pengguna Anggaran/Pejabat Pemungut Penerimaan Negara Kantor/Satker
+			Kuasa Pengguna Anggaran/Pejabat Pemungut Penerimaan Negara Kantor/Satker <?php echo ucwords(strtolower($satker->nm_satker)); ?>
 		</div>
 	</div>
 </body>
