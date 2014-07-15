@@ -137,6 +137,63 @@ class M_user extends MY_Model
 							'rules' => 'trim|is_natural|max_length[1]|xss_clean'
 						)
 	);
+	public $rules_signup	= array(
+						'email' => array( 
+							'field' => 'email', 
+							'label' => 'email', 
+							'rules' => 'trim|required|valid_email|callback__unique_email|max_length[120]|xss_clean'
+						),
+						'username' => array( 
+							'field' => 'username', 
+							'label' => 'username', 
+							'rules' => 'trim|required|max_length[30]|xss_clean'
+						),
+						'password_hash' => array( 
+							'field' => 'password_hash', 
+							'label' => 'password', 
+							'rules' => 'trim|required|matches[password_conf]|max_length[128]'
+						),
+						'password_conf' => array( 
+							'field' => 'password_conf', 
+							'label' => 'password confirmation', 
+							'rules' => 'trim|required|matches[password_hash]|max_length[128]'
+						),
+						'nip' => array( 
+							'field' => 'nip', 
+							'label' => 'Nomor Induk Pegawai', 
+							'rules' => 'trim|required|max_length[18]'
+						),
+						'id_entities' => array( 
+							'field' => 'id_entities', 
+							'label' => 'Nama Entitas', 
+							'rules' => 'trim|required'
+						),
+						'kd_satker' => array( 
+							'field' => 'kd_satker', 
+							'label' => 'Kode Satker', 
+							'rules' => 'trim|required|max_length[6]'
+						),
+						'last_ip' => array( 
+							'field' => 'last_ip', 
+							'label' => 'last IP', 
+							'rules' => 'trim|max_length[40]|xss_clean'
+						),
+						'created_on' => array( 
+							'field' => 'created_on', 
+							'label' => 'created on', 
+							'rules' => 'trim|xss_clean'
+						),
+						'display_name' => array( 
+							'field' => 'display_name', 
+							'label' => 'display name', 
+							'rules' => 'trim|required|max_length[255]|xss_clean'
+						),
+						'active' => array( 
+							'field' => 'active', 
+							'label' => 'active', 
+							'rules' => 'trim|is_natural|max_length[1]|xss_clean'
+						)
+	);
 	
 	/**
 	 * Constructor of class M_user.
@@ -147,7 +204,13 @@ class M_user extends MY_Model
 	{
 		parent::__construct();
 	}
-
+	
+	public function initialize($table_name = NULL, $primary_key = NULL)
+	{
+		$this->_table_name = $table_name;
+		$this->_primary_key = $primary_key;
+	}
+	
 	public function login()
 	{
 		// get data from cms_users table
@@ -186,28 +249,33 @@ class M_user extends MY_Model
 		return (bool) $this->session->userdata('loggedin');
 	}
 	
-	public function get_join($key, $val = FALSE, $single = FALSE)
+	public function get_join($key = NULL, $val = FALSE, $single = FALSE)
 	{
 		$query = $this->db->select('users.id_users')
 							->select('users.username')
 							->select('users.display_name')
+							->select('users.email')
 							->select('user_entity.id_ref_satker')
 							->select('user_entity.id_entities')
+							->select('user_entity.nip')
 							->from('users')
 							->join('user_entity', 'users.id_users = user_entity.id_users', 'left');
-							
-		// Limit results with conditional where
-        if (! is_array($key)) {
-			
-            $query = $this->db->where(htmlentities($key), htmlentities($val));
-            
-        }
-        else {
-            $key = array_map('htmlentities', $key); 
-            $where_method = $orwhere == TRUE ? 'or_where' : 'where';
-            
-            $query = $this->db->$where_method($key);
-        }
+		
+		if ( $key != NULL )
+		{					
+			// Limit results with conditional where
+			if (! is_array($key)) {
+				
+				$query = $this->db->where(htmlentities($key), htmlentities($val));
+				
+			}
+			else {
+				$key = array_map('htmlentities', $key); 
+				$where_method = $orwhere == TRUE ? 'or_where' : 'where';
+				
+				$query = $this->db->$where_method($key);
+			}
+		}
 		
 		$query = $this->db->get();
 		
@@ -225,6 +293,7 @@ class M_user extends MY_Model
 		$user->password_hash	= '';
 		$user->password_conf	= '';
 		$user->email			= '';
+		$user->nip				= '';
 		return $user;
 	}
 	
