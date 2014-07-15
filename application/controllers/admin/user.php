@@ -45,23 +45,60 @@ class User extends Admin_Controller
 	{
 		// taken from some properties in m_user model
 		$dashboard = 'admin/dashboard/home';
-		// rules section
-		$rules = $this->m_user->rules;
-		$this->form_validation->set_rules($rules);
+		// get entity
+		$this->data['dropdown'] 	= $this->m_user;
 		
-		// process form
-		if ( $this->form_validation->run() == TRUE ) {
+		// if register/signup user
+		if ( $this->input->post('register') === 'user' ) 
+		{
+			// rules section
+			$rules = $this->m_user->rules_signup;
+			$this->form_validation->set_rules($rules);
 			
-			if($this->m_user->login() == TRUE)
+			if ( $this->form_validation->run() == TRUE )
 			{
-				redirect($dashboard);
+				$now = date('Y-m-d H:i:s');
+				
+				// populate fields
+				$user = $this->m_user->array_from_post(array('username','password_hash','email','display_name'));
+				// specific action for password hash
+				$user['password_hash'] = $this->m_user->hash($user['password_hash']);
+				$user['last_ip'] = $this->session->userdata['ip_address'];
+				$user['created_on'] = $now;
+				// save user data
+				$id = $this->m_user->save($user);
+				
+				$this->load->model('m_referensi');
+				$entity = $this->m_user->array_from_post(array('nip', 'id_entities'));
+				$entity['id_users'] = $id;
+				$entity['created_at'] = $now;
+				$entity['id_ref_satker'] = $this->m_referensi->get_ref_satker($this->input->post('kd_satker'))->id_ref_satker;
+				// instantiate m_user
+				$this->m_user->initialize('user_entity', 'id_user_entity');
+				// save user entity
+				$this->m_user->save($entity);
+				
 			}
-			else
-			{
-				$this->session->set_flashdata('error', 'Combination of username or password may be wrong');
+		} 
+		else 
+		{
+			// rules section
+			$rules = $this->m_user->rules;
+			$this->form_validation->set_rules($rules);
+			
+			// process form
+			if ( $this->form_validation->run() == TRUE ) {
+				
+				if($this->m_user->login() == TRUE)
+				{
+					redirect($dashboard);
+				}
+				else
+				{
+					$this->session->set_flashdata('error', 'Combination of username or password may be wrong');
+				}
 			}
 		}
-		
 		// load login view
 		$this->data['subview'] = 'admin/user/login';
 		$this->load->view('admin/template/_layout_modal', $this->data);
@@ -84,13 +121,18 @@ class User extends Admin_Controller
 	
 	public function edit($id = NULL)
 	{
+		$this->data['back_link'] = $this->uri->segment(2);
 		// check existing users or create one
 		if ($id) {
-			$this->data['user'] = $this->m_user->get($id);
+			// when using get_join, remember you should use array_shift ;)
+			$this->data['user'] = array_shift($this->m_user->get_join( array( 'users.id_users' => $id ), TRUE ));
+			var_dump($this->data['user']);
 			count($this->data['user']) || $this->data['errors'][] = 'user could not be found';
+			$this->data['dropdown'] 	= $this->m_user;
 		}
 		else {
 			$this->data['user'] = $this->m_user->get_new();
+			$this->data['dropdown'] 	= $this->m_user;
 		}
 		
 		$id == NULL || $this->data['users'] = $this->m_user->get($id);
@@ -141,5 +183,10 @@ class User extends Admin_Controller
 		{
 			return TRUE;
 		}
+	}
+	
+	public function user_entity()
+	{
+		var_dump($this->data['id_ref_satker']);
 	}
 }
