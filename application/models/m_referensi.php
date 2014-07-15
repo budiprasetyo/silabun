@@ -110,4 +110,20 @@ class M_referensi extends MY_Model
 			return FALSE;
 		}
 	}
+	
+	public function get_ref_satker($kd_satker)
+	{
+		$query = $this->db->select('id_ref_satker')
+							->select('kd_satker')
+							->select('nm_satker')
+							->from('ref_satker')
+							->where('kd_satker', $kd_satker)
+							->get();
+							
+		if($query->num_rows() > 0)
+		{
+			return $query->row();
+			$query->free_result();
+		}
+	}
 }
