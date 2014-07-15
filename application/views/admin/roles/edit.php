@@ -8,7 +8,6 @@
 						<i class="fa fa-edit"></i>
 					</div><!--/icons-->
 					<h5><?php echo empty($roles->id_roles) ? 'Tambahkan Wewenang' : 'Ubah Wewenang'; ?></h5>
-					<?php //var_dump($roles); ?>
 					<!-- .toolbar -->
 					<div class="toolbar">
 						<nav style="padding: 8px;">
