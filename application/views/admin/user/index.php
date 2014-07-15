@@ -1,11 +1,29 @@
-	<section id="admin-page">
-	<?php echo anchor('admin/user/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Add User'); ?>
-	<hr />
-	<div class="panel panel-default">
-		<div class="panel-heading"><h4>User Management</h4></div>
-		<div class="panel-body">
-			<div class="table-responsive">
-				<table class="table table-striped">
+	        <!--Begin Datatables-->
+            <div class="row">
+              <div class="col-lg-12">
+                <div class="box">
+                  <header>
+                    <div class="icons">
+                      <i class="fa fa-table"></i>
+                    </div>
+                    <h5>Registrasi User</h5>
+                    <div class="toolbar">
+                      <div class="btn-group">
+                        <a href="#sortableTable" data-toggle="collapse" class="btn btn-default btn-sm minimize-box">
+                          <i class="fa fa-angle-up"></i>
+                        </a> 
+                        <a class="btn btn-danger btn-sm close-box">
+                          <i class="fa fa-times"></i>
+                        </a> 
+                      </div><!--/btn-group-->
+                    </div><!--/toolbar-->
+                  </header>
+                  <div id="sortableTable" class="body collapse in dataTables_wrapper form-inline">
+					  <!-- add category -->
+					  <?php echo anchor('admin/user/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Tambahkan User'); ?>
+	
+				<div class="table-responsive">
+				<table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 					<thead>
 						<tr>
 							<th>Username</th>
@@ -40,7 +58,9 @@
 						?>
 					</tbody>
 				</table>
-			</div><!--/table-responsive-->
-		</div><!--panel-body-->
-	</div><!--/panel panel-default-->
-	</section>
+                  </div><!--/sortableTable-->
+                  </div><!--/responsiveTable-->
+                </div><!--/box-->
+              </div><!--/col-lg-12-->
+            </div><!-- /.row -->
+            <!--End Datatables-->

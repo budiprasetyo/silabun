@@ -1,43 +1,87 @@
-<div class="panel panel-default" id="admin-page">
-	<div class="panel-heading">
-		<div class="panel-title"><?php echo empty($user->id_users) ? 'Add User' : 'Edit User'; ?></div>
-	</div><!--/panel-heading-->     
-
-	<div style="padding-top:30px" class="panel-body" >
-		<?php if (validation_errors()) { ?>
-			<div id="login-alert" class="alert alert-danger col-sm-12">
-			<?php echo validation_errors(); ?>
-			</div>
-		<?php } ?>
-		
-		<form method="post" action="" id="loginform" class="form-horizontal" role="form">
-			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-					<input id="login-username" type="text" class="form-control" name="username" value="<?php echo set_value('username', $user->username); ?>" placeholder="username">                                        
-			</div>
-										
-			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				<input id="login-password" type="password" class="form-control" name="password_hash" placeholder="password">
-			</div>
-										
-			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-				<input id="login-password" type="password" class="form-control" name="password_conf"  placeholder="password confirmation">
-			</div>
-										
-			<div style="margin-bottom: 25px" class="input-group">
-				<span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-					<input id="login-email" type="text" class="form-control" name="email" value="<?php echo set_value('email', $user->email); ?>" placeholder="email">                             
-			</div>
-			
-			<div style="margin-top:10px" class="form-group">
-				<div class="col-sm-12 controls">
-					<input type="submit" value="Save" id="btn-login" class="btn btn-primary" />
-				</div>
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="box dark">
 				
-			</div>
-		</form>  
+				<header>
+					<div class="icons">
+						<i class="fa fa-edit"></i>
+					</div><!--/icons-->
+					<h5><?php echo empty($user->id_users) ? 'Tambahkan User' : 'Edit User'; ?></h5>
+					<!-- .toolbar -->
+					<div class="toolbar">
+						<nav style="padding: 8px;">
+							<a href="javascript:;" class="btn btn-default btn-xs collapse-box">
+							  <i class="fa fa-minus"></i>
+							</a> 
+							<a href="javascript:;" class="btn btn-default btn-xs full-box">
+							  <i class="fa fa-expand"></i>
+							</a> 
+							<a href="javascript:;" class="btn btn-danger btn-xs close-box">
+							  <i class="fa fa-times"></i>
+							</a> 
+						</nav>
+					</div><!--/.toolbar-->
+				</header>  
+
+				<div id="div-1" class="body">
+					<?php echo btn_back('admin/user/home/', $back_link); ?>
+					<?php if (validation_errors()) { ?>
+						<div id="login-alert" class="alert alert-danger col-sm-12">
+						<?php echo validation_errors(); ?>
+						</div>
+					<?php } ?>
+					<hr />
+					<form class="form-horizontal" method="post" action="">
 		
-	</div><!--/panel-body-->                   
-</div><!--/panel panel-info-->  
+						<div class="form-group">
+						<label for="text2" class="control-label col-lg-4">Username</label>
+						<div class="col-lg-8">
+							<input type="text" id="text1" placeholder="Username" class="form-control" name="username" maxlength="30" value="<?php echo set_value('username', $user->username); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+		
+						<div class="form-group">
+						<label for="text2" class="control-label col-lg-4">Password</label>
+						<div class="col-lg-8">
+							<input type="text" id="text2" placeholder="Password" class="form-control" name="password_hash" maxlength="128" value="<?php echo set_value('password', $user->password); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+		
+					  <div class="form-group">
+						<label for="text2" class="control-label col-lg-4">Konfirmasi Password</label>
+						<div class="col-lg-8">
+							<input type="password" id="text3" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" value="<?php echo set_value('password', $user->password); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+		
+					  <div class="form-group">
+						<label for="text2" class="control-label col-lg-4">e-Mail</label>
+						<div class="col-lg-8">
+							<input type="text" id="text4" placeholder="e-Mail" class="form-control" name="email" maxlength="120" value="<?php echo set_value('email', $user->email); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+		
+					  <hr />
+					
+					  <div class="form-group">
+						<label for="text2" class="control-label col-lg-4">NIP</label>
+						<div class="col-lg-8">
+							<input type="text" id="text5" placeholder="Nomor Induk Pegawai" class="form-control" name="nip" maxlength="18" value="<?php echo set_value('nip', $user->nip); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<div class="col-lg-12 controls">
+							<?php 
+								$attributes = 'class = "btn btn-primary"';
+								echo form_submit('submit', 'Simpan', $attributes);
+							?>
+						</div>
+					  </div><!--/.form-group -->
+					  
+					</form><!--/form-horizontal-->
+				  </div><!--/div-1-->
+				
+			</div><!--/box-dark-->
+		</div><!--/col-lg-6-->
+	</div><!--/row-->
