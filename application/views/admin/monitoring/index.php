@@ -97,6 +97,7 @@
 							</ul>
 						</div>
 					  </div><!--/box-->
+					  <?php } ?>
 					  <hr />
 					  <div class="form-group">
 							<label for="text3" class="control-label col-lg-12 bg-success">Satker Yang Sudah Mengirimkan LPJ Bendahara</label>
@@ -106,34 +107,68 @@
                     <table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 						<thead>
 							<tr>
+							<?php if ($this->data['id_entities'] === '1') { ?>
 								<th>No.
 								<i class="fa sort"></i></th>
 								<th>Kode Satker
 								<i class="fa sort"></i></th>
 								<th style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;">Nama Satker
 								<i class="fa sort"></i></th>
+							<?php 
+								} 
+								else if ($this->data['id_entities'] === '2')
+								{
+							?>
+								<th>No.
+								<i class="fa sort"></i></th>
+								<th>Kode KPPN - Nama KPPN
+								<i class="fa sort"></i></th>
+								<th>Kode Kementerian
+								<th>Data Sudah Diterima 
+								<i class="fa sort"></i></th>
+							<?php } ?>
 							</tr>
 						</thead>
 						<tbody>
-						<?php
-							if (count($monitor_satker_sents)) 
-								{
-									$i = 0;
-									foreach ($monitor_satker_sents as $monitor_satker_sent) 
+							<?php
+								if ($this->data['id_entities'] === '1') {
+									if (count($monitor_satker_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_satker_sents as $monitor_satker_sent) 
+											{
+							?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_satker_sent->kd_satker; ?></td>
+											  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_sent->nm_satker; ?></td>
+											</tr>
+							
+							<?php
+											}
+										}
+									} 
+									else if ($this->data['id_entities'] === '2')
 									{
-						?>
-										<tr>
-										  <td><?php echo ++$i; ?></td>
-										  <td><?php echo $monitor_satker_sent->kd_satker; ?></td>
-										  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_sent->nm_satker; ?></td>
-										</tr>
-						
-						<?php
+										if (count($monitor_kppns_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_kppns_sents as $monitor_kppn_sent) 
+											{
+							?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_kppn_sent->kd_kppn . ' - ' . $monitor_kppn_sent->nm_kppn; ?></td>
+											  <td><?php echo $monitor_kppn_sent->kd_kementerian; ?></td>
+											  <td><?php echo $monitor_kppn_sent->jml_lpj; ?></td>
+											</tr>
+							<?php
+											}
+										}
 									}
-								}
-						?>
-							<tr>
-							</tr>
+							?>
+								<tr>
+								</tr>
 						</tbody>
 					  </table>
 					  <!-- satker yang belum -->
@@ -141,42 +176,38 @@
 							<label for="text3" class="control-label col-lg-12 bg-danger">Satker Yang Belum Mengirimkan LPJ Bendahara</label>
 					  </div>
 					  <hr />
-					  <?php } ?>
 					<!-- table -->
                     <table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 						<thead>
 							<tr>
 								<?php if ($this->data['id_entities'] === '1') { ?>
-								<th>No.
-								<i class="fa sort"></i></th>
-								<th>Kode Satker
-								<i class="fa sort"></i></th>
-								<th style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;">Nama Satker
-								<i class="fa sort"></i></th>
+									<th>No.
+									<i class="fa sort"></i></th>
+									<th>Kode Satker
+									<i class="fa sort"></i></th>
+									<th style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;">Nama Satker
+									<i class="fa sort"></i></th>
 								<?php } else if ($this->data['id_entities'] === '2') { ?>
-								<th>No.
-								<i class="fa sort"></i></th>
-								<th>Kode KPPN
-								<i class="fa sort"></i></th>
-								<th>Nama KPPN
-								<i class="fa sort"></i></th>
-								<th>Kode Kementerian
-								<i class="fa sort"></i></th>
-								<th>Data Diterima 
-								<i class="fa sort"></i></th>
+									<th>No.
+									<i class="fa sort"></i></th>
+									<th>Kode KPPN - Nama KPPN
+									<i class="fa sort"></i></th>
+									<th>Kode Kementerian
+									<th>Data Belum Diterima 
+									<i class="fa sort"></i></th>
 								<?php 
 									} 
 									else if ($this->data['id_entities'] === '3')
 									{
 								?>
-								<th>No.
-								<i class="fa sort"></i></th>
-								<th>Kanwil
-								<i class="fa sort"></i></th>
-								<th>Kode Kementerian
-								<i class="fa sort"></i></th>
-								<th>Data Diterima 
-								<i class="fa sort"></i></th>
+									<th>No.
+									<i class="fa sort"></i></th>
+									<th>Kanwil
+									<i class="fa sort"></i></th>
+									<th>Kode Kementerian
+									<i class="fa sort"></i></th>
+									<th>Data Diterima 
+									<i class="fa sort"></i></th>
 								<?php } ?>
 							</tr>
 						</thead>
@@ -202,19 +233,18 @@
 							else if ( $this->data['id_entities'] === '2' )
 							{
 								
-								if (count($monitor_kppns)) 
+								if (count($monitor_kppns_unsents)) 
 								{
 									$i = 0;
-									foreach ($monitor_kppns as $monitor_kppn) 
+									foreach ($monitor_kppns_unsents as $monitor_kppn_unsent) 
 									{
 						?>
-							<tr>
-							  <td><?php echo ++$i; ?></td>
-							  <td><?php echo $monitor_kppn->kd_kppn; ?></td>
-							  <td><?php echo $monitor_kppn->nm_kppn; ?></td>
-							  <td><?php echo $monitor_kppn->kd_kementerian; ?></td>
-							  <td><?php echo $monitor_kppn->jml_satker; ?></td>
-							</tr>
+									<tr>
+									  <td><?php echo ++$i; ?></td>
+									  <td><?php echo $monitor_kppn_unsent->kd_kppn . ' - ' . $monitor_kppn_unsent->nm_kppn; ?></td>
+									  <td><?php echo $monitor_kppn_unsent->kd_kementerian; ?></td>
+									  <td><?php echo $monitor_kppn_unsent->jml_lpj; ?></td>
+									</tr>
 						<?php 
 									}
 								}

@@ -48,7 +48,7 @@ class Monitoring extends Admin_Controller
 		// get month
 		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 		
-		// if entity is kanwil
+		// if entity is kppn
 		if($this->data['id_entities'] === '1')
 		{
 			// table title
@@ -81,7 +81,11 @@ class Monitoring extends Admin_Controller
 			// get id_ref_kanwil
 			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
 			// send to view fetch kppn 
-			$this->data['monitor_kppns'] = $this->m_monitoring->get_count_data_kppn($kanwil->id_ref_kanwil,$this->data['year'],$this->data['month']);
+			//~ $this->data['monitor_kppns'] = $this->m_monitoring->get_count_data_kppn($kanwil->id_ref_kanwil,$this->data['year'],$this->data['month']);
+			// send to view fetch unsent satker 
+			$this->data['monitor_kppns_unsents'] = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], 'K', FALSE);
+			// send to view fetch sent satker
+			$this->data['monitor_kppns_sents'] = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], 'K', TRUE);
 			// path to page folder view
 			$this->data['subview'] = 'admin/monitoring/index';
 			$this->load->view('admin/template/_layout_admin', $this->data);
