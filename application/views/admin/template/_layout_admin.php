@@ -193,6 +193,26 @@
 					</ul>
 				  </li>
 				  
+				  
+				  <li class="">
+					<a href="javascript:;">
+					  <i class="glyphicon glyphicon-book"></i>
+					  <span class="link-title">
+					  Referensi
+					</span> 
+					  <span class="fa arrow"></span> 
+					</a> 
+					<ul style="height: inherit;">
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/jabatan">
+						  <i class="fa fa-angle-right"></i>&nbsp;Jabatan</a> 
+					  </li>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/pejabat">
+						  <i class="fa fa-angle-right"></i>&nbsp;Pejabat</a> 
+					  </li>
+					</ul>
+				  </li>
 				  <li>
 					<a href="javascript:;">
 					<span class="link-title">
