@@ -7,18 +7,9 @@
                       <i class="fa fa-table"></i>
                     </div>
                     <h5><?php echo $table_title; ?></h5>
-                    <div class="toolbar">
-                      <div class="btn-group">
-                        <a href="#sortableTable" data-toggle="collapse" class="btn btn-default btn-sm minimize-box">
-                          <i class="fa fa-angle-up"></i>
-                        </a> 
-                        <a class="btn btn-danger btn-sm close-box">
-                          <i class="fa fa-times"></i>
-                        </a> 
-                      </div><!--/btn-group-->
-                    </div><!--/toolbar-->
                   </header>
-                  <div id="sortableTable" class="body collapse in dataTables_wrapper form-inline">
+                  
+                  <div id="collapse4" class="body">
 					  
 					  <form class="form-horizontal" method="post" action="">
 					  
@@ -100,11 +91,11 @@
 					  <?php } ?>
 					  <hr />
 					  <div class="form-group">
-							<label for="text3" class="control-label col-lg-12 bg-success">Satker Yang Sudah Mengirimkan LPJ Bendahara</label>
+							<label for="text3" class="control-label col-lg-12 bg-green">Satker Yang Sudah Mengirimkan LPJ Bendahara</label>
 					  </div>
 					  <hr />
 					  <!-- table -->
-                    <table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
+                    <table class="table table-bordered table-condensed table-hover table-striped">
 						<thead>
 							<tr>
 							<?php if ($this->data['id_entities'] === '1') { ?>
@@ -126,6 +117,21 @@
 								<th>Kode Kementerian
 								<th>Data Sudah Diterima 
 								<i class="fa sort"></i></th>
+							<?php 
+								} 
+								else if ($this->data['id_entities'] === '3')
+								{
+							?>
+									<th>No.
+									<i class="fa sort"></i></th>
+									<th>Kanwil
+									<i class="fa sort"></i></th>
+									<th>KPPN
+									<i class="fa sort"></i></th>
+									<th>Kode Kementerian
+									<i class="fa sort"></i></th>
+									<th>Data Diterima 
+									<i class="fa sort"></i></th>
 							<?php } ?>
 							</tr>
 						</thead>
@@ -165,19 +171,49 @@
 							<?php
 											}
 										}
-									}
+									} 
+									else if ($this->data['id_entities'] === '3')
+									{
+										if (count($monitor_kanwils_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_kanwils_sents as $monitor_kanwil_sent) 
+											{
 							?>
-								<tr>
-								</tr>
+											<tr>
+												<td><?php echo ++$i; ?></td>
+												<td>
+													<?php echo $monitor_kanwil_sent->kd_kanwil . ' - ' . $monitor_kanwil_sent->nm_kanwil; ?>
+												</td>
+												<td>
+													<?php echo $monitor_kanwil_sent->kd_kppn . ' - ' . $monitor_kanwil_sent->nm_kppn; ?>
+												</td>
+												<td><?php echo $monitor_kanwil_sent->kd_kementerian; ?></td>
+												<td><?php echo $monitor_kanwil_sent->jml_lpj; ?></td>
+											</tr>
+						<?php
+											}
+										}
+										else
+										{
+						?>
+										<tr>
+											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
+										</tr>
+						<?php
+										}
+									}
+						?>
 						</tbody>
 					  </table>
+					  
 					  <!-- satker yang belum -->
 					  <div class="form-group">
-							<label for="text3" class="control-label col-lg-12 bg-danger">Satker Yang Belum Mengirimkan LPJ Bendahara</label>
+							<label for="text3" class="control-label col-lg-12 bg-red">Satker Yang Belum Mengirimkan LPJ Bendahara</label>
 					  </div>
 					  <hr />
 					<!-- table -->
-                    <table id="dataTable_wrapper" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
+                    <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped">
 						<thead>
 							<tr>
 								<?php if ($this->data['id_entities'] === '1') { ?>
@@ -203,6 +239,8 @@
 									<th>No.
 									<i class="fa sort"></i></th>
 									<th>Kanwil
+									<i class="fa sort"></i></th>
+									<th>KPPN
 									<i class="fa sort"></i></th>
 									<th>Kode Kementerian
 									<i class="fa sort"></i></th>
@@ -259,19 +297,22 @@
 							}
 							else if ( $this->data['id_entities'] === '3' )
 							{
-								if (count($monitor_kanwils))
+								if (count($monitor_kanwils_unsents))
 								{
 									$i = 0;
-									foreach ($monitor_kanwils as $monitor_kanwil) 
+									foreach ($monitor_kanwils_unsents as $monitor_kanwil_unsent) 
 									{
 						?>
 							<tr>
 								<td><?php echo ++$i; ?></td>
 								<td>
-									<?php echo $monitor_kanwil->kd_kanwil . ' - ' . $monitor_kanwil->nm_kanwil; ?>
+									<?php echo $monitor_kanwil_unsent->kd_kanwil . ' - ' . $monitor_kanwil_unsent->nm_kanwil; ?>
 								</td>
-								<td><?php echo $monitor_kanwil->kd_kementerian; ?></td>
-								<td><?php echo $monitor_kanwil->jml_data; ?></td>
+								<td>
+									<?php echo $monitor_kanwil_unsent->kd_kppn . ' - ' . $monitor_kanwil_unsent->nm_kppn; ?>
+								</td>
+								<td><?php echo $monitor_kanwil_unsent->kd_kementerian; ?></td>
+								<td><?php echo $monitor_kanwil_unsent->jml_lpj; ?></td>
 							</tr>
 						<?php
 									}
