@@ -1,8 +1,8 @@
 RENAME TABLE `dsp_lpj`.`r_jabatan` TO `dsp_lpj`.`ref_jabatan`;
 ALTER TABLE `dsp_lpj`.`ref_jabatan` 
-CHANGE COLUMN `id_ref_satker` `id_ref_satker` SMALLINT UNSIGNED NOT NULL ;
+CHANGE COLUMN `satker_id` `id_ref_satker` SMALLINT UNSIGNED NOT NULL ;
 ALTER TABLE `dsp_lpj`.`ref_jabatan` 
-CHANGE COLUMN `id_ref_jabatan` `id_ref_jabatan` SMALLINT UNSIGNED NOT NULL ;
+CHANGE COLUMN `id` `id_ref_jabatan` SMALLINT UNSIGNED NOT NULL ;
 ALTER TABLE `dsp_lpj`.`ref_jabatan` 
 ADD INDEX `fk_ref_jabatan_satker_idx` (`id_ref_satker` ASC);
 ALTER TABLE `dsp_lpj`.`ref_jabatan` 
@@ -23,6 +23,9 @@ CREATE TABLE `dsp_lpj`.`ref_pejabat` (
     REFERENCES `dsp_lpj`.`ref_jabatan` (`id_ref_jabatan`)
     ON DELETE CASCADE
     ON UPDATE CASCADE);
+ALTER TABLE `dsp_lpj`.`ref_jabatan` 
+CHANGE COLUMN `id_ref_jabatan` `id_ref_jabatan` SMALLINT(5) UNSIGNED NOT NULL AUTO_INCREMENT ;
 
 ALTER TABLE `dsp_lpj`.`ref_jabatan` 
 CHANGE COLUMN `nama_jabatan` `nm_jabatan` VARCHAR(255) CHARACTER SET 'utf8' COLLATE 'utf8_unicode_ci' NOT NULL ;
+
