@@ -7,8 +7,8 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#5bc0de" />
     <meta name="msapplication-TileImage" content="<?php echo base_url(); ?>assets/img/metis-tile.png" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/bootstrap/dist/css/bootstrap.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/font-awesome/css/font-awesome.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/lib/bootstrap/css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/lib/font-awesome/css/font-awesome.min.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/main.min.css" />	
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/theme.css" />
@@ -39,7 +39,7 @@
 -->
 </head>
 <body>
-<div class="modal fade" id="myModal" tabindex="-1">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -60,9 +60,13 @@
 </div><!-- /.modal -->
 
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.0.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="<?php echo base_url(); ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/bootstrap/js/bootstrap.js"></script>
+<!-- Metis core scripts -->
+<script src="<?php echo base_url(); ?>assets/js/core.min.js"></script>
+<!-- Metis demo scripts -->
+<script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 			$("#myModal").modal('show');

@@ -1,9 +1,10 @@
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="<?php echo base_url(); ?>assets/js/jquery-1.11.0.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="<?php echo base_url(); ?>vendor/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="<?php echo base_url(); ?>vendor/components/modernizr/modernizr.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/bootstrap/js/bootstrap.js"></script>
+<!--
 <script src="<?php echo base_url(); ?>assets/js/main.min.js"></script>
+-->
 <script src="<?php echo base_url(); ?>assets/js/style-switcher.min.js"></script>
 <!-- Screenfull -->
 <script src="<?php echo base_url(); ?>assets/lib/screenfull/screenfull.js"></script>
@@ -25,6 +26,10 @@
 <script src="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.tablesorter/jquery.tablesorter.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+<!-- Metis core scripts -->
+<script src="<?php echo base_url(); ?>assets/js/core.min.js"></script>
+<!-- Metis demo scripts -->
+<script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
 <!-- cleditor -->
 <script src="<?php echo base_url(); ?>assets/lib/bootstrap3-wysihtml5-bower/bootstrap3-wysihtml5.all.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/cleditor/jquery.cleditor.js"></script>
@@ -53,26 +58,13 @@
 </script>
 <script>
   $(function() {
-	formWysiwyg();
+	Metis.MetisTable();
+	Metis.metisSortable();
   });
 </script>
 <script>
-	$(function() {
-		var extensions = {
-			"sFilter": "dataTables_filter custom_filter_class",
-			"sLength": "dataTables_length custom_length_class"
-		}
-		// Used when bJQueryUI is false
-		$.extend($.fn.dataTableExt.oStdClasses, extensions);
-		// Used when bJQueryUI is true
-		$.extend($.fn.dataTableExt.oJUIClasses, extensions);
-		$('#dataTable_wrapper').dataTable();
-	});
-</script>
-<script>
   $(function() {
-	metisTable();
-	metisSortable();
+	formWysiwyg();
   });
 </script>
 <script>

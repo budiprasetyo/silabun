@@ -4,16 +4,27 @@
 <head>
 	<meta charset="utf-8" />
 	<title><?php echo $meta_title; ?></title>
+	<!--IE Compatibility modes-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msapplication-TileColor" content="#5bc0de" />
     <meta name="msapplication-TileImage" content="<?php echo base_url(); ?>assets/img/metis-tile.png" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/bootstrap/dist/css/bootstrap.css" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/font-awesome/css/font-awesome.min.css">
+<!--
+	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>vendor/bootstrap/dist/css/bootstrap.css" />
+-->
+<!--
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/font-awesome/css/font-awesome.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/style.css" />
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/main.min.css" />	
+-->
+	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/main.min.css" />	
+    <!-- Metis Theme stylesheet -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.css">
+	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/theme.css" />
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/bootstrap3-wysihtml5-bower/bootstrap3-wysihtml5.min.css">
-    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/cleditor/jquery.cleditor.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/magic/magic.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/jquery.cleditor-hack.css">
@@ -51,4 +62,10 @@
       ga('send', 'pageview');
     </script>
 -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/css/style-switcher.css">
+    <link rel="stylesheet/less" type="text/css" href="<?php echo base_url(); ?>assets/css/less/theme.less">
+    <script src="<?php echo base_url(); ?>assets/lib/less/less-1.7.3.min.js"></script>
+
+    <!--Modernizr 2.8.2-->
+    <script src="<?php echo base_url(); ?>assets/lib/modernizr/modernizr.min.js"></script>
 </head>
