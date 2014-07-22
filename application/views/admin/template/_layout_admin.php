@@ -25,9 +25,9 @@
 <?php $this->load->view('admin/components/header'); ?>
 
 <body>
-	<div id="wrap">
+	<div class="bg-dark dk" id="wrap">
 		<div id="top">
-			<nav class="navbar navbar-inverse navbar-static-top" role="navigation">
+			<nav class="navbar navbar-inverse navbar-static-top">
 				<div class="container-fluid">
 						
 						<header class="navbar-header">
@@ -84,13 +84,13 @@
 		<?php $uri_segment = $this->uri->segment(2); ?>
 
 			<div id="left">
-				<div class="media user-media">
+				<div class="media user-media bg-dark dker">
 					
 					<div class="user-media-toggleHover">
 						<span class="fa fa-user"></span>
 					</div><!--/user-media-toggleHover-->
 					
-					<div class="user-wrapper">
+					<div class="user-wrapper bg-dark">
 						<a class="user-link" href="">
 							<img class="media-object img-thumbnail user-img" alt="User Picture" src="<?php echo base_url(); ?>assets/css/images/user.gif">
 						</a><!--/user-link-->
@@ -101,7 +101,7 @@
 								<li>Last Access:
 								  <br>
 								  <small>
-									<i class="fa fa-calendar"></i>&nbsp;get from database
+									<i class="fa fa-calendar"></i>&nbsp;<?php echo date("d M Y"); ?>
 								  </small> 
 								</li>
 							  </ul>
@@ -110,7 +110,7 @@
 					
 				</div><!--/media user-media-->
 				
-				<ul id="menu" class="">
+				<ul id="menu" class="bg-blue dker">
 				  <li class="nav-header">Menu</li>
 				  <li class="nav-divider"></li>
 				  <li class="">
@@ -250,13 +250,13 @@
 				
 			<div id="content">
 				<div class="outer">
-					<div class="inner">
+					<div class="inner bg-light lter">
 						<?php $this->load->view($subview); ?>
 					</div><!--/inner-->
 				</div><!--/outer-->
 			</div><!--/content-->
 			
-			<div id="right">
+			<div id="right" class="bg-light lter">
 				<div class="alert alert-danger">
 				  <button type="button" class="close" data-dismiss="alert">&times;</button>
 				  <strong>Warning!</strong>  Best check yo self, you're not looking too good.
@@ -316,6 +316,14 @@
 		
 	</div><!--/#wrap-->
 	
+	<footer class="Footer bg-dark dker">
+      <p>Copyleft 2014 
+		<a rel="home" href="https://en.wikipedia.org/wiki/Copyleft" target="_blank">
+			<img src="<?php echo base_url(); ?>assets/css/images/32px-Copyleft.svg.png" alt="logo-copyleft" height="18px" />
+		</a>
+		all rights reversed Direktorat Sistem Perbendaharaan</p>
+    </footer><!-- /#footer -->
+    
 	 <!-- #helpModal -->
     <div id="helpModal" class="modal fade">
       <div class="modal-dialog">
