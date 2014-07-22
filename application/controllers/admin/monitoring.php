@@ -96,7 +96,11 @@ class Monitoring extends Admin_Controller
 			// table title
 			$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
 			// send to view fetch kanwil and kementerian
-			$this->data['monitor_kanwils'] = $this->m_monitoring->get_count_data_kanwil($this->data['year'],$this->data['month']);
+			//~ $this->data['monitor_kanwils'] = $this->m_monitoring->get_count_data_kanwil($this->data['year'],$this->data['month']);
+			// send to view fetch unsent satker 
+			$this->data['monitor_kanwils_unsents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', FALSE);
+			// send to view fetch sent satker
+			$this->data['monitor_kanwils_sents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', TRUE);
 			// path to page folder view
 			$this->data['subview'] = 'admin/monitoring/index';
 			$this->load->view('admin/template/_layout_admin', $this->data);
