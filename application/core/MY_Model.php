@@ -215,6 +215,7 @@ class MY_Model extends CI_Model
 	 * @brief 		dropdown_get_name
 	 * @description	make easier when generating dropdown, whether edit module or insert module
 	 * @example		dropdown_get_name('cms_categories', $id, 'categories_id', 'page_type_id', 'page_type', '- choose categories -', 'cms_page_type'); 
+	 * @example		dropdown_get_name('ref_pejabat', $id, 'id_ref_pejabat', 'id_ref_jabatan', 'nm_jabatan', '- pilih jabatan -', 'ref_jabatan');
 	 * @param 		str	$table_name 
 	 * @param 		int	$id
 	 * @param 		str	$primary_field
