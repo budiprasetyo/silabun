@@ -28,8 +28,9 @@
 						-->
 					  </div>
 					  
-					</div><!--/login tab-pane active-->    
-                            
+					</div><!--/login tab-pane active-->  
+					  
+            <!--                
 			<div id="signup" class="tab-pane">
 				<p class="text-muted text-center">
 				  Direktorat Jenderal Perbendaharaan
@@ -59,6 +60,7 @@
 						</ul>
 				</form>
 			</div>   
+            -->
                     
             </div><!--/tab-content--> 
             
