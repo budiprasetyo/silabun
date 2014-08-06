@@ -112,8 +112,9 @@ class User extends Admin_Controller
 	
 	public function home()
 	{	
+		//~ var_dump($this->data['id_ref_satker']);
 		// fetch all users
-		$this->data['users'] = $this->m_user->get();
+		$this->data['users'] = $this->m_user->get_join('id_ref_satker', $this->data['id_ref_satker'], FALSE);
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/index';
 		$this->load->view('admin/template/_layout_admin', $this->data);
@@ -124,8 +125,8 @@ class User extends Admin_Controller
 		$this->data['back_link'] = $this->uri->segment(2);
 		// check existing users or create one
 		if ($id) {
-			// when using get_join, remember you should use array_shift ;)
-			$this->data['user'] = array_shift($this->m_user->get_join( array( 'users.id_users' => $id ), TRUE ));
+			// when using get_join, remember you should use array_shift in edit method ;-)
+			$this->data['user'] = array_shift($this->m_user->get_join( array( 'users.id_users' => $id, 'user_entity.id_ref_satker' => $this->data['id_ref_satker'] ), TRUE ));
 			var_dump($this->data['user']);
 			count($this->data['user']) || $this->data['errors'][] = 'user could not be found';
 			$this->data['dropdown'] 	= $this->m_user;
@@ -144,13 +145,35 @@ class User extends Admin_Controller
 		$this->form_validation->set_rules($rules);
 		
 		if ( $this->form_validation->run() == TRUE ) {
-			// populate fields
-			$data = $this->m_user->array_from_post(array('username','password_hash','email'));
+			//~ var_dump($id);
+			
+			$now = date('Y-m-d H:i:s');
+			// populate fields to save to users table
+			$user = $this->m_user->array_from_post(array('username','password_hash','email','display_name'));
 			// specific action for password hash
-			$data['password_hash'] = $this->m_user->hash($data['password_hash']);
-			$this->m_user->save($data, $id);
+			$user['password_hash'] = $this->m_user->hash($user['password_hash']);
+			$user['last_ip'] = $this->session->userdata['ip_address'];
+			$user['created_on'] = $now;
+			// save user data
+			$id_users = $this->m_user->save($user, $id);
+			
+			// populate fields to save to user_entity table
+			$entity = $this->m_user->array_from_post(array('nip'));
+			$entity['id_users'] = $id_users ? $id_users : NULL;
+			// get id_user_entity
+			$user_entity = $this->m_user->get_id_user_entity($entity['id_users']);
+			$entity['id_user_entity'] = $user_entity->id_user_entity;
+			$entity['created_at'] = $now;
+			$entity['id_ref_satker'] = $this->data['id_ref_satker'];
+			$entity['id_entities'] = $this->data['id_entities'];
+			// instantiate m_user
+			$this->m_user->initialize('user_entity', 'id_user_entity');
+			// save user entity
+			$this->m_user->save($entity, $entity['id_user_entity']);
+			
 			// redirect to users home
 			redirect('admin/user/home');
+			
 		}
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/edit';
@@ -181,6 +204,36 @@ class User extends Admin_Controller
 		}
 		else
 		{
+			return TRUE;
+		}
+	}
+	
+	public function _unique_nip($string)
+	{
+		// don't validate if email already exists
+		// unless it's the email for current user
+		
+		$id = $this->uri->segment(4);
+		$this->m_user->_order_by = 'id_user_entity';
+		$this->m_user->_table_name = 'user_entity';
+		$this->db->where('nip', $this->input->post('nip'));
+		// if not getting id, choose another id, and be careful of id's name
+		!$id || $this->db->where('id_users !=' , $id);
+		$user_entity = $this->m_user->get();
+		
+		if (count($user_entity)) 
+		{
+			$this->form_validation->set_message('_unique_nip', '%s should be unique');
+			// bring back to default
+			$this->m_user->_order_by = 'id_users';
+			$this->m_user->_table_name = 'users';
+			return FALSE;
+		}
+		else
+		{
+			// bring back to default
+			$this->m_user->_order_by = 'id_users';
+			$this->m_user->_table_name = 'users';
 			return TRUE;
 		}
 	}

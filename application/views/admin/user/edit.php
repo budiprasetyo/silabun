@@ -39,18 +39,25 @@
 							<input type="text" id="text1" placeholder="Username" class="form-control" name="username" maxlength="30" value="<?php echo set_value('username', $user->username); ?>" />
 						</div>
 					  </div><!-- /.form-group -->
+					  
+						<div class="form-group">
+						<label for="text2" class="control-label col-lg-4">Display Name</label>
+						<div class="col-lg-8">
+							<input type="text" id="text1" placeholder="Display Name" class="form-control" name="display_name" maxlength="255" value="<?php echo set_value('display_name', $user->display_name); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
 		
 						<div class="form-group">
 						<label for="text2" class="control-label col-lg-4">Password</label>
 						<div class="col-lg-8">
-							<input type="text" id="text2" placeholder="Password" class="form-control" name="password_hash" maxlength="128" value="<?php echo set_value('password', $user->password); ?>" />
+							<input type="text" id="text2" placeholder="Password" class="form-control" name="password_hash" maxlength="128" value="<?php echo set_value('password_hash', $user->password); ?>" />
 						</div>
 					  </div><!-- /.form-group -->
 		
 					  <div class="form-group">
 						<label for="text2" class="control-label col-lg-4">Konfirmasi Password</label>
 						<div class="col-lg-8">
-							<input type="password" id="text3" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" value="<?php echo set_value('password', $user->password); ?>" />
+							<input type="password" id="text3" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" value="<?php echo set_value('password_hash', $user->password); ?>" />
 						</div>
 					  </div><!-- /.form-group -->
 		

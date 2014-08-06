@@ -137,8 +137,8 @@
 						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Pengguna</a> 
 					  </li>
 					  <li class="">
-						<a href="icon.html">
-						  <i class="fa fa-angle-right"></i>&nbsp;Persetujuan Pengguna</a> 
+						<a href="<?php echo base_url(); ?>companies.php/admin/user">
+						  <i class="fa fa-angle-right"></i>&nbsp;Ubah Pengguna</a> 
 					  </li>
 					</ul>
 				  </li>

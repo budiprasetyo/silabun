@@ -25,9 +25,9 @@
 
 class M_user extends MY_Model
 {
-	protected $_table_name 		= 'users';
+	public $_table_name 		= 'users';
 	protected $_primary_key 	= 'id_users';
-	protected $_order_by 		= 'username';
+	public $_order_by 		= 'username';
 	public $rules 				= array(
 						'username' => array( 
 							'field' => 'username', 
@@ -135,6 +135,11 @@ class M_user extends MY_Model
 							'field' => 'force_password_reset', 
 							'label' => 'force password reset', 
 							'rules' => 'trim|is_natural|max_length[1]|xss_clean'
+						),
+						'nip' => array( 
+							'field' => 'nip', 
+							'label' => 'Nomor Induk Pegawai', 
+							'rules' => 'trim|required||callback__unique_nip|max_length[18]'
 						)
 	);
 	public $rules_signup	= array(
@@ -284,6 +289,22 @@ class M_user extends MY_Model
         $method = $single ? 'row' : 'result';
 		return $query->$method();
 	}
+	
+	
+	public function get_id_user_entity($id_users = NULL)
+	{
+		$query = $this->db->select('id_user_entity')
+							->where('id_users', $id_users)
+							->get('user_entity');
+		
+		if($query->num_rows() > 0)
+		{
+			return $query->row();
+			$query->free_result();
+		}
+		
+	}
+	
 	
 	public function get_new()
 	{
