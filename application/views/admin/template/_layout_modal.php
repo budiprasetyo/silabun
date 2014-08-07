@@ -21,16 +21,16 @@
 						<?php } ?>
 						<?php $this->load->view($subview); // which is set in controller ?>	 <div class="text-center">
 							
-						<!--	
+							
 						<ul class="list-inline">
 						  <li> <a class="text-muted" href="#signup" data-toggle="tab">Registrasi User</a>  </li>
 						</ul>
-						-->
+						
 					  </div>
 					  
 					</div><!--/login tab-pane active-->  
 					  
-            <!--                
+                         
 			<div id="signup" class="tab-pane">
 				<p class="text-muted text-center">
 				  Direktorat Jenderal Perbendaharaan
@@ -60,7 +60,7 @@
 						</ul>
 				</form>
 			</div>   
-            -->
+            
                     
             </div><!--/tab-content--> 
             
