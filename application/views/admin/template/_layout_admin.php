@@ -128,23 +128,39 @@
 					  <span class="fa arrow"></span> 
 					</a> 
 					<ul style="height: inherit;">
+					
+					<?php if($id_entities === '4') { ?>
 					  <li class="">
 						<a href="<?php echo base_url(); ?>companies.php/admin/roles">
 						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Entitas</a> 
 					  </li>
+					<?php } ?>
+					
+					<?php if($id_entities === '4') { ?>
 					  <li class="">
 						<a href="<?php echo base_url(); ?>companies.php/admin/roles">
 						  <i class="fa fa-angle-right"></i>&nbsp;Wewenang Pengguna</a> 
 					  </li>
+					<?php } ?>
+					
+					<?php if($id_entities === '1' || $id_entities === '4') { ?>
 					  <li class="">
 						<a href="<?php echo base_url(); ?>companies.php/admin/user">
 						  <i class="fa fa-angle-right"></i>&nbsp;Ubah Pengguna</a> 
 					  </li>
+					  <?php } ?>
+					  
+					<?php if($id_entities === '4') { ?>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/user/generate_user">
+						  <i class="fa fa-angle-right"></i>&nbsp;Pendaftaran Pengguna</a> 
+					  </li>
+					<?php } ?>
 					</ul>
 				  </li>
 				  
 				  <!-- if entity is kppn -->
-				  <?php if($id_entities === '1') { ?>
+				  <?php if($id_entities === '1' || $id_entities === '4') { ?>
 				  <li>
 					<a href="<?php echo base_url(); ?>companies.php/admin/upload">
 					  <i class="glyphicon glyphicon-upload"></i>
@@ -153,8 +169,8 @@
 				  </li>
 				  <?php } ?>
 				  
-				  <!-- if entity is kanwil or pkn -->
-				  <?php if($id_entities === '1' || $id_entities === '2' || $id_entities === '3') { ?>
+				  <!-- if entity is all -->
+				  <?php if($id_entities === '1' || $id_entities === '2' || $id_entities === '3'|| $id_entities === '4') { ?>
 				  <li>
 					<a href="javascript:;">
 					  <i class="glyphicon glyphicon-th-large"></i>
@@ -180,7 +196,7 @@
 					</a> 
 					<ul style="height: inherit;">
 					  <!-- if entity is kppn -->
-					  <?php if ($id_entities === '1') { ?>
+					  <?php if ($id_entities === '1' || $id_entities === '4') { ?>
 					  <li class="">
 						<a href="<?php echo base_url(); ?>companies.php/admin/report/form_report_teguran">
 						  <i class="fa fa-angle-right"></i>&nbsp;Surat Teguran</a> 
