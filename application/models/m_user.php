@@ -25,8 +25,8 @@
 
 class M_user extends MY_Model
 {
-	public $_table_name 		= 'users';
-	protected $_primary_key 	= 'id_users';
+	public $_table_name 	= 'users';
+	protected $_primary_key = 'id_users';
 	public $_order_by 		= 'username';
 	public $rules 				= array(
 						'username' => array( 
@@ -256,15 +256,23 @@ class M_user extends MY_Model
 	
 	public function get_join($key = NULL, $val = FALSE, $single = FALSE)
 	{
-		$query = $this->db->select('users.id_users')
+		$query = $this->db->select('ref_satker.id_ref_satker')
+							->select('ref_satker.id_ref_unit')
+							->select('ref_satker.id_ref_kppn')
+							->select('ref_satker.kd_satker')
+							->select('ref_satker.nm_satker')
+							->select('users.id_users')
 							->select('users.username')
-							->select('users.display_name')
-							->select('users.email')
-							->select('user_entity.id_ref_satker')
 							->select('user_entity.id_entities')
-							->select('user_entity.nip')
-							->from('users')
-							->join('user_entity', 'users.id_users = user_entity.id_users', 'left');
+							->select('user_default.id_users')
+							->select('user_default.password')
+							->select('entities.entity_desc')
+							->from('ref_satker')
+							->join('user_entity', 'user_entity.id_ref_satker = ref_satker.id_ref_satker', 'left')
+							->join('users', 'users.id_users = user_entity.id_users', 'left')
+							->join('user_default', 'user_default.id_users = users.id_users', 'left')
+							->join('entities', 'entities.id_entities = user_entity.id_entities', 'left')
+							->like('nm_satker', 'perbendaharaan');
 		
 		if ( $key != NULL )
 		{					
@@ -290,7 +298,7 @@ class M_user extends MY_Model
 		return $query->$method();
 	}
 	
-	
+		
 	public function get_id_user_entity($id_users = NULL)
 	{
 		$query = $this->db->select('id_user_entity')
@@ -305,6 +313,56 @@ class M_user extends MY_Model
 		
 	}
 	
+	public function generate_user($generate)
+	{
+		$jml_data 	= $this->input->post('jml_data');
+		$id_entities= $this->input->post('id_entities');
+		//~ var_dump($this->input->post());
+		for ($i = 1; $i < count($generate); $i++) 
+		{
+			// checkbox
+			$status[$i] = (isset($generate[$i]['status'])) ? $generate[$i]['status'] : NULL;
+			
+			if ($status[$i] != NULL) 
+			{
+				// password pattern
+				$plain_pass = generate_random_str(8);
+				
+				// insert into table users
+				$input_users = array(
+					'email'			=> $generate[$i]['kd_satker'] . '@mail.com',
+					'username'		=> $generate[$i]['kd_satker'],
+					'password_hash'	=> $this->hash($plain_pass),
+					'last_ip'		=> $this->session->userdata['ip_address'],
+					'created_on'	=> date('Y-m-d H:i:s'),
+					'display_name'	=> $generate[$i]['kd_satker']
+				);
+				
+				$this->db->insert('users', $input_users);
+				$id_users = $this->db->insert_id();
+				
+				// insert into user_entity
+				$input_user_entity = array(
+					'id_users' 		=> $id_users,
+					'id_ref_satker'	=> $generate[$i]['id_ref_satker'],
+					'id_entities'	=> $id_entities,
+					'nip'			=> sprintf("%018d",$id_users),
+					'created_at'	=> date('Y-m-d H:i:s')
+				);
+				
+				$this->db->insert('user_entity',$input_user_entity);
+				
+				// insert into user_default
+				$input_user_default = array(
+					'id_users'	=> $id_users,
+					'password'	=> $plain_pass,
+					'created_at'	=> date('Y-m-d H:i:s')
+				);
+				
+				$this->db->insert('user_default',$input_user_default);
+			}
+		}
+	}
 	
 	public function get_new()
 	{

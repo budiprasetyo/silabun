@@ -112,9 +112,8 @@ class User extends Admin_Controller
 	
 	public function home()
 	{	
-		//~ var_dump($this->data['id_ref_satker']);
 		// fetch all users
-		$this->data['users'] = $this->m_user->get_join('id_ref_satker', $this->data['id_ref_satker'], FALSE);
+		$this->data['users'] = $this->m_user->get_join('user_entity.id_ref_satker', $this->data['id_ref_satker'], FALSE);
 		// path to user folder view
 		$this->data['subview'] = 'admin/user/index';
 		$this->load->view('admin/template/_layout_admin', $this->data);
@@ -238,8 +237,29 @@ class User extends Admin_Controller
 		}
 	}
 	
-	public function user_entity()
+	public function generate_user()
 	{
-		var_dump($this->data['id_ref_satker']);
+		// load generator_helper
+		$this->load->helper('generator');
+		// execute generate user
+		if($this->input->post('submit') === 'Generate')
+		{
+			$generate = $this->input->post();
+			if($generate)
+			{
+				$this->m_user->generate_user($generate);
+			}
+		}
+		
+		// load m_referensi
+		$this->load->model('m_referensi');
+		// fetch all entities for dropdown
+		$this->data['entities'] = $this->m_referensi->get_all_entities();
+		
+		// fetch all users
+		$this->data['users'] = $this->m_user->get_join(NULL, FALSE, FALSE);
+		// path to user folder view
+		$this->data['subview'] = 'admin/user/signup';
+		$this->load->view('admin/template/_layout_admin', $this->data);
 	}
 }
