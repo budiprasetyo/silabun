@@ -126,4 +126,19 @@ class M_referensi extends MY_Model
 			$query->free_result();
 		}
 	}
+	
+	public function get_all_entities()
+	{
+		$query = $this->db->select('id_entities')
+							->select('entity_desc')
+							->select('parent_entity')
+							->order_by('id_entities')
+							->get('entities');
+							
+		if($query->num_rows() > 0)
+		{
+			return $query->result();
+			$query->free_result();
+		}
+	}
 }
