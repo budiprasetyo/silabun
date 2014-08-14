@@ -97,7 +97,7 @@
 						<div class="media-body">
 							<h5 class="media-heading"><?php echo strtoupper($username); ?></h5>
 							<ul class="list-unstyled user-info">
-								<li> <a href=""><?php echo $username; ?></a>  </li> <!-- role id -->
+								<li> <a href=""><?php echo $display_name; ?></a>  </li> <!-- role id -->
 								<li>Last Access:
 								  <br>
 								  <small>

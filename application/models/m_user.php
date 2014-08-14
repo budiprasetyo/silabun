@@ -263,6 +263,7 @@ class M_user extends MY_Model
 							->select('ref_satker.nm_satker')
 							->select('users.id_users')
 							->select('users.username')
+							->select('users.display_name')
 							->select('user_entity.id_entities')
 							->select('user_default.id_users')
 							->select('user_default.password')
