@@ -323,6 +323,8 @@ class M_user extends MY_Model
 		//~ var_dump($this->input->post());
 		for ($i = 1; $i < count($generate); $i++) 
 		{
+			//~ var_dump($i);
+			//~ var_dump($generate);
 			// checkbox
 			$status[$i] = (isset($generate[$i]['status'])) ? $generate[$i]['status'] : NULL;
 			
@@ -353,6 +355,7 @@ class M_user extends MY_Model
 					'created_at'	=> date('Y-m-d H:i:s')
 				);
 				
+				
 				$this->db->insert('user_entity',$input_user_entity);
 				
 				// insert into user_default
@@ -361,6 +364,7 @@ class M_user extends MY_Model
 					'password'	=> $plain_pass,
 					'created_at'	=> date('Y-m-d H:i:s')
 				);
+				
 				
 				$this->db->insert('user_default',$input_user_default);
 			}

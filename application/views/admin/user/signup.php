@@ -42,7 +42,7 @@
 					  <hr />
 					  
 				<div class="table-responsive">
-				<table id="dataTable" class="table table-bordered table-condensed table-hover table-striped">
+				<table class="table table-bordered table-condensed table-hover table-striped">
 					<thead>
 						<tr>
 							<th>Pilih</th>
