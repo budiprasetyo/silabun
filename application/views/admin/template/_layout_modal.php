@@ -21,16 +21,15 @@
 						<?php } ?>
 						<?php $this->load->view($subview); // which is set in controller ?>	 <div class="text-center">
 							
-						<!--
+						
 						<ul class="list-inline">
-						  <li> <a class="text-muted" href="#signup" data-toggle="tab">Registrasi User</a>  </li>
+						  <li> <a class="text-muted" href="#signup" data-toggle="tab">Dapatkan Username dan Password</a>  </li>
 						</ul>
-						-->
+					
 					  </div>
 					  
 					</div><!--/login tab-pane active-->  
 					  
-            <!--             
 			<div id="signup" class="tab-pane">
 				<p class="text-muted text-center">
 				  Direktorat Jenderal Perbendaharaan
@@ -41,26 +40,16 @@
 				</div>
 				<?php } ?>
 				<form method="post" action="" class="form-signin" name="signup">
-						<?php echo form_hidden('register', 'user'); ?>
-						<input type="text" placeholder="Username" class="form-control" name="username" maxlength="30" />
-						<input type="text" placeholder="Nama Ditampilkan" class="form-control" name="display_name" maxlength="255" />
-						<input type="email" placeholder="mail@domain.com" class="form-control" name="email" maxlength="120" />
-						<input type="password" placeholder="Password" class="form-control" name="password_hash" maxlength="128" />
-						<input type="password" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" />
-						<input type="text" placeholder="Nomor Induk Pegawai" class="form-control" name="nip" maxlength="18" />
-						<?php 
-							echo $dropdown->dropdown_get_name('roles', $id, 'id_roles', 'id_entities', 'entity_desc', '- Pilih Entitas -', 'entities');
-						?>
-						<input type="text" placeholder="Kode Satker" class="form-control" name="kd_satker" maxlength="6" />
+						<?php echo form_hidden('get', 'username'); ?>
+						<input type="text" placeholder="Kode Satker atau Kode KPPN" class="form-control" name="kd_satker" maxlength="6" autofocus="autofocus" />
 						
-						<button class="btn btn-lg btn-success btn-block" type="submit">Register</button>
+						<button class="btn btn-lg btn-success btn-block" type="submit">Dapatkan !</button>
 						
 						<ul class="list-inline">
 							<li class="text-danger">Tekan tombol F5 untuk kembali ke login</li>
 						</ul>
 				</form>
 			</div>   
-            -->
                     
             </div><!--/tab-content--> 
             

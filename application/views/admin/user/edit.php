@@ -50,14 +50,14 @@
 						<div class="form-group">
 						<label for="text2" class="control-label col-lg-4">Password</label>
 						<div class="col-lg-8">
-							<input type="text" id="text2" placeholder="Password" class="form-control" name="password_hash" maxlength="128" value="<?php echo set_value('password_hash', $user->password); ?>" />
+							<input type="password" id="text2" placeholder="Password" class="form-control" name="password_hash" maxlength="128" value="<?php echo set_value('password_hash', $user->password_hash); ?>" />
 						</div>
 					  </div><!-- /.form-group -->
 		
 					  <div class="form-group">
 						<label for="text2" class="control-label col-lg-4">Konfirmasi Password</label>
 						<div class="col-lg-8">
-							<input type="password" id="text3" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" value="<?php echo set_value('password_hash', $user->password); ?>" />
+							<input type="password" id="text3" placeholder="Konfirmasi Password" class="form-control" name="password_conf" maxlength="128" value="<?php echo set_value('password_hash', $user->password_hash); ?>" />
 						</div>
 					  </div><!-- /.form-group -->
 		

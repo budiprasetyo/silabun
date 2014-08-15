@@ -264,7 +264,9 @@ class M_user extends MY_Model
 							->select('users.id_users')
 							->select('users.username')
 							->select('users.display_name')
+							->select('users.email')
 							->select('user_entity.id_entities')
+							->select('user_entity.nip')
 							->select('user_default.id_users')
 							->select('user_default.password')
 							->select('entities.entity_desc')
@@ -362,6 +364,54 @@ class M_user extends MY_Model
 				
 				$this->db->insert('user_default',$input_user_default);
 			}
+		}
+	}
+	
+	public function regenerate($id)
+	{
+		// password pattern
+		$plain_pass = generate_random_str(8);
+		
+		// update users
+		$update_users = array(
+			'password_hash'	=> $this->hash($plain_pass)
+		);
+		
+		$this->db->update('users', $update_users, array('id_users' => $id));
+		
+		// update user_default
+		$update_user_default = array(
+			'password'		=> $plain_pass,
+			'updated_at'	=> date('Y-m-d H:i:s')
+		);
+		
+		$this->db->update('user_default', $update_user_default, array('id_users' => $id));
+	}
+	
+	public function get_username_default($kd_satker)
+	{
+		
+		$query = $this->db->select('user_entity.id_ref_satker')
+							->select('users.username')
+							->select('user_default.password')
+							->from('user_entity')
+							->join('users', 'users.id_users = user_entity.id_users', 'right')
+							->join('user_default', 'users.id_users = user_default.id_users', 'left')
+							->join('ref_satker', 'user_entity.id_ref_satker = ref_satker.id_ref_satker', 'left')
+							->join('ref_kppn', 'ref_kppn.id_ref_satker = ref_satker.id_ref_satker', 'left')
+							->where('ref_satker.kd_satker', $kd_satker)
+							->or_where('ref_kppn.kd_kppn', $kd_satker)
+							->group_by('user_entity.id_ref_satker')
+							->get();
+							
+		if($query->num_rows > 0)
+		{
+			return $query->row();
+			$query->free_result();
+		}
+		else
+		{
+			return FALSE;
 		}
 	}
 	

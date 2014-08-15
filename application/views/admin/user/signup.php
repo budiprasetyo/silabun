@@ -71,7 +71,7 @@
 											echo form_checkbox($i . '[status]', TRUE); 
 										?>
 									</td>
-									<td><?php echo anchor('admin/user/edit/' . $user->id_ref_satker, $user->kd_satker ); ?></td>
+									<td><?php echo anchor('admin/user/regenerate/' . $user->id_users, $user->kd_satker ); ?></td>
 									<td class="bg-bg-red"><?php echo $user->id_entities ? $user->id_entities : '<span class="label label-warning">UNDEFINED</span>'; ?></td>
 									<td><?php echo $user->username ? $user->username : '<span class="label label-warning">UNDEFINED</span>'; ?></td>
 									<td><?php echo $user->password ? $user->password : '<span class="label label-warning">UNDEFINED</span>'; ?></td>
