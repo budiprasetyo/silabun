@@ -143,12 +143,10 @@
 					  </li>
 					<?php } ?>
 					
-					<?php if($id_entities === '1' || $id_entities === '4') { ?>
 					  <li class="">
 						<a href="<?php echo base_url(); ?>companies.php/admin/user">
 						  <i class="fa fa-angle-right"></i>&nbsp;Ubah Pengguna</a> 
 					  </li>
-					  <?php } ?>
 					  
 					<?php if($id_entities === '4') { ?>
 					  <li class="">
