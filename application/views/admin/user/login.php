@@ -18,6 +18,7 @@
 				<li>Apabila tidak bisa login, coba lakukan dengan tidak dengan copy paste, ketikkan secara manual.</li>
 				<li>Apabila hal pertama telah dilakukan tetap tidak bisa login, hubungi Direktorat Sistem Perbendaharaan, hubungi Service Desk: <span class="label label-danger">Ivan Setiawan</span> di <span class="label label-danger">08562130825</span> atau Developer: <span class="label label-info">Budi Prasetyo</span> di <span class="label label-info">0811383477</span>.</li>
 				<li>Username dan password default harus segera diubah, supaya tidak digunakan oleh pihak lain, tetapi username default tidak boleh dihapus.</li>
+				<li>Manual dapat di-<i>download</i> <span class="label label-warning"><?php echo anchor(base_url().'public/manual/manual_silabun_web_1_0.pdf', 'disini', array('target' => '_blank')); ?></span></li>
 				<br />
 			</ol>
 <?php
