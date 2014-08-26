@@ -43,10 +43,16 @@
 					  </div><!-- /.form-group -->
 					  
 					  <div class="form-group">
+						<label for="text1" class="control-label col-lg-4">NIP Pejabat</label>
+						<div class="col-lg-8">
+						  <input type="text" id="text2" placeholder="NIP Pejabat" class="form-control" name="nip_pejabat" value="<?php echo set_value('nip_pejabat', $pejabats->nip_pejabat); ?>" />
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
 						<label for="text4" class="control-label col-lg-4">Nama Jabatan</label>
 						<div class="col-lg-8">
 						  <?php 
-							//~ echo $dropdown->dropdown_get_name('roles', $id, 'id_roles', 'id_entities', 'entity_desc', '- pilih entitas -', 'entities');
 							echo $dropdown->dropdown_get_name('ref_pejabat', $id, 'id_ref_pejabat', 'id_ref_jabatan', 'nm_jabatan', '- pilih jabatan -', 'ref_jabatan');
 						  ?>
 						</div>

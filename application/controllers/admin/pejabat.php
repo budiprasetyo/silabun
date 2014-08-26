@@ -81,7 +81,8 @@ class Pejabat extends Admin_Controller
 			$data = array(
 							'id_ref_jabatan'=> $id_ref_jabatan,
 							'id_ref_satker'	=> $this->data['id_ref_satker'],
-							'nm_pejabat'	=> $this->input->post('nm_pejabat')
+							'nm_pejabat'	=> $this->input->post('nm_pejabat'),
+							'nip_pejabat'	=> $this->input->post('nip_pejabat')
 			);
 			
 			// save data

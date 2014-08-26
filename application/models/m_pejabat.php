@@ -35,6 +35,11 @@ class M_pejabat extends MY_Model
 						'label'	=> 'Nama Pejabat',
 						'rules'	=> 'trim|required|max_length[120]|xss_clean'
 					),
+					'nip_pejabat'	=> array(
+						'field'	=> 'nip_pejabat',
+						'label'	=> 'NIP Pejabat',
+						'rules'	=> 'trim|required|max_length[18]|xss_clean'
+					),
 					'id_ref_jabatan'	=> array(
 						'field'	=> 'id_ref_jabatan',
 						'label'	=> 'Jabatan',
@@ -50,6 +55,7 @@ class M_pejabat extends MY_Model
 							->select('ref_jabatan.id_entities')
 							->select('ref_jabatan.nm_jabatan')
 							->select('ref_pejabat.nm_pejabat')
+							->select('ref_pejabat.nip_pejabat')
 							->from('ref_jabatan')
 							->join('ref_pejabat', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'right')
 							->where('ref_jabatan.id_entities', $this->data['id_entities']);

@@ -26,6 +26,7 @@
 						<thead>
 							<tr>
 								<th>Nama Pejabat</th>
+								<th>NIP Pejabat</th>
 								<th>Nama Jabatan</th>
 								<th>Edit</th>
 								<th>Delete</th>
@@ -40,6 +41,7 @@
 						?>
 							<tr>
 							  <td><?php echo $pejabat->id_ref_pejabat == NULL ? '' : anchor('admin/pejabat/edit/' . $pejabat->id_ref_pejabat, $pejabat->nm_pejabat); ?></td>
+							  <td><?php echo $pejabat->nip_pejabat; ?></td>
 							  <td><?php echo $pejabat->nm_jabatan; ?></td>
 							  <td><?php echo btn_edit('admin/pejabat/edit/' . $pejabat->id_ref_pejabat); ?></td>
 							  <td><?php echo btn_delete('admin/pejabat/delete/' . $pejabat->id_ref_pejabat); ?></td>
