@@ -267,7 +267,6 @@ class M_user extends MY_Model
 							->select('users.email')
 							->select('user_entity.id_entities')
 							->select('user_entity.nip')
-							->select('user_default.id_users')
 							->select('user_default.password')
 							->select('entities.entity_desc')
 							->from('ref_satker')
