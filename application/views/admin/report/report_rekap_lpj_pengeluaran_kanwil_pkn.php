@@ -80,10 +80,10 @@
 	
 	<div id="footer">
 		<div id="report">
-			Kepala Kantor,
+			<?php echo $pejabat->nm_jabatan; ?>
 			<div id="name">
-				Joko Widodo<br />
-				NIP
+				<?php echo $pejabat->nm_pejabat; ?><br />
+				NIP <?php echo $pejabat->nip_pejabat; ?>
 			</div> 
 		</div>
 		

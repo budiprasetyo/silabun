@@ -146,8 +146,10 @@ class M_referensi extends MY_Model
 	{
 		$query = $this->db->select('ref_jabatan.nm_jabatan')
 							->select('ref_pejabat.nm_pejabat')
+							->select('ref_pejabat.nip_pejabat')
 							->from('ref_pejabat')
 							->join('ref_jabatan', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'left')
+							->where('id_ref_satker', $id_ref_satker)
 							->group_by('ref_jabatan.nm_jabatan')
 							->group_by('ref_pejabat.nm_pejabat')
 							->get();

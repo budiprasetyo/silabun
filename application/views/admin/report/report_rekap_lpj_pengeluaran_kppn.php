@@ -83,7 +83,7 @@
 			<?php echo $pejabat->nm_jabatan; ?>
 			<div id="name">
 				<?php echo $pejabat->nm_pejabat; ?><br />
-				NIP
+				NIP <?php echo $pejabat->nip_pejabat; ?>
 			</div> 
 		</div>
 		
