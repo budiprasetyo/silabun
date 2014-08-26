@@ -51,6 +51,7 @@ class M_jabatan extends MY_Model
 		$jabatans = new stdClass();
 		
 		$jabatans->id_ref_jabatan	= '';
+		$jabatans->id_entities		= '';
 		$jabatans->nm_jabatan		= '';
 		return $jabatans;
 	}

@@ -47,12 +47,12 @@ class M_pejabat extends MY_Model
 		
 		$query = $this->db->select('ref_pejabat.id_ref_pejabat')
 							->select('ref_jabatan.id_ref_jabatan')
-							->select('ref_jabatan.id_ref_satker')
+							->select('ref_jabatan.id_entities')
 							->select('ref_jabatan.nm_jabatan')
 							->select('ref_pejabat.nm_pejabat')
 							->from('ref_jabatan')
-							->join('ref_pejabat', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'left')
-							->where('ref_jabatan.id_ref_satker', $this->data['id_ref_satker']);
+							->join('ref_pejabat', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'right')
+							->where('ref_jabatan.id_entities', $this->data['id_entities']);
 							
 		if($ids){
 			$query = $this->db->where('id_ref_pejabat', $ids);

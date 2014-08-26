@@ -141,4 +141,20 @@ class M_referensi extends MY_Model
 			$query->free_result();
 		}
 	}
+	
+	public function get_pejabat($id_ref_satker)
+	{
+		$query = $this->db->select('ref_jabatan.nm_jabatan')
+							->select('ref_pejabat.nm_pejabat')
+							->from('ref_pejabat')
+							->join('ref_jabatan', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'left')
+							->group_by('ref_jabatan.nm_jabatan')
+							->group_by('ref_pejabat.nm_pejabat')
+							->get();
+		if($query->num_rows() > 0)
+		{
+			return $query->row();
+			$query->free_result();
+		}
+	}
 }

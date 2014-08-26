@@ -76,13 +76,11 @@ class Pejabat extends Admin_Controller
 			
 			// get id_ref_pejabat post
 			$id_ref_jabatan 	= $this->input->post('id_ref_jabatan');
-			// get id of satker
-			//~ $entities = $this->m_pejabat->get_by('kd_satker', $kd_satker, FALSE, TRUE, 'ref_satker');
-			//~ $id_ref_satker = $ref_satker->id_ref_satker;
 			
 			// populate fields
 			$data = array(
 							'id_ref_jabatan'=> $id_ref_jabatan,
+							'id_ref_satker'	=> $this->data['id_ref_satker'],
 							'nm_pejabat'	=> $this->input->post('nm_pejabat')
 			);
 			

@@ -59,7 +59,6 @@
 					  <div class="form-group">
 						<div class="col-lg-12 controls">
 							<?php 
-								echo form_hidden('id_ref_satker', $id_ref_satker);
 								$attributes = 'class = "btn btn-primary"';
 								echo form_submit('submit', 'Simpan', $attributes);
 							?>

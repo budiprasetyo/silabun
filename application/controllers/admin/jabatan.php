@@ -39,8 +39,8 @@ class Jabatan extends Admin_Controller
 
 	public function index()
 	{
-		// fetch all jabatans
-		$this->data['jabatans'] = $this->m_jabatan->get_by('id_ref_satker', $this->data['id_ref_satker'], FALSE, FALSE, 'ref_jabatan');
+		// fetch all jabatans, with id_entities filter
+		$this->data['jabatans'] = $this->m_jabatan->get_by('id_entities', $this->data['id_entities'], FALSE, FALSE, 'ref_jabatan');
 		// path to page folder view
 		$this->data['subview'] = 'admin/jabatan/index';
 		$this->load->view('admin/template/_layout_admin', $this->data);
@@ -70,7 +70,9 @@ class Jabatan extends Admin_Controller
 		
 		if ( $this->form_validation->run() == TRUE ) {
 			// populate fields
-			$data = $this->m_jabatan->array_from_post(array('nm_jabatan','is_boss', 'id_ref_satker'));
+			$data = $this->m_jabatan->array_from_post(array('nm_jabatan','is_boss'));
+			// id_entities
+			$data['id_entities'] = $this->data['id_entities'];
 			// save data
 			$this->m_jabatan->save($data, $id);
 			// redirect to users jabatans

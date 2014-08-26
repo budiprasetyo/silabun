@@ -129,6 +129,9 @@ class Report extends Admin_Controller
 			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
 			// get total sum
 			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+			// load m_referensi
+			$this->load->model('m_referensi');
+			$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
 			// send data to view
 			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_pengeluaran_kppn', $this->data, TRUE);
 		}
