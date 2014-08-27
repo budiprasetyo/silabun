@@ -58,7 +58,8 @@ class M_pejabat extends MY_Model
 							->select('ref_pejabat.nip_pejabat')
 							->from('ref_jabatan')
 							->join('ref_pejabat', 'ref_jabatan.id_ref_jabatan = ref_pejabat.id_ref_jabatan', 'right')
-							->where('ref_jabatan.id_entities', $this->data['id_entities']);
+							->where('ref_jabatan.id_entities', $this->data['id_entities'])
+							->where('ref_pejabat.id_ref_satker', $this->data['id_ref_satker']);
 							
 		if($ids){
 			$query = $this->db->where('id_ref_pejabat', $ids);
