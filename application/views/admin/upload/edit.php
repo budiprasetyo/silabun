@@ -152,6 +152,17 @@
 										$files = $csvdatas->parse_file($filenames);
 										//~ var_dump($files);
 									}
+									if( substr(basename($filenames),0,1) === 'T' )
+									{
+										//~ echo count($filenames);
+										$file_t = $csvdatas->parse_file($filenames);
+										var_dump($file_t);
+									}
+									if (substr(basename($filenames),0,5) === 'REF_T') 
+									{
+										$files = $csvdatas->parse_file($filenames);
+										var_dump($files);
+									}
 									//~ var_dump($csvdatas->parse_file($filename));
 									//~ $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 //~ 

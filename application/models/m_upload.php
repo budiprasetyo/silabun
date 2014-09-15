@@ -78,7 +78,19 @@ class M_upload extends MY_Model
 	
 	public function import_csv($path, $tables)
 	{
+		
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
+		
+		return $query;
+	}
+	
+	public function import_csv_rekening($path, $tables)
+	{
+		
+		
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' 
+		(id_dsp, kdsatker, nokarwas, kdrek, norek, nmrek, nmbank, nosrt, @tglsrt, saldo, kdbpp, kdkppn)
+		SET tgsrt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
 		
 		return $query;
 	}

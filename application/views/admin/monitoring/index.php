@@ -244,7 +244,7 @@
 									<i class="fa sort"></i></th>
 									<th>Kode Kementerian
 									<i class="fa sort"></i></th>
-									<th>Data Diterima 
+									<th>Data Belum Diterima 
 									<i class="fa sort"></i></th>
 								<?php } ?>
 							</tr>

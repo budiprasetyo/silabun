@@ -171,7 +171,7 @@ class Upload extends Admin_Controller
 						$oldname = $extractpath . basename($filename);
 						$newname = $movingpath . basename($filename);
 						//~ $newname = $movingpath . basename(substr(strrchr($filename,'\\'),1)); -- old setting before tamp1 was removed
-						
+					
 						// array newnames for hidden value
 						$this->data['newnames'][] = $movingpath . basename($filename);
 
@@ -207,12 +207,15 @@ class Upload extends Admin_Controller
 		{
 			foreach ($filetemp as $filename) 
 			{
+				
 				// Specified moving extracted file path
 				$movingpath = realpath() . sys_get_temp_dir() . '/';
 				// Get only filenames, used for unlink file from tmp :)
 				$file = substr(strrchr($filename,'/'),1);
 				
+				
 				// Define type of file, K for pengeluaran and P for penerimaan
+				// LPJ Pengeluaran
 				if (substr($file,0,1) === 'K') 
 				{
 					$importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
@@ -231,7 +234,7 @@ class Upload extends Admin_Controller
 				}
 				else if (substr($file,0,5) === 'REF_K') 
 				{
-					$importrefk = $this->m_upload->import_csv($movingpath . $file, 't_lpjk_refrek');
+					$importrefk = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjk_refrek');
 					
 					if($importrefk) 
 					{
@@ -246,9 +249,43 @@ class Upload extends Admin_Controller
 						$this->load->view('admin/components/message', $this->data);
 					}
 				}
-				else 
+				
+				// LPJ Penerimaan
+				if (substr($file,0,1) === 'T')
 				{
-					echo 'lainnya';
+					$importlpjt = $this->m_upload->import_csv($movingpath . $file, 'd_lpjt');
+					
+					if($importlpjt) 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data pengeluaran LPJ berhasil';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					else 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data pengeluaran LPJ gagal';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					
+				}
+				else if (substr($file,0,5) === 'REF_T')
+				{
+					$importreft = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjp_refrek');
+				
+					if($importreft) 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data referensi bank berhasil';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					else 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data referensi bank gagal';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					
 				}
 				
 				// Delete all footprints
@@ -256,6 +293,7 @@ class Upload extends Admin_Controller
 				{
 					unlink($movingpath . $file);
 				}
+				
 				
 			}
 			
