@@ -87,55 +87,35 @@ class M_report extends MY_Model
 	 */
 	public function rekap_lpj_pengeluaran($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
 	{
+		set_time_limit(0);
+		
 		if($is_kppn == FALSE)
 		{
 			// conditional for pkn else for kanwil
 			if($id_ref_satker == NULL)
 			{
-				$where = "";
+				$where = " ";
+				$group = " ";
 			}
 			else
 			{
-				$where = " ref_kppn.id_ref_kanwil = ".$id_ref_satker." AND ";
+				$where = " id_ref_kanwil = ".$id_ref_satker." AND ";
+				$group = " kd_kanwil, ";
 			}
 			
-			$query_kanwil_pkn = $this->db->query("SELECT b.kd_kementerian, b.nm_kementerian, count(*) AS jml_lpj, 
-									sum(dsp_transaksi_pengeluaran.uang_persediaan) AS uang_persediaan,
-									sum(dsp_transaksi_pengeluaran.ls_bendahara) AS ls_bendahara,
-									sum(dsp_transaksi_pengeluaran.pajak) AS pajak,
-									sum(dsp_transaksi_pengeluaran.pengeluaran_lain) AS pengeluaran_lain,
-									sum(
-										dsp_transaksi_pengeluaran.uang_persediaan +
-										dsp_transaksi_pengeluaran.ls_bendahara +
-										dsp_transaksi_pengeluaran.pajak +
-										dsp_transaksi_pengeluaran.pengeluaran_lain
-										) AS saldo_kas,
-									sum(dsp_transaksi_pengeluaran.saldo) AS saldo,
-									sum(dsp_transaksi_pengeluaran.kuitansi) AS kuitansi,
-									sum(
-										dsp_transaksi_pengeluaran.saldo +
-										dsp_transaksi_pengeluaran.kuitansi
-										) AS saldo_penerimaan
+			$query_kanwil_pkn = $this->db->query("SELECT kd_kementerian, nm_kementerian, count(*) AS jml_lpj, 
+									sum(uang_persediaan) AS uang_persediaan,
+									sum(ls_bendahara) AS ls_bendahara,
+									sum(pajak) AS pajak,
+									sum(pengeluaran_lain) AS pengeluaran_lain,
+									sum(saldo) AS saldo,
+									sum(kuitansi) AS kuitansi
 								FROM 
-									dsp_status_kirim_pengeluaran
-								LEFT JOIN ref_kanwil a 
-									ON a.id_ref_kanwil = dsp_status_kirim_pengeluaran.id_ref_kanwil
-								LEFT JOIN ref_kppn
-									ON dsp_status_kirim_pengeluaran.id_ref_kppn = ref_kppn.id_ref_kppn
-								LEFT JOIN (
-									SELECT ref_kementerian.kd_kementerian, ref_kementerian.nm_kementerian, ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker
-										FROM ref_satker
-										LEFT JOIN ref_unit
-										ON ref_satker.id_ref_unit = ref_unit.id_ref_unit
-											LEFT JOIN ref_kementerian
-											ON ref_unit.id_ref_kementerian = ref_kementerian.id_ref_kementerian
-								) b ON b.id_ref_satker = dsp_status_kirim_pengeluaran.id_ref_satker
-								LEFT JOIN dsp_transaksi_pengeluaran
-									ON dsp_status_kirim_pengeluaran.id_status_kirim_pengeluaran = dsp_transaksi_pengeluaran.id_status_kirim_pengeluaran
-								WHERE " .$where. "dsp_status_kirim_pengeluaran.tahun = '".$year."'
-								AND dsp_status_kirim_pengeluaran.bulan = '".$month."'
-								GROUP BY a.kd_kanwil, b.kd_kementerian
-								ORDER BY a.kd_kanwil, b.kd_kementerian");
+									dsp_report_rekap_lpjk
+								WHERE " .$where. "tahun = '".$year."'
+								AND bulan = '".$month."'
+								GROUP BY " . $group . " kd_kementerian
+								ORDER BY " . $group . " kd_kementerian");
 			
 			if($query_kanwil_pkn->num_rows() > 0)
 			{
@@ -206,46 +186,22 @@ class M_report extends MY_Model
 			}
 			else
 			{
-				$where = " ref_kppn.id_ref_kanwil = ".$id_ref_satker." AND ";
-				$select = " dsp_status_kirim_pengeluaran.id_ref_kanwil, ";
-				$group_by = " GROUP BY dsp_status_kirim_pengeluaran.id_ref_kanwil ";
+				$where = " id_ref_kanwil = ".$id_ref_satker." AND ";
+				$select = " id_ref_kanwil, ";
+				$group_by = " GROUP BY id_ref_kanwil ";
 			}
 			
 			$query = $this->db->query("SELECT " . $select . " count(*) AS jml_lpj, 
-				sum(dsp_transaksi_pengeluaran.uang_persediaan) AS uang_persediaan,
-				sum(dsp_transaksi_pengeluaran.ls_bendahara) AS ls_bendahara,
-				sum(dsp_transaksi_pengeluaran.pajak) AS pajak,
-				sum(dsp_transaksi_pengeluaran.pengeluaran_lain) AS pengeluaran_lain,
-				sum(
-					dsp_transaksi_pengeluaran.uang_persediaan +
-					dsp_transaksi_pengeluaran.ls_bendahara +
-					dsp_transaksi_pengeluaran.pajak +
-					dsp_transaksi_pengeluaran.pengeluaran_lain
-					) AS saldo_kas,
-				sum(dsp_transaksi_pengeluaran.saldo) AS saldo,
-				sum(dsp_transaksi_pengeluaran.kuitansi) AS kuitansi,
-				sum(
-					dsp_transaksi_pengeluaran.saldo +
-					dsp_transaksi_pengeluaran.kuitansi
-					) AS saldo_penerimaan
+				sum(uang_persediaan) AS uang_persediaan,
+				sum(ls_bendahara) AS ls_bendahara,
+				sum(pajak) AS pajak,
+				sum(pengeluaran_lain) AS pengeluaran_lain,
+				sum(saldo) AS saldo,
+				sum(kuitansi) AS kuitansi
 			FROM 
-				dsp_status_kirim_pengeluaran
-			LEFT JOIN ref_kanwil a 
-				ON a.id_ref_kanwil = dsp_status_kirim_pengeluaran.id_ref_kanwil
-			LEFT JOIN ref_kppn
-				ON dsp_status_kirim_pengeluaran.id_ref_kppn = ref_kppn.id_ref_kppn
-			LEFT JOIN (
-				SELECT ref_kementerian.kd_kementerian, ref_kementerian.nm_kementerian, ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker
-					FROM ref_satker
-					LEFT JOIN ref_unit
-					ON ref_satker.id_ref_unit = ref_unit.id_ref_unit
-						LEFT JOIN ref_kementerian
-						ON ref_unit.id_ref_kementerian = ref_kementerian.id_ref_kementerian
-			) b ON b.id_ref_satker = dsp_status_kirim_pengeluaran.id_ref_satker
-			LEFT JOIN dsp_transaksi_pengeluaran
-				ON dsp_status_kirim_pengeluaran.id_status_kirim_pengeluaran = dsp_transaksi_pengeluaran.id_status_kirim_pengeluaran
-			WHERE " .$where. "dsp_status_kirim_pengeluaran.tahun = '".$year."'
-			AND dsp_status_kirim_pengeluaran.bulan = '".$month."'
+				dsp_report_rekap_lpjk
+			WHERE " .$where. " tahun = '".$year."'
+			AND bulan = '".$month."'
 			".$group_by."");
 			
 			if($query->num_rows() > 0)

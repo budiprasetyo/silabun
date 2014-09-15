@@ -159,4 +159,27 @@ class M_referensi extends MY_Model
 			$query->free_result();
 		}
 	}
+	
+	public function get_kanwil_dropdown()
+	{
+		$kanwil_dropdown = array();
+		$query = $this->db->select('id_ref_kanwil')
+							->select('kd_kanwil')
+							->select('nm_kanwil')
+							->select('kd_satker_kanwil')
+							->from('ref_kanwil')
+							->order_by('kd_kanwil')
+							->get();
+							
+		if ($query->num_rows() > 0) 
+		{
+			$kanwil_dropdown[] = '-- Pilih Kanwil --';
+
+			foreach ($query->result_array() as $row) 
+			{
+				$kanwil_dropdown[$row['id_ref_kanwil']] = $row['nm_kanwil'];
+			}
+			return $kanwil_dropdown;
+		}
+	}
 }

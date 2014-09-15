@@ -98,6 +98,7 @@ class Report extends Admin_Controller
 		)
 		{
 			$this->data['action'] = 'report_rekap_lpj_pengeluaran';
+		
 			// path to page folder view
 			$this->data['subview'] = 'admin/report/form_rekap_lpj_pengeluaran';
 			$this->load->view('admin/template/_layout_admin', $this->data);
@@ -130,7 +131,7 @@ class Report extends Admin_Controller
 			// fetch rekap
 			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
 			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE, NULL);
 			// send data to view
 			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_pengeluaran_kppn', $this->data, TRUE);
 		}
@@ -141,7 +142,7 @@ class Report extends Admin_Controller
 			// nama entity
 			$this->data['nm_entity'] = 'kanwil djpbn ' . $kanwil->nm_kanwil;
 			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
+			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
 			// get total sum
 			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
 			// send data to view
@@ -153,8 +154,10 @@ class Report extends Admin_Controller
 			$this->data['subtitle'] = 'Per Bagian Anggaran Tingkat Nasional';
 			// nama entity
 			$this->data['nm_entity'] = 'direktorat pengelolaan kas negara';
+			// id_ref_kanwil
+			$id_ref_kanwil = $this->input->post('id_ref_kanwil');
 			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month']);
+			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month'], FALSE);
 			// get total sum
 			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month']);
 			// send data to view
