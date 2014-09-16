@@ -43,8 +43,6 @@
 		<tbody>
 			<?php 
 				$i = 0;
-				$saldo_kas = 0;
-				$saldo_penerimaan = 0;
 				foreach ($rekap_lpjs as $rekap_lpj) 
 				{
 					$saldo_kas = $rekap_lpj->uang_persediaan + $rekap_lpj->ls_bendahara + $rekap_lpj->pajak + $rekap_lpj->pengeluaran_lain;

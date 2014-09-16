@@ -212,6 +212,9 @@ if (defined('ENVIRONMENT'))
 
 		define('APPPATH', BASEPATH.$application_folder.'/');
 	}
+	
+	// Path to spesific controller started by index.php in url
+	define('APPURL', $_SERVER['SCRIPT_NAME']);
 
 /*
  * --------------------------------------------------------------------

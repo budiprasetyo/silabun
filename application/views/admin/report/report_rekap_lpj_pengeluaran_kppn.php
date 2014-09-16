@@ -46,6 +46,8 @@
 				$i = 0;
 				foreach ($rekap_lpjs as $rekap_lpj) 
 				{
+					$saldo_kas = $rekap_lpj->uang_persediaan + $rekap_lpj->ls_bendahara + $rekap_lpj->pajak + $rekap_lpj->pengeluaran_lain;
+					$saldo_penerimaan = $rekap_lpj->saldo + $rekap_lpj->kuitansi;
 			?>
 				<tr>
 					<td align="center" height="20px"><?php echo ++$i; ?></td>
@@ -56,13 +58,15 @@
 					<td align="right"><?php echo amount_format($rekap_lpj->ls_bendahara); ?></td>
 					<td align="right"><?php echo amount_format($rekap_lpj->pajak); ?></td>
 					<td align="right"><?php echo amount_format($rekap_lpj->pengeluaran_lain); ?></td>
-					<td align="right"><?php echo amount_format($rekap_lpj->saldo_kas); ?></td>
+					<td align="right"><?php echo amount_format($saldo_kas); ?></td>
 					<td align="right"><?php echo amount_format($rekap_lpj->saldo); ?></td>
 					<td align="right"><?php echo amount_format($rekap_lpj->kuitansi); ?></td>
-					<td align="right"><?php echo amount_format($rekap_lpj->saldo_penerimaan); ?></td>
+					<td align="right"><?php echo amount_format($saldo_penerimaan); ?></td>
 				</tr>
 			<?php
 				}
+					$saldo_kas = $total_rekap_lpj->uang_persediaan + $total_rekap_lpj->ls_bendahara + $total_rekap_lpj->pajak + $total_rekap_lpj->pengeluaran_lain;
+					$saldo_penerimaan = $total_rekap_lpj->saldo + $total_rekap_lpj->kuitansi;
 			?>
 			<tr>
 				<th colspan="4">Jumlah</th>
@@ -70,10 +74,10 @@
 				<th align="right"><?php echo amount_format($total_rekap_lpj->ls_bendahara); ?></th>
 				<th align="right"><?php echo amount_format($total_rekap_lpj->pajak); ?></th>
 				<th align="right"><?php echo amount_format($total_rekap_lpj->pengeluaran_lain); ?></th>
-				<th align="right"><?php echo amount_format($total_rekap_lpj->saldo_kas); ?></th>
+				<th align="right"><?php echo amount_format($saldo_kas); ?></th>
 				<th align="right"><?php echo amount_format($total_rekap_lpj->saldo); ?></th>
 				<th align="right"><?php echo amount_format($total_rekap_lpj->kuitansi); ?></th>
-				<th align="right"><?php echo amount_format($total_rekap_lpj->saldo_penerimaan); ?></th>
+				<th align="right"><?php echo amount_format($saldo_penerimaan); ?></th>
 			</tr>
 		</tbody>
 	</table>

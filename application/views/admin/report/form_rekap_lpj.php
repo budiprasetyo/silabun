@@ -7,7 +7,7 @@
 					<div class="icons">
 						<i class="glyphicon glyphicon-print"></i>
 					</div><!--/icons-->
-					<h5>Pencetakan Rekapitulasi LPJ Pengeluaran</h5>
+					<h5>Pencetakan Rekapitulasi LPJ <?php echo $title; ?></h5>
 					
 					<!-- .toolbar -->
 					<div class="toolbar">
