@@ -21,6 +21,7 @@
 -->
 	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/main.min.css" />	
     <!-- Metis Theme stylesheet -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/jquery.uniform/themes/default/css/uniform.default.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.css">
 	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/style.css" />
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>assets/css/theme.css" />
@@ -36,8 +37,9 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/daterangepicker/daterangepicker-bs3.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datepicker/css/datepicker.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/timepicker/css/bootstrap-timepicker.min.css">
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/switch/css/bootstrap3/bootstrap-switch.min.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/jasny-bootstrap/css/jasny-bootstrap.min.css">
-	
+	    
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
