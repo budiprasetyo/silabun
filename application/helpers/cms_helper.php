@@ -37,6 +37,30 @@ function btn_back($uri, $page = NULL)
 	return anchor($uri, '<i class="glyphicon glyphicon-chevron-left"></i> Kembali ke ' . $page, ''); 
 }
 
+function btn_mod_primary($uri, $name)
+{
+	return anchor($uri, $name, array('class'=>"btn btn-primary btn-xs btn-grad btn-rect btn-block"));
+}
+
+function btn_mod_warning($uri, $name)
+{
+	return anchor($uri, $name, array('class'=>"btn btn-warning btn-xs btn-grad btn-rect btn-block"));
+}
+
+function btn_mod_danger($uri, $name)
+{
+	return anchor($uri, $name, array('class'=>"btn btn-danger btn-xs btn-grad btn-rect btn-block"));
+}
+
+function btn_mod_metis2($uri, $name)
+{
+	return anchor($uri, $name, array('class'=>"btn btn-metis-2 btn-xs btn-grad btn-rect btn-block"));
+}
+
+function btn_mod_metis4($uri, $name)
+{
+	return anchor($uri, $name, array('class'=>"btn btn-metis-4 btn-xs btn-grad btn-rect btn-block"));
+}
 /**
 * Dump helper. Functions to dump variables to the screen, in a nicley formatted manner.
 * @author Joost van Veen
