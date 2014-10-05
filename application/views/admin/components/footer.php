@@ -23,6 +23,11 @@
 <script src="<?php echo base_url(); ?>assets/lib/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
 <!-- DataTables -->
 <script src="<?php echo base_url(); ?>assets/lib/datatables/jquery.dataTables.js"></script>
+	<script>
+		$(function(){
+			$('table.display').dataTable();
+		});
+	</script>
 <script src="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.tablesorter/jquery.tablesorter.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
@@ -30,9 +35,14 @@
 <script src="<?php echo base_url(); ?>assets/js/core.min.js"></script>
 <!-- Metis demo scripts -->
 <script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+    <script>
+      $(function() {
+        Metis.formGeneral();
+      });
+    </script>
 <!-- cleditor -->
 <script src="<?php echo base_url(); ?>assets/lib/bootstrap3-wysihtml5-bower/bootstrap3-wysihtml5.all.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/cleditor/jquery.cleditor.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/ckeditor/ckeditor.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/pagedown-bootstrap/js/jquery.pagedown-bootstrap.combined.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/epiceditor/js/epiceditor.min.js"></script>
 <!-- upload -->
@@ -40,6 +50,14 @@
 <script src="<?php echo base_url(); ?>assets/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.uniform/jquery.uniform.min.js"></script>
+<!-- chained-master -->
+<script src="<?php echo base_url(); ?>assets/lib/chained-master/jquery.chained.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#series").chained("#mark");
+		$("#child").chained("#parent");
+	});
+</script>
 <!-- dashboard -->
 <script src="<?php echo base_url(); ?>assets/lib/jquery.sparkline/jquery.sparkline.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.js"></script>
@@ -65,11 +83,6 @@
 <script>
   $(function() {
 	formWysiwyg();
-  });
-</script>
-<script>
-  $(function() {
-	formGeneral();
   });
 </script>
 <script type="text/javascript">
