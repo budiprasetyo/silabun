@@ -75,9 +75,98 @@ class M_referensi extends MY_Model
 	 * 
 	 * 
 	 */
-	public function get_kementerian($table_name = NULL, $field_name = NULL)
+	
+	public function get_kementerian()
 	{
-		
+		$query = $this->db->select('id_ref_kementerian')
+							->select('kd_kementerian')
+							->select('nm_kementerian')
+							->from('ref_kementerian')
+							->order_by('kd_kementerian')
+							->get();
+							
+		if ($query->num_rows > 0) 
+		{
+			return $query->result();
+			$query->free_result();
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function get_kementerian_unit()
+	{
+		$query = $this->db->select('ref_kementerian.id_ref_kementerian')
+							->select('ref_kementerian.kd_kementerian')
+							->select('ref_kementerian.nm_kementerian')
+							->select('ref_unit.id_ref_unit')
+							->select('ref_unit.kd_unit')
+							->select('ref_unit.nm_unit')
+							->from('ref_kementerian')
+							->join('ref_unit', 'ref_unit.id_ref_kementerian = ref_kementerian.id_ref_kementerian', 'left')
+							->group_by('ref_kementerian.id_ref_kementerian')
+							->group_by('ref_unit.id_ref_unit')
+							->order_by('ref_kementerian.kd_kementerian')
+							->get();
+												
+		if ($query->num_rows > 0) 
+		{
+			return $query->result();
+			$query->free_result();
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function get_provinsi()
+	{
+		$query = $this->db->select('id_ref_lokasi')
+							->select('kd_lokasi')
+							->select('nm_lokasi')
+							->from('ref_lokasi')
+							->order_by('kd_lokasi')
+							->get();
+							
+		if ($query->num_rows > 0) 
+		{
+			return $query->result();
+			$query->free_result();
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	public function get_provinsi_kabkota()
+	{
+		$query = $this->db->select('ref_lokasi.id_ref_lokasi')
+							->select('ref_lokasi.kd_lokasi')
+							->select('ref_lokasi.nm_lokasi')
+							->select('ref_kabkota.id_ref_kabkota')
+							->select('ref_kabkota.id_lokasi')
+							->select('ref_kabkota.kd_kabkota')
+							->select('ref_kabkota.nm_kabkota')
+							->from('ref_lokasi')
+							->join('ref_kabkota', 'ref_kabkota.id_lokasi = ref_lokasi.id_ref_lokasi', 'left')
+							->group_by('id_ref_lokasi')
+							->group_by('id_ref_kabkota')
+							->order_by('ref_kabkota.kd_kabkota')
+							->get();
+							
+		if ($query->num_rows > 0) 
+		{
+			return $query->result();
+			$query->free_result();
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 	
 	public function get_id_name_satker($kd_satker, $id_ref_kppn)
