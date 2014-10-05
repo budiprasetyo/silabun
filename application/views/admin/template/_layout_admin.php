@@ -177,8 +177,12 @@
 					</a> 
 					<ul style="height: inherit;">
 					  <li class="">
-						<a href="<?php echo base_url(); ?>companies.php/admin/monitoring/monitor_data_terkirim">
-						  <i class="fa fa-angle-right"></i>&nbsp;Kiriman LPJ</a> 
+						<a href="<?php echo base_url(); ?>companies.php/admin/monitoring/monitor_data_terkirim/pengeluaran">
+						  <i class="fa fa-angle-right"></i>&nbsp;Kiriman LPJ Pengeluaran</a> 
+					  </li>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/monitoring/monitor_data_terkirim/penerimaan">
+						  <i class="fa fa-angle-right"></i>&nbsp;Kiriman LPJ Penerimaan</a> 
 					  </li>
 					</ul>
 				  </li>
@@ -229,6 +233,12 @@
 						<a href="<?php echo base_url(); ?>companies.php/admin/pejabat">
 						  <i class="fa fa-angle-right"></i>&nbsp;Pejabat</a> 
 					  </li>
+					  <?php if ($id_entities === '1' || $id_entities === '4'){ ?>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/satker">
+						  <i class="fa fa-angle-right"></i>&nbsp;Satuan Kerja</a> 
+					  </li>
+					  <?php } ?>
 					</ul>
 				  </li>
 				  <li>
