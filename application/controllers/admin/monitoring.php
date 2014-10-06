@@ -41,32 +41,66 @@ class Monitoring extends Admin_Controller
 
 	public function monitor_data_terkirim()
 	{	
+		$transaksi = $this->uri->segment(4);
 		// load helper
 		$this->load->helper('datetime');
 		// get year
 		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
 		// get month
 		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
+		// sent transaksi to view
+		$this->data['transaksi'] = $transaksi;
 		
 		// if entity is kppn
 		if($this->data['id_entities'] === '1')
 		{
-			// table title
-			$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker';
+			if ( $transaksi === 'pengeluaran' ) 
+			{
+				
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Pengeluaran Bendahara oleh Satker';
+				
+				// load m_referensi model
+				$this->load->model('m_referensi');
+				// get id_ref_kanwil
+				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+				
+				// send to view fetch sent and unsent satker count
+				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month']);
+				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
+				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
+				
+				// send to view fetch unsent satker 
+				$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
+				$this->data['monitor_satker_pengeluaran_unsents'] = $monitor_satker_unsents['query_pengeluaran'];
+				// send to view fetch sent satker 
+				$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
+				$this->data['monitor_satker_pengeluaran_sents'] = $monitor_satker_sents['query_pengeluaran'];
+				
+			}
 			
-			// load m_referensi model
-			$this->load->model('m_referensi');
-			// get id_ref_kanwil
-			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-			
-			// send to view fetch sent and unsent satker count
-			$this->data['count_satkers_k'] = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], 'K');
-			$this->data['count_satkers_p'] = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], 'P');
-			
-			// send to view fetch unsent satker 
-			$this->data['monitor_satker_unsents'] = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], 'K', FALSE);
-			// send to view fetch sent satker 
-			$this->data['monitor_satker_sents'] = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], 'K', TRUE);
+			if ( $transaksi === 'penerimaan' ) 
+			{
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Penerimaan Bendahara oleh Satker';
+				
+				// load m_referensi model
+				$this->load->model('m_referensi');
+				// get id_ref_kanwil
+				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+				
+				// send to view fetch sent and unsent satker count
+				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month']);
+				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
+				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
+				
+				// send to view fetch unsent satker 
+				$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
+				$this->data['monitor_satker_penerimaan_unsents'] = $monitor_satker_unsents['query_penerimaan'];
+				// send to view fetch sent satker 
+				$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
+				$this->data['monitor_satker_penerimaan_sents'] = $monitor_satker_sents['query_penerimaan'];
+			}
 			
 			// path to page folder view
 			$this->data['subview'] = 'admin/monitoring/index';
@@ -74,18 +108,40 @@ class Monitoring extends Admin_Controller
 		}
 		else if($this->data['id_entities'] === '2')
 		{
-			// table title
-			$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per KPPN';
-			// load m_referensi model
-			$this->load->model('m_referensi');
-			// get id_ref_kanwil
-			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-			// send to view fetch kppn 
-			//~ $this->data['monitor_kppns'] = $this->m_monitoring->get_count_data_kppn($kanwil->id_ref_kanwil,$this->data['year'],$this->data['month']);
-			// send to view fetch unsent satker 
-			$this->data['monitor_kppns_unsents'] = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], 'K', FALSE);
-			// send to view fetch sent satker
-			$this->data['monitor_kppns_sents'] = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], 'K', TRUE);
+			if ($transaksi === 'pengeluaran') 
+			{
+				
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara Pengeluaran oleh Satker Per KPPN';
+				// load m_referensi model
+				$this->load->model('m_referensi');
+				// get id_ref_kanwil
+				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+				// send to view fetch unsent satker 
+				$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+				$this->data['monitor_kppns_pengeluaran_unsents'] = $monitor_kppns_unsents['query_pengeluaran'];
+				// send to view fetch sent satker
+				$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
+				$this->data['monitor_kppns_pengeluaran_sents'] = $monitor_kppns_sents['query_pengeluaran'];
+			}
+			
+			if ($transaksi === 'penerimaan') 
+			{
+				
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara Pengeluaran oleh Satker Per KPPN';
+				// load m_referensi model
+				$this->load->model('m_referensi');
+				// get id_ref_kanwil
+				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+				// send to view fetch unsent satker 
+				$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+				$this->data['monitor_kppns_penerimaan_unsents'] = $monitor_kppns_unsents['query_penerimaan'];
+				// send to view fetch sent satker
+				$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
+				$this->data['monitor_kppns_penerimaan_sents'] = $monitor_kppns_sents['query_penerimaan'];
+			}
+			
 			// path to page folder view
 			$this->data['subview'] = 'admin/monitoring/index';
 			$this->load->view('admin/template/_layout_admin', $this->data);

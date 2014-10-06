@@ -49,33 +49,40 @@
 						<div class="body">
 							<ul>
 								<?php 
-									foreach ($count_satkers_k as $count_satker) 
+									if ( $transaksi === 'pengeluaran') 
 									{
-										if( $count_satker->tahun == NULL
-											&& $count_satker->bulan == NULL )
+										
+										foreach ($count_satkers_k as $count_satker) 
 										{
+											if( $count_satker->tahun == NULL
+												&& $count_satker->bulan == NULL )
+											{
 								?>
-											<li>Jumlah Satker Yang <span class="text-danger">Belum</span> Mengirimkan LPJ Bendahara <span class="label label-danger">K</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
+												<li>Jumlah Satker Yang <span class="text-danger">Belum</span> Mengirimkan LPJ Bendahara <span class="label label-danger">K</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
 								<?php
-										} else {
+											} else {
 								?>
-											<li>Jumlah Satker Yang <span class="text-success">Sudah</span> Mengirimkan LPJ Bendahara <span class="label label-danger">K</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
+												<li>Jumlah Satker Yang <span class="text-success">Sudah</span> Mengirimkan LPJ Bendahara <span class="label label-danger">K</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
 								<?php
+											}
 										}
 									}
 									
-									foreach ($count_satkers_p as $count_satker) 
+									if ( $transaksi === 'penerimaan') 
 									{
-										if( $count_satker->tahun == NULL
-											&& $count_satker->bulan == NULL )
+										foreach ($count_satkers_p as $count_satker) 
 										{
+											if( $count_satker->tahun == NULL
+												&& $count_satker->bulan == NULL )
+											{
 								?>
-											<li>Jumlah Satker Yang <span class="text-danger">Belum</span> Mengirimkan LPJ Bendahara <span class="label label-info">P</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
+												<li>Jumlah Satker Yang <span class="text-danger">Belum</span> Mengirimkan LPJ Bendahara <span class="label label-info">P</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
 								<?php
-										} else {
+											} else {
 								?>
-											<li>Jumlah Satker Yang <span class="text-success">Sudah</span> Mengirimkan LPJ Bendahara <span class="label label-info">P</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
+												<li>Jumlah Satker Yang <span class="text-success">Sudah</span> Mengirimkan LPJ Bendahara <span class="label label-info">P</span> <span class="badge"><?php echo $count_satker->jml_lpj; ?></span></li>
 								<?php
+											}
 										}
 									}
 								?>
@@ -91,11 +98,11 @@
 					  <?php } ?>
 					  <hr />
 					  <div class="form-group">
-							<label for="text3" class="control-label col-lg-12 bg-green">Satker Yang Sudah Mengirimkan LPJ Bendahara</label>
+							<label for="text3" class="control-label col-lg-12 bg-green">Satker Yang Sudah Mengirimkan LPJ Bendahara <?php echo ucfirst($transaksi); ?></label>
 					  </div>
 					  <hr />
 					  <!-- table -->
-                    <table class="table table-bordered table-condensed table-hover table-striped">
+                    <table class="table table-bordered table-condensed table-hover table-striped display">
 						<thead>
 							<tr>
 							<?php if ($this->data['id_entities'] === '1') { ?>
@@ -138,37 +145,89 @@
 						<tbody>
 							<?php
 								if ($this->data['id_entities'] === '1') {
-									if (count($monitor_satker_sents)) 
-										{
-											$i = 0;
-											foreach ($monitor_satker_sents as $monitor_satker_sent) 
+									if ($transaksi === 'pengeluaran') 
+									{
+										// transaksi pengeluaran sents
+										if (count($monitor_satker_pengeluaran_sents)) 
 											{
+												$i = 0;
+												foreach ($monitor_satker_pengeluaran_sents as $monitor_satker_sent) 
+												{
 							?>
-											<tr>
-											  <td><?php echo ++$i; ?></td>
-											  <td><?php echo $monitor_satker_sent->kd_satker; ?></td>
-											  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_sent->nm_satker; ?></td>
-											</tr>
+													<tr>
+													  <td><?php echo ++$i; ?></td>
+													  <td><?php echo $monitor_satker_sent->kd_satker; ?></td>
+													  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_sent->nm_satker; ?></td>
+													</tr>
 							
 							<?php
+												}
 											}
+										}
+										
+										// transaksi penerimaan sents
+										if ($transaksi === 'penerimaan') 
+										{
+											if (count($monitor_satker_penerimaan_sents)) 
+											{
+												$i = 0;
+												foreach ($monitor_satker_penerimaan_sents as $monitor_satker_sent) 
+												{
+							?>
+													<tr>
+													  <td><?php echo ++$i; ?></td>
+													  <td><?php echo $monitor_satker_sent->kd_satker; ?></td>
+													  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_sent->nm_satker; ?></td>
+													</tr>
+							
+							<?php
+													
+												}
+											}
+											
 										}
 									} 
 									else if ($this->data['id_entities'] === '2')
 									{
-										if (count($monitor_kppns_sents)) 
+										// pengeluaran sents
+										if ($transaksi === 'pengeluaran') 
 										{
-											$i = 0;
-											foreach ($monitor_kppns_sents as $monitor_kppn_sent) 
+											
+											if (count($monitor_kppns_pengeluaran_sents)) 
 											{
+												$i = 0;
+												foreach ($monitor_kppns_pengeluaran_sents as $monitor_kppn_sent) 
+												{
 							?>
-											<tr>
-											  <td><?php echo ++$i; ?></td>
-											  <td><?php echo $monitor_kppn_sent->kd_kppn . ' - ' . $monitor_kppn_sent->nm_kppn; ?></td>
-											  <td><?php echo $monitor_kppn_sent->kd_kementerian; ?></td>
-											  <td><?php echo $monitor_kppn_sent->jml_lpj; ?></td>
-											</tr>
+												<tr>
+												  <td><?php echo ++$i; ?></td>
+												  <td><?php echo $monitor_kppn_sent->kd_kppn . ' - ' . $monitor_kppn_sent->nm_kppn; ?></td>
+												  <td><?php echo $monitor_kppn_sent->kd_kementerian; ?></td>
+												  <td><?php echo $monitor_kppn_sent->jml_lpj; ?></td>
+												</tr>
 							<?php
+												}
+											}
+										}
+										
+										// penerimaan sents
+										if ($transaksi === 'penerimaan') 
+										{
+											if (count($monitor_kppns_penerimaan_sents)) 
+											{
+												$i = 0;
+												foreach ($monitor_kppns_penerimaan_sents as $monitor_kppn_sent) 
+												{
+							?>
+												<tr>
+												  <td><?php echo ++$i; ?></td>
+												  <td><?php echo $monitor_kppn_sent->kd_kppn . ' - ' . $monitor_kppn_sent->nm_kppn; ?></td>
+												  <td><?php echo $monitor_kppn_sent->kd_kementerian; ?></td>
+												  <td><?php echo $monitor_kppn_sent->jml_lpj; ?></td>
+												</tr>
+							<?php
+												
+												}
 											}
 										}
 									} 
@@ -206,14 +265,15 @@
 						?>
 						</tbody>
 					  </table>
+					  <br />
 					  
 					  <!-- satker yang belum -->
 					  <div class="form-group">
-							<label for="text3" class="control-label col-lg-12 bg-red">Satker Yang Belum Mengirimkan LPJ Bendahara</label>
+							<label for="text3" class="control-label col-lg-12 bg-red">Satker Yang Belum Mengirimkan LPJ Bendahara <?php echo ucfirst($transaksi); ?></label>
 					  </div>
 					  <hr />
 					<!-- table -->
-                    <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped">
+                    <table class="table table-bordered table-condensed table-hover table-striped display">
 						<thead>
 							<tr>
 								<?php if ($this->data['id_entities'] === '1') { ?>
@@ -253,46 +313,104 @@
 						<?php 
 							if ( $this->data['id_entities'] === '1' )
 							{
-								if (count($monitor_satker_unsents)) 
+								// transaksi pengeluaran unsents
+								if ($transaksi === 'pengeluaran') 
 								{
-									$i = 0;
-									foreach ($monitor_satker_unsents as $monitor_satker_unsent) 
+									
+									if (count($monitor_satker_pengeluaran_unsents)) 
 									{
+										$i = 0;
+										foreach ($monitor_satker_pengeluaran_unsents as $monitor_satker_unsent) 
+										{
 						?>
-										<tr>
-										  <td><?php echo ++$i; ?></td>
-										  <td><?php echo $monitor_satker_unsent->kd_satker; ?></td>
-										  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_unsent->nm_satker; ?></td>
-										</tr>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_satker_unsent->kd_satker; ?></td>
+											  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_unsent->nm_satker; ?></td>
+											</tr>
 						<?php
+										}
+									}
+								}
+								
+								// transaksi penerimaan unsents
+								if ($transaksi === 'penerimaan') 
+								{
+									
+									if (count($monitor_satker_penerimaan_unsents)) 
+									{
+										$i = 0;
+										foreach ($monitor_satker_penerimaan_unsents as $monitor_satker_unsent) 
+										{
+						?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_satker_unsent->kd_satker; ?></td>
+											  <td style="width: 80%;overflow:hidden;display: inline-block;white-space: nowrap;"><?php echo $monitor_satker_unsent->nm_satker; ?></td>
+											</tr>
+						<?php
+										}
 									}
 								}
 							}
 							else if ( $this->data['id_entities'] === '2' )
 							{
-								
-								if (count($monitor_kppns_unsents)) 
+								// transaksi pengeluaran unsents
+								if ($transaksi === 'pengeluaran') 
 								{
-									$i = 0;
-									foreach ($monitor_kppns_unsents as $monitor_kppn_unsent) 
+									
+									if (count($monitor_kppns_pengeluaran_unsents)) 
+									{
+										$i = 0;
+										foreach ($monitor_kppns_pengeluaran_unsents as $monitor_kppn_unsent) 
+										{
+						?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->kd_kppn . ' - ' . $monitor_kppn_unsent->nm_kppn; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->kd_kementerian; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->jml_lpj; ?></td>
+											</tr>
+						<?php 
+										}
+									}
+									else
 									{
 						?>
-									<tr>
-									  <td><?php echo ++$i; ?></td>
-									  <td><?php echo $monitor_kppn_unsent->kd_kppn . ' - ' . $monitor_kppn_unsent->nm_kppn; ?></td>
-									  <td><?php echo $monitor_kppn_unsent->kd_kementerian; ?></td>
-									  <td><?php echo $monitor_kppn_unsent->jml_lpj; ?></td>
-									</tr>
-						<?php 
+										<tr>
+											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
+										</tr>
+						<?php
 									}
 								}
-								else
+								
+								// penerimaan unsents
+								if ($transaksi === 'penerimaan') 
 								{
+									if (count($monitor_kppns_penerimaan_unsents)) 
+									{
+										$i = 0;
+										foreach ($monitor_kppns_penerimaan_unsents as $monitor_kppn_unsent) 
+										{
+											
 						?>
-									<tr>
-										<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
-									</tr>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->kd_kppn . ' - ' . $monitor_kppn_unsent->nm_kppn; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->kd_kementerian; ?></td>
+											  <td><?php echo $monitor_kppn_unsent->jml_lpj; ?></td>
+											</tr>
+						<?php 
+										}
+									}
+									else
+									{
+						?>
+										<tr>
+											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
+										</tr>
 						<?php
+									}
 								}
 							}
 							else if ( $this->data['id_entities'] === '3' )

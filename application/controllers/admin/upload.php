@@ -52,16 +52,18 @@ class Upload extends Admin_Controller
 			$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 			
 			// fetch all upload
-			$this->data['uploads'] = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
+			 $data_uploads = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
+			 $this->data['pengeluaran_uploads'] = $data_uploads['query_pengeluaran'];
+			 $this->data['penerimaan_uploads'] = $data_uploads['query_penerimaan'];
 			
 			// get sent and unsent pos kirim = K
-			$status_data_k = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'K');
-			$this->data['data_sent_k'] = $status_data_k['query_sent'];
-			$this->data['data_unsent_k'] = $status_data_k['query_unsent'];
+			$status_data_k = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
+			$this->data['data_sent_k'] = $status_data_k['query_pengeluaran_sent'];
+			$this->data['data_unsent_k'] = $status_data_k['query_pengeluaran_unsent'];
 			// get sent and unsent pos kirim = P
-			$status_data_p = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'P');
-			$this->data['data_sent_p'] = $status_data_p['query_sent'];
-			$this->data['data_unsent_p'] = $status_data_p['query_unsent'];
+			$status_data_p = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
+			$this->data['data_sent_p'] = $status_data_p['query_penerimaan_sent'];
+			$this->data['data_unsent_p'] = $status_data_p['query_penerimaan_unsent'];
 			//~ // load m_monitoring
 			//~ $this->load->model('m_monitoring');
 			//~ $this->data['data_sent_k'] = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'K');

@@ -52,7 +52,7 @@ class M_upload extends MY_Model
 	
 	public function get_uploaded($id_ref_kppn, $year, $month)
 	{
-		$query = $this->db->select('ref_satker.id_ref_unit')
+		$query_pengeluaran = $this->db->select('ref_satker.id_ref_unit')
 						  ->select('ref_satker.kd_satker')
 						  ->select('ref_satker.no_karwas')
 						  ->select('dsp_status_kirim_pengeluaran.id_status_kirim_pengeluaran')
@@ -65,15 +65,36 @@ class M_upload extends MY_Model
 						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
 						  ->where('dsp_status_kirim_pengeluaran.tahun', $year)
 						  ->where('dsp_status_kirim_pengeluaran.bulan', $month)
+						  ->where('ref_satker.lpj_status', 1)
 						  ->order_by('dsp_status_kirim_pengeluaran.id_ref_satker')
 						  ->order_by('dsp_status_kirim_pengeluaran.pos_kirim')
 						  ->get();
+	
+		$query_penerimaan = $this->db->select('ref_satker.id_ref_unit')
+						  ->select('ref_satker.kd_satker')
+						  ->select('ref_satker.no_karwas')
+						  ->select('dsp_status_kirim_penerimaan.id_status_kirim_penerimaan')
+						  ->select('dsp_status_kirim_penerimaan.tahun')
+						  ->select('dsp_status_kirim_penerimaan.bulan')
+						  ->select('dsp_status_kirim_penerimaan.timestamp')
+						  ->select('dsp_status_kirim_penerimaan.pos_kirim')
+						  ->from('ref_satker')
+						  ->join('dsp_status_kirim_penerimaan', 'ref_satker.id_ref_satker = dsp_status_kirim_penerimaan.id_ref_satker', 'left')
+						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
+						  ->where('dsp_status_kirim_penerimaan.tahun', $year)
+						  ->where('dsp_status_kirim_penerimaan.bulan', $month)
+						  ->where('ref_satker.lpj_status', 1)
+						  ->order_by('dsp_status_kirim_penerimaan.id_ref_satker')
+						  ->order_by('dsp_status_kirim_penerimaan.pos_kirim')
+						  ->get();
 		
-		if ($query->num_rows() > 0) 
-		{
-			return $query;
-			$query->free_result();
-		}
+		return array(
+			'query_pengeluaran'	=> $query_pengeluaran,
+			'query_penerimaan'	=> $query_penerimaan
+		);
+		
+		$query_pengeluaran->free_result();
+		
 	}
 	
 	public function import_csv($path, $tables)
@@ -95,9 +116,9 @@ class M_upload extends MY_Model
 		return $query;
 	}
 	
-	public function get_status_sent_satker($id_ref_kppn, $year, $month, $pos_kirim)
+	public function get_status_sent_satker($id_ref_kppn, $year, $month)
 	{
-		$query_unsent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
+		$query_pengeluaran_unsent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`,`dsp_status_kirim_pengeluaran`.`pos_kirim`,
 					 count(*) as jml_lpj
 				FROM `ref_satker`
@@ -107,10 +128,11 @@ class M_upload extends MY_Model
 				AND `dsp_status_kirim_pengeluaran`.`tahun` is null
 				AND `dsp_status_kirim_pengeluaran`.`bulan` is null
 				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` is null
+				AND `ref_satker`.`lpj_status` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
 					
-		$query_sent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
+		$query_pengeluaran_sent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`, count(*) as jml_lpj
 				FROM `ref_satker`
 				LEFT JOIN `dsp_status_kirim_pengeluaran` 
@@ -118,16 +140,49 @@ class M_upload extends MY_Model
 				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_pengeluaran`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_pengeluaran`.`bulan` = '".$month."'
-				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` = '".$pos_kirim."'
+				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` = 'K'
+				AND `ref_satker`.`lpj_status` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
 		
-		$query_unsent->num_rows > 0 ? $query_unsent_row = $query_unsent->row() : $query_unsent_row = 0;
-		$query_sent->num_rows > 0 ? $query_sent_row = $query_sent->row() : $query_sent_row = 0;
+		$query_pengeluaran_unsent->num_rows > 0 ? $query_pengeluaran_unsent_row = $query_pengeluaran_unsent->row() : $query_pengeluaran_unsent_row = 0;
+		$query_pengeluaran_sent->num_rows > 0 ? $query_pengeluaran_sent_row = $query_pengeluaran_sent->row() : $query_pengeluaran_sent_row = 0;
+		
+		$query_penerimaan_unsent = $this->db->query("SELECT `dsp_status_kirim_penerimaan`.`tahun`,
+					`dsp_status_kirim_penerimaan`.`bulan`,`dsp_status_kirim_penerimaan`.`pos_kirim`,
+					 count(*) as jml_lpj
+				FROM `ref_satker`
+				LEFT JOIN `dsp_status_kirim_penerimaan` 
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker` 
+				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				AND `dsp_status_kirim_penerimaan`.`tahun` is null
+				AND `dsp_status_kirim_penerimaan`.`bulan` is null
+				AND `dsp_status_kirim_penerimaan`.`pos_kirim` is null
+				AND `ref_satker`.`lpj_status` = 1
+				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
+					`dsp_status_kirim_penerimaan`.`bulan`");
+					
+		$query_penerimaan_sent = $this->db->query("SELECT `dsp_status_kirim_penerimaan`.`tahun`,
+					`dsp_status_kirim_penerimaan`.`bulan`, count(*) as jml_lpj
+				FROM `ref_satker`
+				LEFT JOIN `dsp_status_kirim_penerimaan` 
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker` 
+				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				AND `dsp_status_kirim_penerimaan`.`tahun` = '".$year."'
+				AND `dsp_status_kirim_penerimaan`.`bulan` = '".$month."'
+				AND `dsp_status_kirim_penerimaan`.`pos_kirim` = 'P'
+				AND `ref_satker`.`lpj_status` = 1
+				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
+					`dsp_status_kirim_penerimaan`.`bulan`");
+					
+		$query_penerimaan_unsent->num_rows > 0 ? $query_penerimaan_unsent_row = $query_penerimaan_unsent->row() : $query_penerimaan_unsent_row = 0;
+		$query_penerimaan_sent->num_rows > 0 ? $query_penerimaan_sent_row = $query_penerimaan_sent->row() : $query_penerimaan_sent_row = 0;
 		
 		return array(
-			'query_unsent' => $query_unsent_row,
-			'query_sent' => $query_sent_row,
+			'query_pengeluaran_unsent' => $query_pengeluaran_unsent_row,
+			'query_pengeluaran_sent' => $query_pengeluaran_sent_row,
+			'query_penerimaan_unsent' => $query_penerimaan_unsent_row,
+			'query_penerimaan_sent' => $query_penerimaan_sent_row,
 		);
 		
 	}
