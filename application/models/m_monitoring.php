@@ -52,6 +52,7 @@ class M_monitoring extends MY_Model
 					) a
 					ON ref_satker.id_ref_satker = a.id_ref_satker 
 					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn." 
+					AND ref_satker.lpj_status_pengeluaran = 1
 					GROUP BY a.tahun, a.bulan, a.pos_kirim
 					ORDER BY a.tahun, a.bulan, a.pos_kirim");
 					
@@ -66,6 +67,7 @@ class M_monitoring extends MY_Model
 					) a
 					ON ref_satker.id_ref_satker = a.id_ref_satker 
 					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn." 
+					AND ref_satker.lpj_status_penerimaan = 1
 					GROUP BY a.tahun, a.bulan, a.pos_kirim
 					ORDER BY a.tahun, a.bulan, a.pos_kirim");
 					
@@ -172,6 +174,7 @@ class M_monitoring extends MY_Model
 		$query_pengeluaran = $this->db->query("SELECT ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
 					FROM ref_satker
 					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn."
+					AND ref_satker.lpj_status_pengeluaran = 1
 					AND ref_satker.id_ref_satker ".$status_kirim." IN ( SELECT
 														dsp_status_kirim_pengeluaran.id_ref_satker
 														FROM dsp_status_kirim_pengeluaran
@@ -184,6 +187,7 @@ class M_monitoring extends MY_Model
 		$query_penerimaan = $this->db->query("SELECT ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
 					FROM ref_satker
 					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn."
+					AND ref_satker.lpj_status_penerimaan = 1
 					AND ref_satker.id_ref_satker ".$status_kirim." IN ( SELECT
 														dsp_status_kirim_penerimaan.id_ref_satker
 														FROM dsp_status_kirim_penerimaan
@@ -221,6 +225,7 @@ class M_monitoring extends MY_Model
 							LEFT JOIN ref_kanwil
 							ON ref_kppn.id_ref_kanwil = ref_kanwil.id_ref_kanwil
 			WHERE ref_kanwil.id_ref_kanwil = ".$id_ref_kanwil."
+			AND ref_satker.lpj_status_pengeluaran = 1
 			AND ref_satker.id_ref_satker ".$status_kirim." IN ( 
 												SELECT
 												dsp_status_kirim_pengeluaran.id_ref_satker
@@ -243,6 +248,7 @@ class M_monitoring extends MY_Model
 							LEFT JOIN ref_kanwil
 							ON ref_kppn.id_ref_kanwil = ref_kanwil.id_ref_kanwil
 			WHERE ref_kanwil.id_ref_kanwil = ".$id_ref_kanwil."
+			AND ref_satker.lpj_status_penerimaan = 1
 			AND ref_satker.id_ref_satker ".$status_kirim." IN ( 
 												SELECT
 												dsp_status_kirim_penerimaan.id_ref_satker

@@ -65,7 +65,7 @@ class M_upload extends MY_Model
 						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
 						  ->where('dsp_status_kirim_pengeluaran.tahun', $year)
 						  ->where('dsp_status_kirim_pengeluaran.bulan', $month)
-						  ->where('ref_satker.lpj_status', 1)
+						  ->where('ref_satker.lpj_status_pengeluaran', 1)
 						  ->order_by('dsp_status_kirim_pengeluaran.id_ref_satker')
 						  ->order_by('dsp_status_kirim_pengeluaran.pos_kirim')
 						  ->get();
@@ -83,7 +83,7 @@ class M_upload extends MY_Model
 						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
 						  ->where('dsp_status_kirim_penerimaan.tahun', $year)
 						  ->where('dsp_status_kirim_penerimaan.bulan', $month)
-						  ->where('ref_satker.lpj_status', 1)
+						  ->where('ref_satker.lpj_status_penerimaan', 1)
 						  ->order_by('dsp_status_kirim_penerimaan.id_ref_satker')
 						  ->order_by('dsp_status_kirim_penerimaan.pos_kirim')
 						  ->get();
@@ -128,7 +128,7 @@ class M_upload extends MY_Model
 				AND `dsp_status_kirim_pengeluaran`.`tahun` is null
 				AND `dsp_status_kirim_pengeluaran`.`bulan` is null
 				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` is null
-				AND `ref_satker`.`lpj_status` = 1
+				AND `ref_satker`.`lpj_status_pengeluaran` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
 					
@@ -141,7 +141,7 @@ class M_upload extends MY_Model
 				AND `dsp_status_kirim_pengeluaran`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_pengeluaran`.`bulan` = '".$month."'
 				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` = 'K'
-				AND `ref_satker`.`lpj_status` = 1
+				AND `ref_satker`.`lpj_status_pengeluaran` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
 		
@@ -158,7 +158,7 @@ class M_upload extends MY_Model
 				AND `dsp_status_kirim_penerimaan`.`tahun` is null
 				AND `dsp_status_kirim_penerimaan`.`bulan` is null
 				AND `dsp_status_kirim_penerimaan`.`pos_kirim` is null
-				AND `ref_satker`.`lpj_status` = 1
+				AND `ref_satker`.`lpj_status_penerimaan` = 1
 				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`");
 					
@@ -171,7 +171,7 @@ class M_upload extends MY_Model
 				AND `dsp_status_kirim_penerimaan`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_penerimaan`.`bulan` = '".$month."'
 				AND `dsp_status_kirim_penerimaan`.`pos_kirim` = 'P'
-				AND `ref_satker`.`lpj_status` = 1
+				AND `ref_satker`.`lpj_status_penerimaan` = 1
 				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`");
 					
