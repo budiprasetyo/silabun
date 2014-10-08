@@ -242,10 +242,9 @@
 					</ul>
 				  </li>
 				  <li>
-					<a href="javascript:;">
-					<span class="link-title">
-					&nbsp;
-					</span>
+					<a href="<?php echo base_url(); ?>companies.php/admin/about">
+					  <i class="fa fa-users"></i>
+					  <span class="link-title"> About</span> 
 					</a> 
 				  </li>
 				  <li>
