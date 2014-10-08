@@ -67,9 +67,14 @@ class M_satker extends MY_Model
 						'label'	=> 'Satker Aktif',
 						'rules'	=> 'trim|xss_clean|max_length[3]'
 					),
-					'lpj_status'	=> array(
-						'field'	=> 'lpj_status',
-						'label'	=> 'Status LPJ',
+					'lpj_status_pengeluaran'	=> array(
+						'field'	=> 'lpj_status_pengeluaran',
+						'label'	=> 'Status LPJ Pengeluaran',
+						'rules'	=> 'trim|xss_clean|max_length[3]'
+					),
+					'lpj_status_penerimaan'	=> array(
+						'field'	=> 'lpj_status_penerimaan',
+						'label'	=> 'Status LPJ Penerimaan',
 						'rules'	=> 'trim|xss_clean|max_length[3]'
 					)
 	);
@@ -90,7 +95,8 @@ class M_satker extends MY_Model
 							->select('ref_satker.nm_satker')
 							->select('ref_satker.no_karwas')
 							->select('ref_satker.aktif')
-							->select('ref_satker.lpj_status')
+							->select('ref_satker.lpj_status_pengeluaran')
+							->select('ref_satker.lpj_status_penerimaan')
 							->from('ref_satker')
 							->join('ref_unit', 'ref_satker.id_ref_unit = ref_unit.id_ref_unit', 'left')
 							->join('ref_kementerian', 'ref_unit.id_ref_kementerian = ref_kementerian.id_ref_kementerian', 'left')
@@ -158,7 +164,7 @@ class M_satker extends MY_Model
 		}
 	}
 	
-	public function update_status_satker($id, $aktif = FALSE, $lpj_status = FALSE)
+	public function update_status_satker($id, $aktif = FALSE, $lpj_status_pengeluaran = FALSE, $lpj_status_penerimaan = FALSE)
 	{
 		// get aktif status, this query is used in updating lpj_status too
 		$query_aktif = $this->db->select('aktif')
@@ -186,8 +192,9 @@ class M_satker extends MY_Model
 			else
 			{
 				$data = array(
-					'aktif' 		=> 0,
-					'lpj_status' 	=> 0
+					'aktif' 					=> 0,
+					'lpj_status_pengeluaran' 	=> 0,
+					'lpj_status_penerimaan' 	=> 0,
 				);
 			}
 			
@@ -196,13 +203,13 @@ class M_satker extends MY_Model
 		}
 		
 		// update lpj_status field
-		if ($lpj_status == TRUE) 
+		if ($lpj_status_pengeluaran == TRUE) 
 		{
 			// get lpj_status status
-			$query_lpj_status = $this->db->select('lpj_status')
+			$query_lpj_status = $this->db->select('lpj_status_pengeluaran')
 									->from('ref_satker')
 									->where('id_ref_satker', $id)
-									->group_by('lpj_status')
+									->group_by('lpj_status_pengeluaran')
 									->get();
 			
 			if ($query_lpj_status->num_rows() > 0) 
@@ -211,16 +218,52 @@ class M_satker extends MY_Model
 			}
 			
 			// if non aktif, update lpj_status to 1 (aktif)
-			if ($result_lpj_status->lpj_status === '0') 
+			if ($result_lpj_status->lpj_status_pengeluaran === '0') 
 			{
 				$data = array(
-					'lpj_status' => 1
+					'lpj_status_pengeluaran' => 1
 				);
 			}
 			else
 			{
 				$data = array(
-					'lpj_status' => 0
+					'lpj_status_pengeluaran' => 0
+				);
+			}
+			
+			if ($result_aktif->aktif !== '0')
+			{
+				$this->db->where('id_ref_satker', $id)
+						->update('ref_satker', $data);
+			}
+		}
+		
+		// update lpj_status field
+		if ($lpj_status_penerimaan == TRUE) 
+		{
+			// get lpj_status status
+			$query_lpj_status = $this->db->select('lpj_status_penerimaan')
+									->from('ref_satker')
+									->where('id_ref_satker', $id)
+									->group_by('lpj_status_penerimaan')
+									->get();
+			
+			if ($query_lpj_status->num_rows() > 0) 
+			{
+				$result_lpj_status = $query_lpj_status->row();
+			}
+			
+			// if non aktif, update lpj_status to 1 (aktif)
+			if ($result_lpj_status->lpj_status_penerimaan === '0') 
+			{
+				$data = array(
+					'lpj_status_penerimaan' => 1
+				);
+			}
+			else
+			{
+				$data = array(
+					'lpj_status_penerimaan' => 0
 				);
 			}
 			
@@ -239,14 +282,15 @@ class M_satker extends MY_Model
 		// define and instantiate
 		$satker = new stdClass();
 		
-		$satker->id_ref_unit	= '';
-		$satker->id_ref_kabkota	= '';
-		$satker->id_ref_kppn	= '';
-		$satker->kd_satker		= '';
-		$satker->no_karwas		= '';
-		$satker->nm_satker		= '';
-		$satker->aktif			= '';
-		$satker->lpj_status		= '';
+		$satker->id_ref_unit				= '';
+		$satker->id_ref_kabkota				= '';
+		$satker->id_ref_kppn				= '';
+		$satker->kd_satker					= '';
+		$satker->no_karwas					= '';
+		$satker->nm_satker					= '';
+		$satker->aktif						= '';
+		$satker->lpj_status_pengeluaran		= '';
+		$satker->lpj_status_penerimaan		= '';
 		return $satker;
 	}
 

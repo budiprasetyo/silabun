@@ -184,10 +184,10 @@
 					  </div><!-- /.form-group -->
 					  
 					  <div class="form-group">
-						<label for="text2" class="control-label col-lg-4">Status LPJ</label>
+						<label for="text2" class="control-label col-lg-4">Status LPJ Pengeluaran</label>
 						<div class="col-lg-8">
 						   <?php 
-								switch ($satker->lpj_status) {
+								switch ($satker->lpj_status_pengeluaran) {
 									case '0':
 										$lpj_checked = '';
 									break;
@@ -199,7 +199,27 @@
 								}
 								
 						   ?>
-                           <input name="lpj_status" class="make-switch" type="checkbox" data-off-color="danger" data-off-text="Tidak" data-on-color="primary" data-on-text="Wajib" <?php echo $lpj_checked; ?> />
+                           <input name="lpj_status_pengeluaran" class="make-switch" type="checkbox" data-off-color="danger" data-off-text="Tidak" data-on-color="primary" data-on-text="Wajib" <?php echo $lpj_checked; ?> />
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<label for="text2" class="control-label col-lg-4">Status LPJ Penerimaan</label>
+						<div class="col-lg-8">
+						   <?php 
+								switch ($satker->lpj_status_penerimaan) {
+									case '0':
+										$lpj_checked = '';
+									break;
+									case '1':
+										$lpj_checked = 'checked';
+									default :
+										$lpj_checked = 'checked';
+									break;
+								}
+								
+						   ?>
+                           <input name="lpj_status_penerimaan" class="make-switch" type="checkbox" data-off-color="danger" data-off-text="Tidak" data-on-color="primary" data-on-text="Wajib" <?php echo $lpj_checked; ?> />
 						</div>
 					  </div><!-- /.form-group -->
 					  

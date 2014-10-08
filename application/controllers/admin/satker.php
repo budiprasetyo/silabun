@@ -86,19 +86,22 @@ class Satker extends Admin_Controller
 			if($this->input->post('aktif') == 'on')
 			{
 				$aktif 	= 1;
-				$this->input->post('lpj_status') == 'on' ? $lpj_status 	= 1 : $lpj_status = 0;
+				$this->input->post('lpj_status_pengeluaran') == 'on' ? $lpj_status_pengeluaran 	= 1 : $lpj_status_pengeluaran = 0;
+				$this->input->post('lpj_status_penerimaan') == 'on' ? $lpj_status_penerimaan 	= 1 : $lpj_status_penerimaan = 0;
 			}
 			else
 			{
 				$aktif = 0;
-				$lpj_status = 0;
+				$lpj_status_pengeluaran = 0;
+				$lpj_status_penerimaan = 0;
 			}
 			
 			// populate fields
 			$data = $this->m_satker->array_from_post(array('id_ref_unit','id_ref_kabkota','kd_satker','no_karwas','nm_satker'));
-			$data['id_ref_kppn'] 	= $ref_kppn->id_ref_kppn;
-			$data['aktif'] 			= $aktif;
-			$data['lpj_status'] 	= $lpj_status;
+			$data['id_ref_kppn'] 				= $ref_kppn->id_ref_kppn;
+			$data['aktif'] 						= $aktif;
+			$data['lpj_status_pengeluaran'] 	= $lpj_status_pengeluaran;
+			$data['lpj_status_penerimaan'] 		= $lpj_status_penerimaan;
 			
 			
 			// save data
@@ -115,10 +118,11 @@ class Satker extends Admin_Controller
 		
 	}
 	
-	public function status_satker($id, $aktif = FALSE, $lpj_status = FALSE)
+	public function status_satker($id, $aktif = FALSE, $lpj_status_pengeluaran = FALSE, $lpj_status_penerimaan = FALSE)
 	{
 		$aktif = $this->uri->segment(5);
-		$lpj_status = $this->uri->segment(6);
+		$lpj_status_pengeluaran = $this->uri->segment(6);
+		$lpj_status_penerimaan = $this->uri->segment(7);
 		
 		
 		if ($aktif === 'TRUE') 
@@ -127,10 +131,16 @@ class Satker extends Admin_Controller
 			$this->m_satker->update_status_satker($id, TRUE);
 		}
 		
-		if ($lpj_status === 'TRUE') 
+		if ($lpj_status_pengeluaran === 'TRUE') 
 		{
 			// change data in lpj_status field
 			$this->m_satker->update_status_satker($id, FALSE, TRUE);
+		}
+		
+		if ($lpj_status_penerimaan === 'TRUE') 
+		{
+			// change data in lpj_status field
+			$this->m_satker->update_status_satker($id, FALSE, FALSE, TRUE);
 		}
 		
 		// redirect to satker

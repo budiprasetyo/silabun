@@ -19,9 +19,9 @@
                     </div><!--/toolbar-->
                   </header>
                   <div id="sortableTable" class="body collapse in dataTables_wrapper form-inline">
-					  <!-- add jabatan -->
-					  <?php echo anchor('admin/satker/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Tambah Referensi Satker'); ?>
-					  
+					<!-- add satker -->
+					<?php echo anchor('admin/satker/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Tambah Referensi Satker'); ?><br />
+                    <span class="label label-danger">Apabila Satker non aktif maka otomatis status LPJ menjadi tidak wajib</span><br /><br />
                     <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 						<thead>
 							<tr style="font-size:11px;">
@@ -49,12 +49,21 @@
 							  <td>
 								  <div class="btn-group">
 									<?php 
-										switch ($satker->lpj_status) {
+										switch ($satker->lpj_status_pengeluaran) {
 											case '0':
-												$lpj = btn_mod_warning('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'NON LPJ');
+												$lpj_pengeluaran = btn_mod_warning('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'NON LPJ PENGELUARAN');
 											break;
 											case '1':
-												$lpj = btn_mod_metis2('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'L P J');
+												$lpj_pengeluaran = btn_mod_metis2('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'LPJ PENGELUARAN');
+											break;
+										}
+
+										switch ($satker->lpj_status_penerimaan) {
+											case '0':
+												$lpj_penerimaan = btn_mod_warning('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'NON LPJ PENERIMAAN');
+											break;
+											case '1':
+												$lpj_penerimaan = btn_mod_primary('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'LPJ PENERIMAAN');
 											break;
 										}
 										
@@ -69,7 +78,8 @@
 										
 									?>
 									<?php echo $aktif; ?><br />
-									<?php echo $lpj; ?>
+									<?php echo $lpj_pengeluaran; ?><br />
+									<?php echo $lpj_penerimaan; ?>
 								  </div>
 							  </td>
 							  <td><?php echo $satker->kd_kementerian; ?>
