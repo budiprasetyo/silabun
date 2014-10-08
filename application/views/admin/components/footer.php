@@ -26,6 +26,10 @@
 	<script>
 		$(function(){
 			$('table.display').dataTable();
+			$('table.sortfield').dataTable({
+                "bJQueryUI": true,
+				"aaSorting": [[0,'desc']]
+			});
 		});
 	</script>
 <script src="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.js"></script>
