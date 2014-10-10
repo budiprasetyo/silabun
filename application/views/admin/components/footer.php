@@ -15,6 +15,35 @@
 <script src="<?php echo base_url(); ?>assets/lib/tagsinput/jquery.tagsinput.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/validVal/js/jquery.validVal.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/moment/moment.min.js"></script>
+
+<!-- dashboard -->
+<script src="<?php echo base_url(); ?>assets/lib/jquery.sparkline/jquery.sparkline.min.js"></script>
+
+<script type="text/javascript">
+    $(function() {
+        /** This code runs when everything has been loaded on the page */
+        /* Inline sparklines take their values from the contents of the tag */
+        $('.inlinesparkline').sparkline(); 
+		
+        /* Sparklines can also take their values from the first argument 
+        passed to the sparkline() function */
+        var myvalues = [10,8,5,7,4,4,1];
+        $('.dynamicsparkline').sparkline(myvalues);
+
+        /* The second argument gives options such as chart type */
+        $('.dynamicbar').sparkline('html', {type: 'bar', negBarColor: 'red', height: '40px'} );
+        
+        /* The second argument gives options such as chart type */
+        $('.piechart').sparkline('html', {type: 'pie', sliceColors: ['#dc3912','#3366cc','#ff9900','#109618','#66aa00','#dd4477','#0099c6','#990099 '], height: '40px'} );
+
+        /* Use 'html' instead of an array of values to pass options 
+        to a sparkline with data in the tag */
+        $('.inlinebar').sparkline('html', {type: 'bar', barColor: 'red'} );
+    });
+</script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.selection.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.resize.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/daterangepicker/daterangepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/datepicker/js/bootstrap-datepicker.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
@@ -62,11 +91,6 @@
 		$("#child").chained("#parent");
 	});
 </script>
-<!-- dashboard -->
-<script src="<?php echo base_url(); ?>assets/lib/jquery.sparkline/jquery.sparkline.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.selection.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.resize.js"></script>
 <script>
       $('.list-inline li > a').click(function() {
         var activeForm = $(this).attr('href') + ' > form';

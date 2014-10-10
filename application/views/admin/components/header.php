@@ -20,7 +20,8 @@
 	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/font-awesome/css/font-awesome.css" />
 -->
 	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/main.min.css" />	
-    <!-- Metis Theme stylesheet -->
+    <!-- Metis Theme stylesheet --><!-- Metis Theme stylesheet -->
+    <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/fullcalendar/fullcalendar.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/jquery.uniform/themes/default/css/uniform.default.css">
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.css">
 	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/style.css" />
