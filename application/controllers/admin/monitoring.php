@@ -66,7 +66,7 @@ class Monitoring extends Admin_Controller
 				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
 				
 				// send to view fetch sent and unsent satker count
-				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month']);
+				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
 				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
 				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
 				
@@ -78,8 +78,7 @@ class Monitoring extends Admin_Controller
 				$this->data['monitor_satker_pengeluaran_sents'] = $monitor_satker_sents['query_pengeluaran'];
 				
 			}
-			
-			if ( $transaksi === 'penerimaan' ) 
+			else if ( $transaksi === 'penerimaan' ) 
 			{
 				// table title
 				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Penerimaan Bendahara oleh Satker';
@@ -90,7 +89,7 @@ class Monitoring extends Admin_Controller
 				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
 				
 				// send to view fetch sent and unsent satker count
-				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn,$this->data['year'],$this->data['month']);
+				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
 				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
 				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
 				
@@ -108,6 +107,8 @@ class Monitoring extends Admin_Controller
 		}
 		else if($this->data['id_entities'] === '2')
 		{
+			$this->data['jenis_monitoring'] = $this->input->post('jenis_monitoring');
+			
 			if ($transaksi === 'pengeluaran') 
 			{
 				
@@ -117,15 +118,31 @@ class Monitoring extends Admin_Controller
 				$this->load->model('m_referensi');
 				// get id_ref_kanwil
 				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-				// send to view fetch unsent satker 
-				$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
-				$this->data['monitor_kppns_pengeluaran_unsents'] = $monitor_kppns_unsents['query_pengeluaran'];
-				// send to view fetch sent satker
-				$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
-				$this->data['monitor_kppns_pengeluaran_sents'] = $monitor_kppns_sents['query_pengeluaran'];
+				$count_satker = $this->m_monitoring->get_count_data_satker(NULL, $kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
+				// count satker lpj sent or not sent
+				$this->data['monitor_satkers_k'] = $count_satker['query_pengeluaran'];
+				
+				// jenis monitoring option
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+					// send to view fetch unsent satker 
+					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+					$this->data['monitor_kppns_pengeluaran_unsents'] = $monitor_kppns_unsents['query_pengeluaran'];
+					// send to view fetch sent satker
+					$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
+					$this->data['monitor_kppns_pengeluaran_sents'] = $monitor_kppns_sents['query_pengeluaran'];
+				}
+				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) 
+				{
+					// send to view fetch unsent satker 
+					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
+					$this->data['monitor_satkers_pengeluaran_unsents'] = $monitor_satkers_unsents['query_pengeluaran_satker'];
+					// send to view fetch sent satker
+					$monitor_satkers_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE, TRUE);
+					$this->data['monitor_satkers_pengeluaran_sents'] = $monitor_satkers_sents['query_pengeluaran_satker'];
+				}
+				
 			}
-			
-			if ($transaksi === 'penerimaan') 
+			else if ($transaksi === 'penerimaan') 
 			{
 				
 				// table title
@@ -134,12 +151,28 @@ class Monitoring extends Admin_Controller
 				$this->load->model('m_referensi');
 				// get id_ref_kanwil
 				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-				// send to view fetch unsent satker 
-				$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
-				$this->data['monitor_kppns_penerimaan_unsents'] = $monitor_kppns_unsents['query_penerimaan'];
-				// send to view fetch sent satker
-				$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
-				$this->data['monitor_kppns_penerimaan_sents'] = $monitor_kppns_sents['query_penerimaan'];
+				$count_satker = $this->m_monitoring->get_count_data_satker(NULL, $kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
+				// count satker lpj sent or not sent
+				$this->data['monitor_satkers_p'] = $count_satker['query_penerimaan'];
+				
+				// jenis monitoring option
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+					// send to view fetch unsent satker 
+					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+					$this->data['monitor_kppns_penerimaan_unsents'] = $monitor_kppns_unsents['query_penerimaan'];
+					// send to view fetch sent satker
+					$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
+					$this->data['monitor_kppns_penerimaan_sents'] = $monitor_kppns_sents['query_penerimaan'];
+				}
+				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) 
+				{
+					// send to view fetch unsent satker 
+					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
+					$this->data['monitor_satkers_penerimaan_unsents'] = $monitor_satkers_unsents['query_penerimaan_satker'];
+					// send to view fetch sent satker
+					$monitor_satkers_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE, TRUE);
+					$this->data['monitor_satkers_penerimaan_sents'] = $monitor_satkers_sents['query_penerimaan_satker'];
+				}
 			}
 			
 			// path to page folder view
