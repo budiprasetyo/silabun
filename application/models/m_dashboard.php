@@ -29,11 +29,11 @@ class M_dashboard extends MY_Model
 
 	public function get_kanwil_rekap()
 	{
-		$query = $this->db->select('dsp_report_rekap_lpjk.tahun')
+		$rekap_pengeluaran = $this->db->select('dsp_report_rekap_lpjk.tahun')
 							->select('dsp_report_rekap_lpjk.bulan')
-							->select('ref_kppn.id_ref_kanwil')
-							->select('ref_kanwil.kd_kanwil')
-							->select('ref_kanwil.nm_kanwil')
+							->select('dsp_report_rekap_lpjk.id_ref_kanwil')
+							->select('dsp_report_rekap_lpjk.kd_kanwil')
+							->select('dsp_report_rekap_lpjk.nm_kanwil')
 							->select('count(*) AS jml_lpj')
 							->select_sum('dsp_report_rekap_lpjk.uang_persediaan')
 							->select_sum('dsp_report_rekap_lpjk.ls_bendahara')
@@ -41,22 +41,43 @@ class M_dashboard extends MY_Model
 							->select_sum('dsp_report_rekap_lpjk.pengeluaran_lain')
 							->select_sum('dsp_report_rekap_lpjk.saldo')
 							->select_sum('dsp_report_rekap_lpjk.kuitansi')
-							->from('ref_kppn')
-							->join('dsp_report_rekap_lpjk', 'dsp_report_rekap_lpjk.id_ref_kppn = ref_kppn.id_ref_kppn', 'left')
-							->join('ref_kanwil', 'ref_kanwil.id_ref_kanwil = ref_kppn.id_ref_kanwil', 'left')
+							->from('dsp_report_rekap_lpjk')
 							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker', 'left')
+							->where('ref_satker.lpj_status_pengeluaran', 1)
 							->group_by('dsp_report_rekap_lpjk.tahun')
 							->group_by('dsp_report_rekap_lpjk.bulan')
-							->group_by('ref_kppn.id_ref_kanwil')
-							->group_by('ref_kanwil.kd_kanwil')
-							->group_by('ref_kanwil.nm_kanwil')
+							->group_by('dsp_report_rekap_lpjk.id_ref_kanwil')
+							->group_by('dsp_report_rekap_lpjk.kd_kanwil')
+							->group_by('dsp_report_rekap_lpjk.nm_kanwil')
 							->get();
 							
-		if ($query->num_rows > 0) 
-		{
-			return $query;
-			$query->free_result();
-		}
+		$rekap_penerimaan = $this->db->select('dsp_report_rekap_lpjt.tahun')
+							->select('dsp_report_rekap_lpjt.bulan')
+							->select('dsp_report_rekap_lpjt.id_ref_kanwil')
+							->select('dsp_report_rekap_lpjt.kd_kanwil')
+							->select('dsp_report_rekap_lpjt.nm_kanwil')
+							->select('count(*) AS jml_lpj')
+							->select_sum('dsp_report_rekap_lpjt.kas_tunai')
+							->select_sum('dsp_report_rekap_lpjt.kas_bank')
+							->select_sum('dsp_report_rekap_lpjt.saldo_awal')
+							->select_sum('dsp_report_rekap_lpjt.penerimaan')
+							->select_sum('dsp_report_rekap_lpjt.penyetoran')
+							->from('dsp_report_rekap_lpjt')
+							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjt.id_ref_satker', 'left')
+							->where('ref_satker.lpj_status_penerimaan', 1)
+							->group_by('dsp_report_rekap_lpjt.tahun')
+							->group_by('dsp_report_rekap_lpjt.bulan')
+							->group_by('dsp_report_rekap_lpjt.id_ref_kanwil')
+							->group_by('dsp_report_rekap_lpjt.kd_kanwil')
+							->group_by('dsp_report_rekap_lpjt.nm_kanwil')
+							->get();
+		
+							
+		
+			return array(
+				'rekap_pengeluaran' => $rekap_pengeluaran,
+				'rekap_penerimaan' => $rekap_penerimaan
+			);
 	}
 
 }

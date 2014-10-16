@@ -56,8 +56,10 @@ class Dashboard extends Admin_Controller
 		{
 			// get kanwil rekap
 			$kanwils = $this->m_dashboard->get_kanwil_rekap();
+			$rekap_pengeluarans = $kanwils['rekap_pengeluaran'];
+			$rekap_penerimaans = $kanwils['rekap_penerimaan'];
 			
-			
+			// rekap pengeluaran
 			$this->data['jml_lpj'] = 0;
 			$this->data['jml_uang_persediaan'] = 0;
 			$this->data['jml_ls_bendahara'] = 0;
@@ -67,7 +69,7 @@ class Dashboard extends Admin_Controller
 			$this->data['jml_kuitansi'] = 0;
 			$grouped = array();
 			
-			foreach ( $kanwils->result_array() as $kanwil ) 
+			foreach ( $rekap_pengeluarans->result_array() as $kanwil ) 
 			{
 				if ( !isset($grouped[$kanwil['tahun']]) ) 
 				{
@@ -87,6 +89,38 @@ class Dashboard extends Admin_Controller
 			}
 			
 			$this->data['grouped'] = $grouped;
+			// end of rekap pengeluaran
+			
+			// rekap penerimaan
+			$this->data['jml_lpj_penerimaan'] = 0;
+			$this->data['jml_kas_tunai'] = 0;
+			$this->data['jml_kas_bank'] = 0;
+			$this->data['jml_saldo_awal'] = 0;
+			$this->data['jml_penerimaan'] = 0;
+			$this->data['jml_penyetoran'] = 0;
+			$grouped_penerimaan = array();
+			
+			foreach ( $rekap_penerimaans->result_array() as $rekap_penerimaan ) 
+			{
+				if ( !isset($grouped_penerimaan[$rekap_penerimaan['tahun']]) ) 
+				{
+					$grouped_penerimaan[$rekap_penerimaan['tahun']] = array();
+				}
+				
+				$grouped_penerimaan[$rekap_penerimaan['tahun']][$rekap_penerimaan['bulan']][] = $rekap_penerimaan;
+				$this->data['jml_lpj_penerimaan'] += $rekap_penerimaan['jml_lpj'];
+				$this->data['jml_kas_tunai'] 	+= $rekap_penerimaan['kas_tunai'];
+				$this->data['jml_kas_bank'] 	+= $rekap_penerimaan['kas_bank'];
+				$this->data['jml_saldo_awal'] 	+= $rekap_penerimaan['saldo_awal'];
+				$this->data['jml_penerimaan'] 	+= $rekap_penerimaan['penerimaan'];
+				$this->data['jml_penyetoran'] 	+= $rekap_penerimaan['penyetoran'];
+				
+				$this->data['jml_saldo_kas_penerimaan'] = $this->data['jml_kas_tunai'] + $this->data['jml_kas_bank']; 
+				$this->data['jml_saldo_penyetoran_penerimaan'] = $this->data['jml_saldo_awal'] + $this->data['jml_penerimaan'] - $this->data['jml_penyetoran']; 
+			}
+			
+			$this->data['grouped_penerimaan'] = $grouped_penerimaan;
+			// end of rekap penerimaan
 		}
 		
 		$this->data['subview'] = 'admin/dashboard/index';
