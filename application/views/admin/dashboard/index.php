@@ -16,7 +16,6 @@
 				<thead>
 					<tr>
 						<th rowspan="2">Tahun</th>
-						<th rowspan="2">Bulan</th>
 						<th rowspan="2">Kanwil</th>
 						<th rowspan="2">Jml<br />LPJ</th>
 						<th colspan="5">Saldo Kas Menurut Buku Pembantu (BP)</th>
@@ -53,7 +52,7 @@
 						{
 				?>
 					<tr style="font-weight: bold;">
-						<td colspan="12"><?php echo $tahun; ?></td>
+						<td colspan="11"><?php echo $tahun; ?></td>
 					</tr>
 				<?php 
 							foreach ($groups as $bulan => $results) 
@@ -61,7 +60,7 @@
 				?>
 							<tr class="bg-light" style="font-weight: bold;">
 								<td></td>
-								<td colspan="11"><?php echo strtoupper(get_month_name($bulan)); ?></td>
+								<td colspan="10"><?php echo strtoupper(get_month_name($bulan)); ?></td>
 							</tr>
 				<?php
 								$jml_lpj_perbulan = 0;
@@ -91,7 +90,6 @@
 				?>
 								<tr>
 									<td></td>
-									<td></td>
 									<td style="white-space:normal;"><?php echo '(' . $kanwil['kd_kanwil'] . ') ' . $kanwil['nm_kanwil']; ?></td>
 									<td align="right"><?php echo amount_format($kanwil['jml_lpj']); ?></td>
 									<td align="right"><?php echo amount_format($kanwil['uang_persediaan']); ?></td>
@@ -108,7 +106,7 @@
 				?>
 								<tr style="font-weight: bold; font-style: italic;">
 									<td></td>
-									<td colspan="2"><?php echo 'JUMLAH BULAN ' . strtoupper(get_month_name($bulan)); ?></td>
+									<td><?php echo 'JUMLAH BULAN ' . strtoupper(get_month_name($bulan)); ?></td>
 									<td align="right"><?php echo amount_format($jml_lpj_perbulan); ?></td>
 									<td align="right"><?php echo amount_format($jml_uang_persediaan_perbulan); ?></td>
 									<td align="right"><?php echo amount_format($jml_ls_bendahara_perbulan); ?></td>
@@ -125,7 +123,7 @@
 					}
 				?>
 					<tr  class="bg-light" style="font-weight: bold;">
-						<td colspan="3" align="center">JUMLAH TOTAL</td>
+						<td colspan="2" align="center">JUMLAH TOTAL</td>
 						<td align="right"><?php echo amount_format($jml_lpj); ?></td>
 						<td align="right"><?php echo amount_format($jml_uang_persediaan); ?></td>
 						<td align="right"><?php echo amount_format($jml_ls_bendahara); ?></td>
