@@ -3,7 +3,7 @@
 		<div class="col-lg-12">
 			<h3>Aplikasi Silabun Online</h3>
 				<blockquote>
-					<p>Sistem Laporan Bendahara Umum Negara Versi 1.0.0</p>
+					<p>Sistem Laporan Bendahara Umum Negara</p>
 				</blockquote>
 			  <h4>Table of contents</h4>
               <ul>
