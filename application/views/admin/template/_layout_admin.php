@@ -114,7 +114,7 @@
 				  <li class="nav-header">Menu</li>
 				  <li class="nav-divider"></li>
 				  <li class="">
-					<a href="">
+					<a href="<?php echo base_url(); ?>companies.php/admin/dashboard/home">
 					  <i class="fa fa-dashboard"></i><span class="link-title"> Dashboard</span> 
 					</a> 
 				  </li>
