@@ -2,6 +2,7 @@
 <div class="row">
   <div class="col-lg-12">
 	<div class="box">
+	<?php if($id_entities === '3') { ?>
 	  <header>
 		<div class="icons">
 		  <i class="fa fa-table"></i>
@@ -11,7 +12,7 @@
       <div id="collapse4" class="body">
 		
 		<?php if (count($grouped)) { ?>
-			<table class="table table-bordered table-condensed table-hover" style="font-size:11px;">
+			<table class="table table-bordered table-condensed table-hover" style="font-size:10px;">
 				<thead>
 					<tr>
 						<th rowspan="2">Tahun</th>
@@ -142,6 +143,7 @@
 		<?php } ?>
 		
 	  </div><!--/collapse4-->
+	  <?php } ?>
 	</div><!--/box-->
   </div><!--/col-lg-12-->
 </div><!-- /.row -->
