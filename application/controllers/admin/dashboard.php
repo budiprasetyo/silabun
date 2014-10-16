@@ -47,6 +47,48 @@ class Dashboard extends Admin_Controller
 
 	public function home()
 	{	
+		$this->load->model('m_dashboard');
+		$this->load->helper('datetime');
+		$this->load->helper('amountformat');
+		
+		// if pkn
+		if($this->data['id_entities'] === '3')
+		{
+			// get kanwil rekap
+			$kanwils = $this->m_dashboard->get_kanwil_rekap();
+			
+			
+			$this->data['jml_lpj'] = 0;
+			$this->data['jml_uang_persediaan'] = 0;
+			$this->data['jml_ls_bendahara'] = 0;
+			$this->data['jml_pajak'] = 0;
+			$this->data['jml_pengeluaran_lain'] = 0;
+			$this->data['jml_saldo'] = 0;
+			$this->data['jml_kuitansi'] = 0;
+			$grouped = array();
+			
+			foreach ( $kanwils->result_array() as $kanwil ) 
+			{
+				if ( !isset($grouped[$kanwil['tahun']]) ) 
+				{
+					$grouped[$kanwil['tahun']] = array();
+				}
+				
+				$grouped[$kanwil['tahun']][$kanwil['bulan']][] = $kanwil;
+				$this->data['jml_lpj'] 				+= $kanwil['jml_lpj'];
+				$this->data['jml_uang_persediaan'] 	+= $kanwil['uang_persediaan'];
+				$this->data['jml_ls_bendahara'] 	+= $kanwil['ls_bendahara'];
+				$this->data['jml_pajak'] 			+= $kanwil['pajak'];
+				$this->data['jml_pengeluaran_lain'] += $kanwil['pengeluaran_lain'];
+				$this->data['jml_saldo']	 		+= $kanwil['saldo'];
+				$this->data['jml_kuitansi'] 		+= $kanwil['kuitansi'];
+				
+				$this->data['jml_saldo_kas']		= $this->data['jml_uang_persediaan'] + $this->data['jml_ls_bendahara'] + $this->data['jml_pajak'] + $this->data['jml_pengeluaran_lain'];$this->data['jml_saldo_up']			= $this->data['jml_saldo'] + $this->data['jml_kuitansi'];
+			}
+			
+			$this->data['grouped'] = $grouped;
+		}
+		
 		$this->data['subview'] = 'admin/dashboard/index';
 		$this->load->view('admin/template/_layout_admin', $this->data);
 	}
