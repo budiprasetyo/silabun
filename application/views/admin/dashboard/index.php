@@ -1,9 +1,12 @@
  <!--Begin Datatables-->
 <div class="row">
-
+  
+  <!-- Pengeluaran -->
   <div class="col-lg-12">
   
 	<div class="box">
+	<!-- if pkn -->
+	<?php if($id_entities === '3') { ?>
 	  <header>
 		  <div class="form-group">
 				<label for="text3" class="control-label col-lg-12 bg-red"><h4>Dashboard LPJ Pengeluaran</h4></label>
@@ -581,14 +584,9 @@
 		
 	  </ul>
 	</div><!--/text-center -->
-  </div><!--/col-lg-12 -->
-  
-  
-  
-  <div class="col-lg-12">
-  <!-- Pengeluaran -->
+	
+	
 	<div class="box">
-	<?php if($id_entities === '3') { ?>
 	  <header>
 		<div class="icons">
 		  <i class="fa fa-table"></i>
@@ -740,6 +738,530 @@
 	  </header>
 	</div><!--/box -->
 	
+	<div class="text-center">
+	  <ul class="stats_box">
+		
+		<!-- kas tunai -->
+		<li>
+			<div class="inlinesparkline sparkline bar_week">
+			<?php 
+			if (count($grouped_penerimaan)) 
+			{
+				foreach ( $grouped_penerimaan as $tahun => $groups ) 
+				{
+					if($tahun !== '')
+					{
+						foreach ($groups as $bulan => $results) 
+						{
+							
+							$jml_kas_tunai_chart_perbulan = 0;
+							foreach ($results as $chart) 
+							{
+								$jml_kas_tunai_chart_perbulan += $chart['kas_tunai'];
+							}
+							// data up every month
+							echo $jml_kas_tunai_chart_perbulan . ', ';
+						}
+					}
+				}
+			}
+			?>
+			</div>
+		  <div class="stat_text">
+			<strong>Rp <?php echo amount_format($jml_kas_tunai); ?></strong> Saldo <br />Kas Tunai
+				<?php 
+					if (count($grouped_penerimaan)) 
+					{
+						foreach ( $grouped_penerimaan as $tahun => $groups ) 
+						{
+							if($tahun !== '')
+							{
+								
+								$i = 0;
+								$len = count($groups);
+								foreach ($groups as $bulan => $results) 
+								{
+									$jml_kas_tunai_chart_perbulan = 0;
+									foreach ($results as $chart) 
+									{
+										$jml_kas_tunai_chart_perbulan += $chart['kas_tunai'];
+									}
+									
+									// get last data in array and last data -1
+									if ($i === $len - 2) 
+									{
+										$before_last_kas_tunai = $jml_kas_tunai_chart_perbulan;
+									}
+									else if ($i === $len - 1) 
+									{
+										$last_kas_tunai = $jml_kas_tunai_chart_perbulan;
+										// calculation for getting percentation
+										$percent_kas_tunai = (($last_kas_tunai - $before_last_kas_tunai) / $before_last_kas_tunai) * 100;
+										if ($percent_kas_tunai > 0) {
+				?>
+											<span class="percent up"> 
+											<br />
+											<i class="fa fa-caret-up"></i> 
+				<?php
+											echo round($percent_kas_tunai, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_kas_tunai < 0){
+				?>
+											<span class="percent down"> 
+											<br />
+											<i class="fa fa-caret-down"></i> 
+				<?php
+												echo round($percent_kas_tunai, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_kas_tunai === 0){
+				?>
+											<span class="percent"> 
+											<br />
+				<?php
+												echo round($percent_kas_tunai, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										
+									}
+										
+									$i++;
+								}
+							}
+						}
+					}
+				?>
+		  </div>
+		</li>
+		
+		
+		<!-- kas bank -->
+		<li>
+			<div class="inlinesparkline sparkline bar_week">
+			<?php 
+			if (count($grouped_penerimaan)) 
+			{
+				foreach ( $grouped_penerimaan as $tahun => $groups ) 
+				{
+					if($tahun !== '')
+					{
+						foreach ($groups as $bulan => $results) 
+						{
+							
+							$jml_kas_bank_chart_perbulan = 0;
+							foreach ($results as $chart) 
+							{
+								$jml_kas_bank_chart_perbulan += $chart['kas_bank'];
+							}
+							// data up every month
+							echo $jml_kas_bank_chart_perbulan . ', ';
+						}
+					}
+				}
+			}
+			?>
+			</div>
+		  <div class="stat_text">
+			<strong>Rp <?php echo amount_format($jml_kas_bank); ?></strong> Saldo <br />Kas Bank
+				<?php 
+					if (count($grouped_penerimaan)) 
+					{
+						foreach ( $grouped_penerimaan as $tahun => $groups ) 
+						{
+							if($tahun !== '')
+							{
+								
+								$i = 0;
+								$len = count($groups);
+								foreach ($groups as $bulan => $results) 
+								{
+									$jml_kas_bank_chart_perbulan = 0;
+									foreach ($results as $chart) 
+									{
+										$jml_kas_bank_chart_perbulan += $chart['kas_bank'];
+									}
+									
+									// get last data in array and last data -1
+									if ($i === $len - 2) 
+									{
+										$before_last_kas_bank = $jml_kas_bank_chart_perbulan;
+									}
+									else if ($i === $len - 1) 
+									{
+										$last_kas_bank = $jml_kas_bank_chart_perbulan;
+										// calculation for getting percentation
+										$percent_kas_bank = (($last_kas_bank - $before_last_kas_bank) / $before_last_kas_bank) * 100;
+										if ($percent_kas_bank > 0) {
+				?>
+											<span class="percent up"> 
+											<br />
+											<i class="fa fa-caret-up"></i> 
+				<?php
+											echo round($percent_kas_bank, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_kas_bank < 0){
+				?>
+											<span class="percent down"> 
+											<br />
+											<i class="fa fa-caret-down"></i> 
+				<?php
+												echo round($percent_kas_bank, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_kas_bank === 0){
+				?>
+											<span class="percent"> 
+											<br />
+				<?php
+												echo round($percent_kas_bank, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										
+									}
+										
+									$i++;
+								}
+							}
+						}
+					}
+				?>
+		  </div>
+		</li>
+		
+		<!-- saldo awal -->
+		<li>
+			<div class="inlinesparkline sparkline bar_week">
+			<?php 
+			if (count($grouped_penerimaan)) 
+			{
+				foreach ( $grouped_penerimaan as $tahun => $groups ) 
+				{
+					if($tahun !== '')
+					{
+						foreach ($groups as $bulan => $results) 
+						{
+							
+							$jml_saldo_awal_chart_perbulan = 0;
+							foreach ($results as $chart) 
+							{
+								$jml_saldo_awal_chart_perbulan += $chart['saldo_awal'];
+							}
+							// data up every month
+							echo $jml_saldo_awal_chart_perbulan . ', ';
+						}
+					}
+				}
+			}
+			?>
+			</div>
+		  <div class="stat_text">
+			<strong>Rp <?php echo amount_format($jml_saldo_awal); ?></strong> Saldo Awal<br />Penerimaan
+				<?php 
+					if (count($grouped_penerimaan)) 
+					{
+						foreach ( $grouped_penerimaan as $tahun => $groups ) 
+						{
+							if($tahun !== '')
+							{
+								
+								$i = 0;
+								$len = count($groups);
+								foreach ($groups as $bulan => $results) 
+								{
+									$jml_saldo_awal_chart_perbulan = 0;
+									foreach ($results as $chart) 
+									{
+										$jml_saldo_awal_chart_perbulan += $chart['saldo_awal'];
+									}
+									
+									// get last data in array and last data -1
+									if ($i === $len - 2) 
+									{
+										$before_last_saldo_awal = $jml_saldo_awal_chart_perbulan;
+									}
+									else if ($i === $len - 1) 
+									{
+										$last_saldo_awal = $jml_saldo_awal_chart_perbulan;
+										// calculation for getting percentation
+										$percent_saldo_awal = (($last_saldo_awal - $before_last_saldo_awal) / $before_last_saldo_awal) * 100;
+										if ($percent_saldo_awal > 0) {
+				?>
+											<span class="percent up"> 
+											<br />
+											<i class="fa fa-caret-up"></i> 
+				<?php
+											echo round($percent_saldo_awal, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_saldo_awal < 0){
+				?>
+											<span class="percent down"> 
+											<br />
+											<i class="fa fa-caret-down"></i> 
+				<?php
+												echo round($percent_saldo_awal, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_saldo_awal === 0){
+				?>
+											<span class="percent"> 
+											<br />
+				<?php
+												echo round($percent_saldo_awal, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										
+									}
+										
+									$i++;
+								}
+							}
+						}
+					}
+				?>
+		  </div>
+		</li>
+		
+		
+		<!-- penerimaan -->
+		<li>
+			<div class="inlinesparkline sparkline bar_week">
+			<?php 
+			if (count($grouped_penerimaan)) 
+			{
+				foreach ( $grouped_penerimaan as $tahun => $groups ) 
+				{
+					if($tahun !== '')
+					{
+						foreach ($groups as $bulan => $results) 
+						{
+							
+							$jml_penerimaan_chart_perbulan = 0;
+							foreach ($results as $chart) 
+							{
+								$jml_penerimaan_chart_perbulan += $chart['penerimaan'];
+							}
+							// data up every month
+							echo $jml_penerimaan_chart_perbulan . ', ';
+						}
+					}
+				}
+			}
+			?>
+			</div>
+		  <div class="stat_text">
+			<strong>Rp <?php echo amount_format($jml_penerimaan); ?></strong> Penerimaan
+				<?php 
+					if (count($grouped_penerimaan)) 
+					{
+						foreach ( $grouped_penerimaan as $tahun => $groups ) 
+						{
+							if($tahun !== '')
+							{
+								
+								$i = 0;
+								$len = count($groups);
+								foreach ($groups as $bulan => $results) 
+								{
+									$jml_penerimaan_chart_perbulan = 0;
+									foreach ($results as $chart) 
+									{
+										$jml_penerimaan_chart_perbulan += $chart['penerimaan'];
+									}
+									
+									// get last data in array and last data -1
+									if ($i === $len - 2) 
+									{
+										$before_last_penerimaan = $jml_penerimaan_chart_perbulan;
+									}
+									else if ($i === $len - 1) 
+									{
+										$last_penerimaan = $jml_penerimaan_chart_perbulan;
+										// calculation for getting percentation
+										$percent_penerimaan = (($last_penerimaan - $before_last_penerimaan) / $before_last_penerimaan) * 100;
+										if ($percent_penerimaan > 0) {
+				?>
+											<span class="percent up"> 
+											<br />
+											<i class="fa fa-caret-up"></i> 
+				<?php
+											echo round($percent_penerimaan, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_penerimaan < 0){
+				?>
+											<span class="percent down"> 
+											<br />
+											<i class="fa fa-caret-down"></i> 
+				<?php
+												echo round($percent_penerimaan, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_penerimaan === 0){
+				?>
+											<span class="percent"> 
+											<br />
+				<?php
+												echo round($percent_penerimaan, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										
+									}
+										
+									$i++;
+								}
+							}
+						}
+					}
+				?>
+		  </div>
+		</li>
+		
+		
+		<!-- penyetoran -->
+		<li>
+			<div class="inlinesparkline sparkline bar_week">
+			<?php 
+			if (count($grouped_penerimaan)) 
+			{
+				foreach ( $grouped_penerimaan as $tahun => $groups ) 
+				{
+					if($tahun !== '')
+					{
+						foreach ($groups as $bulan => $results) 
+						{
+							
+							$jml_penyetoran_chart_perbulan = 0;
+							foreach ($results as $chart) 
+							{
+								$jml_penyetoran_chart_perbulan += $chart['penyetoran'];
+							}
+							// data up every month
+							echo $jml_penyetoran_chart_perbulan . ', ';
+						}
+					}
+				}
+			}
+			?>
+			</div>
+		  <div class="stat_text">
+			<strong>Rp <?php echo amount_format($jml_penyetoran); ?></strong> Penyetoran
+				<?php 
+					if (count($grouped_penerimaan)) 
+					{
+						foreach ( $grouped_penerimaan as $tahun => $groups ) 
+						{
+							if($tahun !== '')
+							{
+								
+								$i = 0;
+								$len = count($groups);
+								foreach ($groups as $bulan => $results) 
+								{
+									$jml_penyetoran_chart_perbulan = 0;
+									foreach ($results as $chart) 
+									{
+										$jml_penyetoran_chart_perbulan += $chart['penyetoran'];
+									}
+									
+									// get last data in array and last data -1
+									if ($i === $len - 2) 
+									{
+										$before_last_penyetoran = $jml_penyetoran_chart_perbulan;
+									}
+									else if ($i === $len - 1) 
+									{
+										$last_penyetoran = $jml_penyetoran_chart_perbulan;
+										// calculation for getting percentation
+										$percent_penyetoran = (($last_penyetoran - $before_last_penyetoran) / $before_last_penyetoran) * 100;
+										if ($percent_penyetoran > 0) {
+				?>
+											<span class="percent up"> 
+											<br />
+											<i class="fa fa-caret-up"></i> 
+				<?php
+											echo round($percent_penyetoran, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_penyetoran < 0){
+				?>
+											<span class="percent down"> 
+											<br />
+											<i class="fa fa-caret-down"></i> 
+				<?php
+												echo round($percent_penyetoran, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										else if ($percent_penyetoran === 0){
+				?>
+											<span class="percent"> 
+											<br />
+				<?php
+												echo round($percent_penyetoran, 2);
+				?>
+											%
+											</span> 
+				<?php
+										}
+										
+									}
+										
+									$i++;
+								}
+							}
+						}
+					}
+				?>
+		  </div>
+		</li>
+		
+	  </ul>
+	</div><!--/text-center -->
+  
 	<div class="box">
 	  <header>
 		<div class="icons">
