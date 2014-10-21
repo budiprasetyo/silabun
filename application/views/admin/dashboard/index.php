@@ -93,7 +93,7 @@
 											</span> 
 				<?php
 										}
-										else if ($percent_kppn_up > 0){
+										else if ($percent_kppn_up < 0){
 				?>
 											<span class="percent down"> 
 											<br />
