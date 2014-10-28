@@ -13,12 +13,7 @@
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/font-awesome/css/font-awesome.min.css">
-<!--
-	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>vendor/bootstrap/dist/css/bootstrap.css" />
--->
-<!--
-	<link rel="stylesheet" type="text/css" media="screen" href="<?php echo base_url(); ?>vendor/font-awesome/css/font-awesome.css" />
--->
+
 	<link rel="stylesheet" type="text/css"  href="<?php echo base_url(); ?>assets/css/main.min.css" />	
     <!-- Metis Theme stylesheet --><!-- Metis Theme stylesheet -->
     <link rel="stylesheet" href="<?php echo base_url(); ?>assets/lib/fullcalendar/fullcalendar.css">
