@@ -145,23 +145,148 @@
 									{
 										//~ echo count($filenames);
 										$file_k = $csvdatas->parse_file($filenames);
-										//~ var_dump($file_k);
+										
+										if ($file_k !== false) 
+										{
+											$count_pengeluaran = count($file_k) + 1;
+											?>
+											
+											<header><h4>Jumlah data pengeluaran <span class="label label-danger"><?php echo $count_pengeluaran; ?></span> records</h4></header>
+											<br />
+											
+											<!--
+											<table class="table table-bordered">
+												<tr><th>Detail Data LPJ Pengeluaran</th></tr>
+											
+											<?php
+											/*
+											for ($i = 0; $i <= $count_pengeluaran; $i++) 
+											{
+												$j = 0;
+												foreach ($file_k[$i] as $data) 
+												{
+													?>
+														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
+													<?php
+													$j++;
+												}
+											}
+											*/
+											?>
+											</table>
+											<br />
+											-->
+											<?php
+										}
 									}
-									if (substr(basename($filenames),0,5) === 'REF_K') 
+									else if (substr(basename($filenames),0,5) === 'REF_K') 
 									{
 										$files = $csvdatas->parse_file($filenames);
-										//~ var_dump($files);
+
+										if ($files !== false) 
+										{
+											$count_rek_pengeluaran = count($files) + 1;
+											?>
+											
+											<header><h4>Jumlah data rekening pengeluaran <span class="label label-danger"><?php echo $count_rek_pengeluaran; ?></span> records</h4></header>
+											<br />
+											<!--
+											<table class="table table-bordered">
+												<tr><th>Detail Data Rekening LPJ Pengeluaran</th></tr>
+											
+											<?php
+											/*
+											for ($i = 0; $i <= $count_rek_pengeluaran; $i++) 
+											{
+												$j = 0;
+												foreach ($files[$i] as $data) 
+												{
+													?>
+														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
+													<?php
+													$j++;
+												}
+											}
+											*/
+											?>
+											</table>
+											<br />
+											-->
+											<?php
+										}
 									}
-									if( substr(basename($filenames),0,1) === 'T' )
+									else if( substr(basename($filenames),0,1) === 'T' )
 									{
 										//~ echo count($filenames);
 										$file_t = $csvdatas->parse_file($filenames);
-										var_dump($file_t);
+										
+										if ($file_t !== false) 
+										{
+											$count_penerimaan = count($file_t) + 1;
+											?>
+											
+											<header><h4>Jumlah data penerimaan <span class="label label-info"><?php echo $count_penerimaan; ?></span> records</h4></header>
+											<br />
+											<!--
+											<table class="table table-bordered">
+												<tr><th>Detail Data LPJ Penerimaan</th></tr>
+											
+											<?php
+											/*
+											for ($i = 0; $i < $count_penerimaan; $i++) 
+											{
+												$j = 1;
+												foreach ($file_t[$i] as $data) 
+												{
+													?>
+														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
+													<?php
+													$j++;
+												}
+											}
+											*/
+											?>
+											</table>
+											<br />
+											-->
+											<?php
+										}
 									}
-									if (substr(basename($filenames),0,5) === 'REF_T') 
+									else if (substr(basename($filenames),0,5) === 'REF_T') 
 									{
 										$files = $csvdatas->parse_file($filenames);
-										var_dump($files);
+										
+										if ($files !== false) 
+										{
+											$count_rek_penerimaan = count($files) + 1;
+											?>
+											
+											<header><h4>Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_rek_penerimaan; ?> records</span></h4></header>
+											<br />
+
+											<!--
+											<table class="table table-bordered">
+												<tr><th>Detail Data Rekening LPJ Penerimaan</th></tr>
+											<?php
+											/*
+											for ($i = 0; $i < $count_rek_penerimaan; $i++) 
+											{
+												$j = 1;
+												foreach ($files[$i] as $data) 
+												{
+													?>
+														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
+													<?php
+													$j++;
+												}
+											}
+											*/
+											?>
+											</table>
+											<br />
+											-->
+											<?php
+										}
 									}
 									//~ var_dump($csvdatas->parse_file($filename));
 									//~ $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);

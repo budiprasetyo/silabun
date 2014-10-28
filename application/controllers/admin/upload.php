@@ -183,6 +183,37 @@ class Upload extends Admin_Controller
 						$this->load->library('csvreader');
 						$this->data['csvdatas'] = $this->csvreader;
 						$this->data['movingpaths'] = $movingpath;
+
+						// if in temp/ folder
+						$this->data['message'] = 'Data ADK Anda Tidak Sesuai format';
+						
+						if (substr($newname,0,9) === '/tmp/temp') 
+						{
+							if (substr($newname,0,11) === '/tmp/temp\K')
+							{
+								$this->data['message_title'] = 'Informasi Load & Insert Data';
+								$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda Salah';
+								$this->load->view('admin/components/message', $this->data);
+							
+							}
+							else if (substr($newname,0,11) === '/tmp/temp\T')
+							{
+								$this->data['message_title'] = 'Informasi Load & Insert Data';
+								$this->data['message'] = 'Format ADK LPJ Penerimaan Anda Salah';
+								$this->load->view('admin/components/message', $this->data);
+							}
+							else if (substr($newname,0,11) === '/tmp/temp\R')
+							{
+								
+								$this->data['message_title'] = 'Informasi Load & Insert Data';
+								$this->data['message'] = 'Format ADK Rekening Anda Salah';
+								$this->load->view('admin/components/message', $this->data);
+								
+							}
+							// redirect to index page
+							$this->output->set_header('refresh:2; url=index');
+						}
+						
 					}
 					
 					// Delete all footprints
