@@ -55,6 +55,7 @@
 						<label for="text1" class="control-label col-lg-6 bg-primary dker">Bulan <?php echo get_month_name($month); ?>&nbsp;&nbsp;</label>
 						<label for="text2" class="control-label col-lg-6">Tahun <?php echo $year; ?></label>
 					  </div>
+					  <br />
 					  <hr />
 					  <!-- KPPN -->
 					  <?php if ($this->data['id_entities'] === '1') { ?>
@@ -110,7 +111,6 @@
 						{
 					  ?>
 					  
-						
 							<div class="text-center">
 							  <ul class="stats_box">
 								<li>
@@ -118,7 +118,7 @@
 									if ( $transaksi === 'pengeluaran') 
 									{
 								?>
-								  <div class="piechart sparkline bar_week">
+								  <div class="sparkline piechart pie_week">
 									
 									<?php 
 											$total_monitor_satkers_k = 0;
@@ -245,6 +245,7 @@
 					  <div class="form-group">
 							<label for="text3" class="control-label col-lg-12 bg-green">Satker Yang Sudah Mengirimkan LPJ Bendahara <?php echo ucfirst($transaksi); ?></label>
 					  </div>
+					  <br />
 					  <hr />
 					  <!-- table -->
                     <table class="table table-bordered table-condensed table-hover table-striped display">
@@ -475,9 +476,11 @@
 					  <br />
 					  
 					  <!-- satker yang belum -->
+					  <hr /> 
 					  <div class="form-group">
 							<label for="text3" class="control-label col-lg-12 bg-red">Satker Yang Belum Mengirimkan LPJ Bendahara <?php echo ucfirst($transaksi); ?></label>
 					  </div>
+					  <br />
 					  <hr />
 					<!-- table -->
                     <table class="table table-bordered table-condensed table-hover table-striped display">
