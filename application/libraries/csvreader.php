@@ -55,27 +55,52 @@ class CSVReader {
         if($p_NamedFields) {
             $this->fields = fgetcsv($file, $this->max_row_size, $this->separator, $this->enclosure);
             // modify here
-            var_dump($this->fields);
+            //~ var_dump($this->fields);
         }
-        while( ($row = fgetcsv($file, $this->max_row_size, $this->separator, $this->enclosure)) != false ) {            
+        while( ($row = fgetcsv($file, $this->max_row_size, $this->separator, $this->enclosure)) != false ) {      
+			
             if( $row[0] != null ) { // skip empty lines
+				
                 if( !$content ) {
                     $content = array();
                 }
+                
+                ?>
+<!--
+                <table class="table">
+-->
+                <?php
                 if( $p_NamedFields ) {
+                
                     $items = array();
-
                     // I prefer to fill the array with values of defined fields
                     foreach( $this->fields as $id => $field ) {
+						
                         if( isset($row[$id]) ) {
                             $items[$field] = $row[$id];    
                         }
+                        
+				?>
+<!--
+						<tr>
+							<td><?php echo $field; ?></td>
+						</tr>
+-->
+                <?php
                     }
                     $content[] = $items;
+                    
                 } else {
                     $content[] = $row;
                 }
+                ?>
+<!--
+                </table>
+-->
+                <?php
+                count($row);
             }
+            
         }
         fclose($file);
         return $content;
