@@ -151,8 +151,9 @@
 											$count_pengeluaran = count($file_k) + 1;
 											?>
 											
-											<header><h4>Jumlah data pengeluaran <span class="label label-danger"><?php echo $count_pengeluaran; ?></span> records</h4></header>
+											Jumlah data pengeluaran <span class="label label-danger"><?php echo $count_pengeluaran; ?> records</span>
 											<br />
+											<hr />
 											
 											<!--
 											<table class="table table-bordered">
@@ -188,8 +189,9 @@
 											$count_rek_pengeluaran = count($files) + 1;
 											?>
 											
-											<header><h4>Jumlah data rekening pengeluaran <span class="label label-danger"><?php echo $count_rek_pengeluaran; ?></span> records</h4></header>
+											Jumlah data rekening pengeluaran <span class="label label-danger"><?php echo $count_rek_pengeluaran; ?> records</span> 
 											<br />
+											<hr />
 											<!--
 											<table class="table table-bordered">
 												<tr><th>Detail Data Rekening LPJ Pengeluaran</th></tr>
@@ -225,8 +227,9 @@
 											$count_penerimaan = count($file_t) + 1;
 											?>
 											
-											<header><h4>Jumlah data penerimaan <span class="label label-info"><?php echo $count_penerimaan; ?></span> records</h4></header>
+											Jumlah data penerimaan <span class="label label-info"><?php echo $count_penerimaan; ?> records</span>
 											<br />
+											<hr />
 											<!--
 											<table class="table table-bordered">
 												<tr><th>Detail Data LPJ Penerimaan</th></tr>
@@ -261,8 +264,9 @@
 											$count_rek_penerimaan = count($files) + 1;
 											?>
 											
-											<header><h4>Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_rek_penerimaan; ?> records</span></h4></header>
+											Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_rek_penerimaan; ?> records</span>
 											<br />
+											<hr />
 
 											<!--
 											<table class="table table-bordered">
