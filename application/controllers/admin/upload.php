@@ -120,7 +120,7 @@ class Upload extends Admin_Controller
 	{
 		if($this->input->post('submit') === 'Upload');
 		{
-			
+				
 			$file_types	= '*';
 			// Upload section
 			$config['upload_path'] 		= './public/data_lpj';
@@ -143,6 +143,7 @@ class Upload extends Admin_Controller
 			}
 			else
 			{
+				
 				// extension length should be 3, then this validation should be added with kode kppn as extension
 				// after user management modul is finished
 				if(strlen(substr(strrchr($_FILES['upload_lpj']['name'],'.'),1)) === 3)
@@ -183,9 +184,6 @@ class Upload extends Admin_Controller
 						$this->load->library('csvreader');
 						$this->data['csvdatas'] = $this->csvreader;
 						$this->data['movingpaths'] = $movingpath;
-
-						// if in temp/ folder
-						$this->data['message'] = 'Data ADK Anda Tidak Sesuai format';
 						
 						if (substr($newname,0,9) === '/tmp/temp') 
 						{
@@ -212,8 +210,7 @@ class Upload extends Admin_Controller
 							}
 							// redirect to index page
 							$this->output->set_header('refresh:2; url=index');
-						}
-						
+						}	
 					}
 					
 					// Delete all footprints
@@ -222,8 +219,8 @@ class Upload extends Admin_Controller
 						unlink($compressedpath . $adk_filename);
 					}
 				}
+				
 			}
-
 		}
 		// path to upload folder view
 		$this->data['subview'] = 'admin/upload/edit';
