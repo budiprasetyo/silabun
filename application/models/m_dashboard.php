@@ -143,4 +143,47 @@ class M_dashboard extends MY_Model
 			);
 	}
 
+	public function get_kppn_rekap($id_ref_kppn)
+	{
+		$rekap_pengeluaran = $this->db->select('dsp_report_rekap_lpjk.tahun')
+							->select('dsp_report_rekap_lpjk.bulan')
+							->select('count(*) AS jml_lpj')
+							->select_sum('dsp_report_rekap_lpjk.uang_persediaan')
+							->select_sum('dsp_report_rekap_lpjk.ls_bendahara')
+							->select_sum('dsp_report_rekap_lpjk.pajak')
+							->select_sum('dsp_report_rekap_lpjk.pengeluaran_lain')
+							->select_sum('dsp_report_rekap_lpjk.saldo')
+							->select_sum('dsp_report_rekap_lpjk.kuitansi')
+							->from('dsp_report_rekap_lpjk')
+							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker', 'left')
+							->where('ref_satker.lpj_status_pengeluaran', 1)
+							->where('dsp_report_rekap_lpjk.id_ref_kppn', $id_ref_kppn)
+							->group_by('dsp_report_rekap_lpjk.tahun')
+							->group_by('dsp_report_rekap_lpjk.bulan')
+							->get();
+							
+		$rekap_penerimaan = $this->db->select('dsp_report_rekap_lpjt.tahun')
+							->select('dsp_report_rekap_lpjt.bulan')
+							->select('count(*) AS jml_lpj')
+							->select_sum('dsp_report_rekap_lpjt.kas_tunai')
+							->select_sum('dsp_report_rekap_lpjt.kas_bank')
+							->select_sum('dsp_report_rekap_lpjt.saldo_awal')
+							->select_sum('dsp_report_rekap_lpjt.penerimaan')
+							->select_sum('dsp_report_rekap_lpjt.penyetoran')
+							->from('dsp_report_rekap_lpjt')
+							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjt.id_ref_satker', 'left')
+							->where('ref_satker.lpj_status_penerimaan', 1)
+							->where('dsp_report_rekap_lpjt.id_ref_kppn', $id_ref_kppn)
+							->group_by('dsp_report_rekap_lpjt.tahun')
+							->group_by('dsp_report_rekap_lpjt.bulan')
+							->get();
+		
+							
+		
+			return array(
+				'rekap_pengeluaran' => $rekap_pengeluaran,
+				'rekap_penerimaan' => $rekap_penerimaan
+			);
+	}
+
 }

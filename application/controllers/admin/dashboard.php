@@ -51,8 +51,84 @@ class Dashboard extends Admin_Controller
 		$this->load->helper('datetime');
 		$this->load->helper('amountformat');
 		
+		// if kppn
+		if ($this->data['id_entities'] === '1') 
+		{
+			// load m_referensi model
+			$this->load->model('m_referensi');
+			// get id_ref_kanwil
+			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+			// get kppn rekap
+			$satkers = $this->m_dashboard->get_kppn_rekap($kppn->id_ref_kppn);
+			$rekap_kppn_pengeluarans = $satkers['rekap_pengeluaran'];
+			$rekap_kppn_penerimaans = $satkers['rekap_penerimaan'];
+			
+			// rekap pengeluaran
+			$this->data['jml_satker_lpj'] = 0;
+			$this->data['jml_satker_uang_persediaan'] = 0;
+			$this->data['jml_satker_ls_bendahara'] = 0;
+			$this->data['jml_satker_pajak'] = 0;
+			$this->data['jml_satker_pengeluaran_lain'] = 0;
+			$this->data['jml_satker_saldo'] = 0;
+			$this->data['jml_satker_kuitansi'] = 0;
+			$grouped_kppn = array();
+			
+			foreach ( $rekap_kppn_pengeluarans->result_array() as $satker ) 
+			{
+				if ( !isset($grouped_kppn[$satker['tahun']]) ) 
+				{
+					$grouped_kppn[$satker['tahun']] = array();
+				}
+				
+				$grouped_kppn[$satker['tahun']][$satker['bulan']][] = $satker;
+				$this->data['jml_satker_lpj'] 				+= $satker['jml_lpj'];
+				$this->data['jml_satker_uang_persediaan'] 	+= $satker['uang_persediaan'];
+				$this->data['jml_satker_ls_bendahara'] 		+= $satker['ls_bendahara'];
+				$this->data['jml_satker_pajak'] 			+= $satker['pajak'];
+				$this->data['jml_satker_pengeluaran_lain'] 	+= $satker['pengeluaran_lain'];
+				$this->data['jml_satker_saldo']	 			+= $satker['saldo'];
+				$this->data['jml_satker_kuitansi'] 			+= $satker['kuitansi'];
+				
+				$this->data['jml_satker_saldo_kas']			= $this->data['jml_satker_uang_persediaan'] + $this->data['jml_satker_ls_bendahara'] + $this->data['jml_satker_pajak'] + $this->data['jml_satker_pengeluaran_lain'];
+				$this->data['jml_satker_saldo_up']			= $this->data['jml_satker_saldo'] + $this->data['jml_satker_kuitansi'];
+			}
+			
+			$this->data['grouped_kppn'] = $grouped_kppn;
+			// end of rekap pengeluaran
+			
+			// rekap penerimaan
+			$this->data['jml_satker_lpj_penerimaan'] = 0;
+			$this->data['jml_satker_kas_tunai'] = 0;
+			$this->data['jml_satker_kas_bank'] = 0;
+			$this->data['jml_satker_saldo_awal'] = 0;
+			$this->data['jml_satker_penerimaan'] = 0;
+			$this->data['jml_satker_penyetoran'] = 0;
+			$grouped_satker_penerimaan = array();
+			
+			foreach ( $rekap_kppn_penerimaans->result_array() as $rekap_satker_penerimaan ) 
+			{
+				if ( !isset($grouped_satker_penerimaan[$rekap_satker_penerimaan['tahun']]) ) 
+				{
+					$grouped_satker_penerimaan[$rekap_satker_penerimaan['tahun']] = array();
+				}
+				
+				$grouped_satker_penerimaan[$rekap_satker_penerimaan['tahun']][$rekap_satker_penerimaan['bulan']][] = $rekap_satker_penerimaan;
+				$this->data['jml_satker_lpj_penerimaan'] 	+= $rekap_satker_penerimaan['jml_lpj'];
+				$this->data['jml_satker_kas_tunai'] 		+= $rekap_satker_penerimaan['kas_tunai'];
+				$this->data['jml_satker_kas_bank'] 			+= $rekap_satker_penerimaan['kas_bank'];
+				$this->data['jml_satker_saldo_awal'] 		+= $rekap_satker_penerimaan['saldo_awal'];
+				$this->data['jml_satker_penerimaan'] 		+= $rekap_satker_penerimaan['penerimaan'];
+				$this->data['jml_satker_penyetoran'] 		+= $rekap_satker_penerimaan['penyetoran'];
+				
+				$this->data['jml_satker_saldo_kas_penerimaan'] = $this->data['jml_satker_kas_tunai'] + $this->data['jml_satker_kas_bank']; 
+				$this->data['jml_satker_saldo_penyetoran_penerimaan'] = $this->data['jml_satker_saldo_awal'] + $this->data['jml_satker_penerimaan'] - $this->data['jml_satker_penyetoran']; 
+			}
+			$this->data['grouped_satker_penerimaan'] = $grouped_satker_penerimaan;
+			// end of rekap penerimaan
+			
+		}
 		// if kanwil
-		if($this->data['id_entities'] === '2')
+		else if($this->data['id_entities'] === '2')
 		{
 			// load m_referensi model
 			$this->load->model('m_referensi');
