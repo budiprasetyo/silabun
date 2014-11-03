@@ -183,7 +183,7 @@ class Dashboard extends Admin_Controller
 			
 			foreach ( $rekap_kanwil_penerimaans->result_array() as $rekap_kppn_penerimaan ) 
 			{
-				if ( !isset($grouped_kppn_penerimaan[$rekap_penerimaan['tahun']]) ) 
+				if ( !isset($grouped_kppn_penerimaan[$rekap_kppn_penerimaan['tahun']]) ) 
 				{
 					$grouped_kppn_penerimaan[$rekap_kppn_penerimaan['tahun']] = array();
 				}
@@ -201,6 +201,7 @@ class Dashboard extends Admin_Controller
 			}
 			
 			$this->data['grouped_kppn_penerimaan'] = $grouped_kppn_penerimaan;
+			
 			// end of rekap penerimaan
 		}
 		// if pkn
