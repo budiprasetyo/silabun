@@ -338,4 +338,54 @@ class M_report extends MY_Model
 			}
 		}
 	}
+	
+	public function detil_lpj_pengeluaran($id_ref_kanwil, $year, $month)
+	{
+		// query for kppn
+		$query_kanwil = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, kd_satker, nm_satker, count(*) AS jml_lpj, 
+				sum(uang_persediaan) AS uang_persediaan,
+				sum(ls_bendahara) AS ls_bendahara,
+				sum(pajak) AS pajak,
+				sum(pengeluaran_lain) AS pengeluaran_lain,
+				sum(saldo) AS saldo,
+				sum(kuitansi) AS kuitansi
+			FROM 
+				dsp_report_rekap_lpjk
+			WHERE id_ref_kanwil = ".$id_ref_kanwil."
+			AND tahun = '".$year."'
+			AND bulan = '".$month."'
+			GROUP BY kd_kementerian, kd_satker
+			ORDER BY kd_kementerian, kd_satker");
+			
+		if($query_kanwil->num_rows() > 0)
+		{
+			return $query_kanwil;
+			$query_kanwil->free_result();
+		}
+	}
+	
+	public function detil_lpj_penerimaan($id_ref_kanwil, $year, $month)
+	{
+		// query for kppn
+		$query_kanwil = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, kd_satker, nm_satker, count(*) AS jml_lpj, 
+				sum(kas_tunai) AS kas_tunai,
+				sum(kas_bank) AS kas_bank,
+				sum(penerimaan) AS penerimaan,
+				sum(penyetoran) AS penyetoran,
+				sum(saldo_awal) AS saldo_awal,
+				sum(saldo_akhir) AS saldo_akhir
+			FROM 
+				dsp_report_rekap_lpjt
+			WHERE id_ref_kanwil = ".$id_ref_kanwil."
+			AND tahun = '".$year."'
+			AND bulan = '".$month."'
+			GROUP BY kd_kementerian, kd_satker
+			ORDER BY kd_kementerian, kd_satker");
+			
+		if($query_kanwil->num_rows() > 0)
+		{
+			return $query_kanwil;
+			$query_kanwil->free_result();
+		}
+	}
 }
