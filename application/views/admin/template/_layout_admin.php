@@ -212,6 +212,12 @@
 						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekap_lpj/penerimaan">
 						  <i class="fa fa-angle-right"></i>&nbsp;Rekap LPJ Penerimaan</a> 
 					  </li>
+					  <?php if ($id_entities === '2' || $id_entities === '3') {?>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/report/detil_lpj">
+						  <i class="fa fa-angle-right"></i>&nbsp;Detil LPJ</a> 
+					  </li>
+					  <?php } ?>
 					</ul>
 				  </li>
 				  
