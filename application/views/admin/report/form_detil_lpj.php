@@ -376,7 +376,6 @@
 					  ?>
 					</div><!--/responsive-table-->
 				  </div><!--/collapse4-->
-				
 			</div><!--/box-dark-->
 		</div><!--/col-lg-6-->
 	</div><!--/row-->
