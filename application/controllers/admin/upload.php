@@ -208,6 +208,10 @@ class Upload extends Admin_Controller
 								$this->load->view('admin/components/message', $this->data);
 								
 							}
+							
+							// delete extracted file with unsupported format
+							unlink($extractpath . '*');
+							
 							// redirect to index page
 							$this->output->set_header('refresh:2; url=index');
 						}	
@@ -322,6 +326,8 @@ class Upload extends Admin_Controller
 				if(file($movingpath . $file))
 				{
 					unlink($movingpath . $file);
+					// delete extracted file with unsupported format
+					unlink($extractpath . '*');
 				}
 				
 				

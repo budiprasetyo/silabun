@@ -65,11 +65,6 @@ class CSVReader {
                     $content = array();
                 }
                 
-                ?>
-<!--
-                <table class="table">
--->
-                <?php
                 if( $p_NamedFields ) {
                 
                     $items = array();
@@ -80,24 +75,13 @@ class CSVReader {
                             $items[$field] = $row[$id];    
                         }
                         
-				?>
-<!--
-						<tr>
-							<td><?php echo $field; ?></td>
-						</tr>
--->
-                <?php
                     }
                     $content[] = $items;
                     
                 } else {
                     $content[] = $row;
                 }
-                ?>
-<!--
-                </table>
--->
-                <?php
+
                 count($row);
             }
             

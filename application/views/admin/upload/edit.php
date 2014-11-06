@@ -138,38 +138,12 @@
 							}
 							else
 							{
+								$this->benchmark->mark('code_start');
 								foreach (glob($movingpaths . '*.*') as $filenames) 
 								{
-									/*
-									if( substr(basename($filenames),0,1) === 'K' )
-									{
-										//~ echo count($filenames);
-										$file_k = $csvdatas->parse_file($filenames);
-										//~ var_dump($file_k);
-									}
-									if (substr(basename($filenames),0,5) === 'REF_K') 
-									{
-										$files = $csvdatas->parse_file($filenames);
-										//~ var_dump($files);
-									}
-									if( substr(basename($filenames),0,1) === 'T' )
-									{
-										//~ echo count($filenames);
-										$file_t = $csvdatas->parse_file($filenames);
-										var_dump($file_t);
-									}
-									if (substr(basename($filenames),0,5) === 'REF_T') 
-									{
-										$files = $csvdatas->parse_file($filenames);
-										var_dump($files);
-									}
-									*/
-
-
 									
 									if( substr(basename($filenames),0,1) === 'K' )
 									{
-										//~ echo count($filenames);
 										$file_k = $csvdatas->parse_file($filenames);
 										
 										if ($file_k !== false) 
@@ -181,28 +155,6 @@
 											<br />
 											<hr />
 											
-											<!--
-											<table class="table table-bordered">
-												<tr><th>Detail Data LPJ Pengeluaran</th></tr>
-											
-											<?php
-											/*
-											for ($i = 0; $i <= $count_pengeluaran; $i++) 
-											{
-												$j = 0;
-												foreach ($file_k[$i] as $data) 
-												{
-													?>
-														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
-													<?php
-													$j++;
-												}
-											}
-											*/
-											?>
-											</table>
-											<br />
-											-->
 											<?php
 										}
 									}
@@ -218,34 +170,12 @@
 											Jumlah data rekening pengeluaran <span class="label label-danger"><?php echo $count_rek_pengeluaran; ?> records</span> 
 											<br />
 											<hr />
-											<!--
-											<table class="table table-bordered">
-												<tr><th>Detail Data Rekening LPJ Pengeluaran</th></tr>
 											
-											<?php
-											/*
-											for ($i = 0; $i <= $count_rek_pengeluaran; $i++) 
-											{
-												$j = 0;
-												foreach ($files[$i] as $data) 
-												{
-													?>
-														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
-													<?php
-													$j++;
-												}
-											}
-											*/
-											?>
-											</table>
-											<br />
-											-->
 											<?php
 										}
 									}
 									else if( substr(basename($filenames),0,1) === 'T' )
 									{
-										//~ echo count($filenames);
 										$file_t = $csvdatas->parse_file($filenames);
 										
 										if ($file_t !== false) 
@@ -256,28 +186,6 @@
 											Jumlah data penerimaan <span class="label label-info"><?php echo $count_penerimaan; ?> records</span>
 											<br />
 											<hr />
-											<!--
-											<table class="table table-bordered">
-												<tr><th>Detail Data LPJ Penerimaan</th></tr>
-											
-											<?php
-											/*
-											for ($i = 0; $i < $count_penerimaan; $i++) 
-											{
-												$j = 1;
-												foreach ($file_t[$i] as $data) 
-												{
-													?>
-														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
-													<?php
-													$j++;
-												}
-											}
-											*/
-											?>
-											</table>
-											<br />
-											-->
 											<?php
 										}
 									}
@@ -294,39 +202,28 @@
 											<br />
 											<hr />
 
-											<!--
-											<table class="table table-bordered">
-												<tr><th>Detail Data Rekening LPJ Penerimaan</th></tr>
-											<?php
-											/*
-											for ($i = 0; $i < $count_rek_penerimaan; $i++) 
-											{
-												$j = 1;
-												foreach ($files[$i] as $data) 
-												{
-													?>
-														<tr><td><?php echo $j; ?></td><td><?php echo $data; ?></td></tr>
-													<?php
-													$j++;
-												}
-											}
-											*/
-											?>
-											</table>
-											<br />
-											-->
 											<?php
 										}
 									}
-
-									//~ var_dump($csvdatas->parse_file($filename));
-									//~ $lines = file($filename, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
-//~ 
-									//~ foreach ($lines as $line_num => $line) 
-									//~ {
-										//~ echo "Line #<b>{$line_num}</b> : " . htmlspecialchars($line) . "<br />\n";
-									//~ }
+									
 								}
+								$this->benchmark->mark('code_end');
+								?>
+								<header>
+									<nav style="padding: 4px;">
+									<div class="icons">
+									  <i class="fa fa-wrench"></i>
+									</div>
+										<h5>Data Benchmark</h5>
+									</nav>
+								</header>
+								<br />
+								<?php
+								echo 'Code ini diproses dalam <span class="label label-primary">' . $this->benchmark->elapsed_time('code_start', 'code_end') . ' detik</span>';
+								?>
+								<br />
+								<?php
+								echo 'Menggunakan memory sebesar <span class="label label-primary">' . $this->benchmark->memory_usage() . '</span>';
 							}
 						?>
                     </form><!--/form-horizontal-->
