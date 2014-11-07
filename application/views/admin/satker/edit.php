@@ -34,7 +34,6 @@
 					<hr />
 					<form class="form-horizontal" id="validVal" method="post" action="">
 					
-						
 					  <div class="form-group">
 						<label for="text4" class="control-label col-lg-4">Kementerian</label>
 						<div class="col-lg-8">
