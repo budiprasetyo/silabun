@@ -47,21 +47,35 @@ class M_referensi extends MY_Model
 		}
 	}
 	
-	public function get_kanwil($id_ref_satker)
+	public function get_kanwil($id_ref_satker = FALSE, $row = TRUE, $order_by = NULL)
 	{
-		$query = $this->db->select('ref_satker.id_ref_satker')
+		// row or result
+		$row == TRUE ? $row = 'row' : $row = 'result';
+		
+		$this->db->select('ref_satker.id_ref_satker')
 							->select('ref_satker.kd_satker')
 							->select('ref_kanwil.id_ref_kanwil')
 							->select('ref_kanwil.kd_kanwil')
 							->select('ref_kanwil.nm_kanwil')
 							->from('ref_satker')
-							->join('ref_kanwil', 'ref_satker.kd_satker = ref_kanwil.kd_satker_kanwil')
-							->where('ref_satker.id_ref_satker', $id_ref_satker)
-							->get();
+							->join('ref_kanwil', 'ref_satker.kd_satker = ref_kanwil.kd_satker_kanwil');
+							
+		// where with null conditional
+		if($id_ref_satker != FALSE)
+		{
+			$this->db->where('ref_satker.id_ref_satker', $id_ref_satker);
+		}
+		// order by
+		if($order_by !== NULL)
+		{
+			$this->db->order_by($order_by);
+		}
+		
+		$query = $this->db->get();
 							
 		if($query->num_rows() > 0)
 		{
-			return $query->row();
+			return $query->$row();
 			$query->free_result();
 		}
 	}
