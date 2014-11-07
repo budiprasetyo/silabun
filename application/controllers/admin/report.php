@@ -275,17 +275,30 @@ class Report extends Admin_Controller
 		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 		// load m_referensi model
 		$this->load->model('m_referensi');
-		// get id_ref_kanwil
-		$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+		
+		// get kanwil referensi
+		if ($this->data['id_entities'] === '2') 
+		{
+			// get id_ref_kanwil
+			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+		}
+		else if ($this->data['id_entities'] === '3') 
+		{
+			// dropdown kanwil
+			$this->data['dropdown_kanwil'] = $this->m_referensi->get_kanwil(FALSE, FALSE, 'kd_kanwil');
+		}
+		
+		$id_ref_kanwil = $kanwil->id_ref_kanwil ? $id_ref_kanwil = $kanwil->id_ref_kanwil : $id_ref_kanwil = $this->input->post('id_ref_kanwil');
 		// load m_referensi
 		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
 		
+		//~ var_dump($id_ref_kanwil);
+		
 		// if kanwil pengeluaran
-		if ($this->data['id_entities'] === '2' 
+		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 			&& $this->input->post('post') === 'pengeluaran'
 			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE
-			)
+			&& $this->input->post('month') == TRUE)
 		{
 			// subtitle
 			$this->data['subtitle'] = 'LPJ ' . $post . ' Per Satuan Kerja Tingkat Wilayah';
@@ -295,7 +308,7 @@ class Report extends Admin_Controller
 			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
 			
 			// fetch rekap
-			$detil_lpjs = $this->m_report->detil_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
+			$detil_lpjs = $this->m_report->detil_lpj_pengeluaran($id_ref_kanwil, $this->data['year'], $this->data['month']);
 
 			// parent array
 			$detil_kanwil = array();
@@ -314,7 +327,7 @@ class Report extends Admin_Controller
 			
 		}
 		// if kanwil penerimaan
-		else if ($this->data['id_entities'] === '2' 
+		else if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 			&& $this->input->post('post') === 'penerimaan'
 			&& $this->input->post('year') == TRUE
 			&& $this->input->post('month') == TRUE) 
@@ -327,7 +340,7 @@ class Report extends Admin_Controller
 			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
 			
 			// fetch rekap
-			$detil_lpjs = $this->m_report->detil_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
+			$detil_lpjs = $this->m_report->detil_lpj_penerimaan($id_ref_kanwil, $this->data['year'], $this->data['month']);
 
 			// parent array
 			$detil_kanwil_penerimaan = array();
@@ -398,10 +411,6 @@ class Report extends Admin_Controller
 			$this->data['subview'] = 'admin/report/form_detil_lpj';
 			$this->load->view('admin/template/_layout_admin', $this->data);
 			
-			//~ // get total sum
-			//~ $this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
-			//~ // send data to view
-			//~ $this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_penerimaan_kanwil_pkn', $this->data, TRUE);
 		}
 	}
 }

@@ -34,6 +34,27 @@
 					
 					<form class="form-horizontal" method="post" action="" >
 					  
+					  <?php if($id_entities === '3'){ ?>
+					  <div class="form-group">
+						<label for="text4" class="control-label col-lg-5">Kanwil</label>
+						<div class="col-lg-4">
+							
+							<select data-placeholder="Pilih Kanwil" id="mark" name="id_ref_kanwil" class="form-control chzn-select">
+								<option value="">Pilih Kanwil</option>
+								<?php 
+									foreach ($dropdown_kanwil as $kanwil) 
+									{
+										?>
+										<option value="<?php echo $kanwil->id_ref_kanwil?>">( <?php echo $kanwil->kd_kanwil?> ) <?php echo $kanwil->nm_kanwil; ?></option>
+										<?php
+									}
+								?>
+							</select>
+							
+						</div>
+					  </div><!-- /.form-group -->
+					  <?php } ?>
+					  
 					  <div class="form-group">
 						<label for="text1" class="control-label col-lg-5">Tahun</label>
 						<div class="col-lg-2">
@@ -129,7 +150,7 @@
 							{
 						?>
 								<tr style="font-weight: bold; font-size:11px;">
-									<td class="bg-green dk" colspan="10"><?php echo $kppn; ?></td>
+									<td class="bg-green lter" colspan="10">KPPN <?php echo $kppn; ?></td>
 								</tr>
 								
 						<?php 
@@ -148,7 +169,7 @@
 									
 						?>
 								<tr style="font-weight: bold; font-size:11px;">
-									<td class="bg-green lt" colspan="10">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $kementerian; ?></td>
+									<td class="bg-green" colspan="10">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $kementerian; ?></td>
 								</tr>
 						<?php
 									
@@ -203,7 +224,7 @@
 									}
 						?>
 								<tr style="font-weight: bold; font-style: italic; font-size:11px;" class="bg-brick lter">
-									<td colspan="2" style="white-space:normal;">&nbsp;&nbsp;&nbsp;&nbsp;JUMLAH <?php echo $kementerian; ?></td>
+									<td colspan="2" style="white-space:normal;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;JUMLAH <?php echo $kementerian; ?></td>
 									<td align="right"><?php echo amount_format($saldo_uang_persediaan_pengeluaran); ?></td>
 									<td align="right"><?php echo amount_format($saldo_ls_bendahara_pengeluaran); ?></td>
 									<td align="right"><?php echo amount_format($saldo_pajak_pengeluaran); ?></td>
@@ -217,7 +238,7 @@
 								}
 						?>
 							<tr style="font-size:11px;font-weight:bold;" class="bg-brick dker">
-								<td colspan="2" style="white-space:normal;">&nbsp;&nbsp;&nbsp;&nbsp;JUMLAH TOTAL KPPN <?php echo $kppn; ?></td>
+								<td colspan="2" style="white-space:normal;">JUMLAH TOTAL KPPN <?php echo $kppn; ?></td>
 								<td align="right"><?php echo amount_format($saldo_total_uang_persediaan_pengeluaran); ?></td>
 								<td align="right"><?php echo amount_format($saldo_total_ls_bendahara_pengeluaran); ?></td>
 								<td align="right"><?php echo amount_format($saldo_total_pajak_pengeluaran); ?></td>
