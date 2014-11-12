@@ -182,17 +182,38 @@ class Monitoring extends Admin_Controller
 		// if entity is pkn
 		else if($this->data['id_entities'] === '3')
 		{
-			// table title
-			$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
-			// send to view fetch kanwil and kementerian
-			//~ $this->data['monitor_kanwils'] = $this->m_monitoring->get_count_data_kanwil($this->data['year'],$this->data['month']);
-			// send to view fetch unsent satker 
-			$this->data['monitor_kanwils_unsents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', FALSE);
-			// send to view fetch sent satker
-			$this->data['monitor_kanwils_sents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', TRUE);
-			// path to page folder view
-			$this->data['subview'] = 'admin/monitoring/index';
-			$this->load->view('admin/template/_layout_admin', $this->data);
+			if ($transaksi === 'pengeluaran') {
+				
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
+				// send to view fetch kanwil and kementerian
+				//~ $this->data['monitor_kanwils'] = $this->m_monitoring->get_count_data_kanwil($this->data['year'],$this->data['month']);
+				// send to view fetch unsent satker 
+				$this->data['monitor_kanwils_unsents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', FALSE);
+				// send to view fetch sent satker
+				$this->data['monitor_kanwils_sents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'K', TRUE);
+				// path to page folder view
+				$this->data['subview'] = 'admin/monitoring/index';
+				$this->load->view('admin/template/_layout_admin', $this->data);
+				
+			}
+			elseif ($transaksi === 'penerimaan') {
+				
+				// table title
+				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
+				// send to view fetch kanwil and kementerian
+				//~ $this->data['monitor_kanwils'] = $this->m_monitoring->get_count_data_kanwil($this->data['year'],$this->data['month']);
+				// send to view fetch unsent satker 
+				$this->data['monitor_kanwils_penerimaan_unsents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'P', FALSE);
+				// send to view fetch sent satker
+				$this->data['monitor_kanwils_penerimaan_sents'] = $this->m_monitoring->get_list_satker_status_pkn($this->data['year'], $this->data['month'], 'P', TRUE);
+				// path to page folder view
+				$this->data['subview'] = 'admin/monitoring/index';
+				$this->load->view('admin/template/_layout_admin', $this->data);
+				
+			}
+			
+			
 		}
 	}
 }

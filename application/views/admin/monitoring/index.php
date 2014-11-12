@@ -439,7 +439,8 @@
 											}
 										}
 									} 
-									else if ($this->data['id_entities'] === '3')
+									else if ($this->data['id_entities'] === '3'
+											&& $transaksi === 'pengeluaran')
 									{
 										if (count($monitor_kanwils_sents)) 
 										{
@@ -470,6 +471,39 @@
 						<?php
 										}
 									}
+									else if ($this->data['id_entities'] === '3'
+											&& $transaksi === 'penerimaan')
+									{
+										if (count($monitor_kanwils_penerimaan_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_kanwils_penerimaan_sents as $monitor_kanwil_penerimaan_sent) 
+											{
+							?>
+											<tr>
+												<td><?php echo ++$i; ?></td>
+												<td>
+													<?php echo $monitor_kanwil_penerimaan_sent->kd_kanwil . ' - ' . $monitor_kanwil_penerimaan_sent->nm_kanwil; ?>
+												</td>
+												<td>
+													<?php echo $monitor_kanwil_penerimaan_sent->kd_kppn . ' - ' . $monitor_kanwil_penerimaan_sent->nm_kppn; ?>
+												</td>
+												<td><?php echo $monitor_kanwil_penerimaan_sent->kd_kementerian; ?></td>
+												<td><?php echo $monitor_kanwil_penerimaan_sent->jml_lpj; ?></td>
+											</tr>
+						<?php
+											}
+										}
+										else
+										{
+						?>
+										<tr>
+											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
+										</tr>
+						<?php
+										}
+									}
+									
 						?>
 						</tbody>
 					  </table>
@@ -704,7 +738,8 @@
 								}
 								
 							}
-							else if ( $this->data['id_entities'] === '3' )
+							else if ( $this->data['id_entities'] === '3' 
+									&& $transaksi === 'pengeluaran')
 							{
 								if (count($monitor_kanwils_unsents))
 								{
@@ -722,6 +757,38 @@
 								</td>
 								<td><?php echo $monitor_kanwil_unsent->kd_kementerian; ?></td>
 								<td><?php echo $monitor_kanwil_unsent->jml_lpj; ?></td>
+							</tr>
+						<?php
+									}
+								}
+								else
+								{
+						?>
+									<tr>
+										<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
+									</tr>
+								<?php
+								}
+							}
+							else if ( $this->data['id_entities'] === '3' 
+									&& $transaksi === 'penerimaan')
+							{
+								if (count($monitor_kanwils_penerimaan_unsents))
+								{
+									$i = 0;
+									foreach ($monitor_kanwils_penerimaan_unsents as $monitor_kanwil_penerimaan_unsent) 
+									{
+						?>
+							<tr>
+								<td><?php echo ++$i; ?></td>
+								<td>
+									<?php echo $monitor_kanwil_penerimaan_unsent->kd_kanwil . ' - ' . $monitor_kanwil_penerimaan_unsent->nm_kanwil; ?>
+								</td>
+								<td>
+									<?php echo $monitor_kanwil_penerimaan_unsent->kd_kppn . ' - ' . $monitor_kanwil_penerimaan_unsent->nm_kppn; ?>
+								</td>
+								<td><?php echo $monitor_kanwil_penerimaan_unsent->kd_kementerian; ?></td>
+								<td><?php echo $monitor_kanwil_penerimaan_unsent->jml_lpj; ?></td>
 							</tr>
 						<?php
 									}
