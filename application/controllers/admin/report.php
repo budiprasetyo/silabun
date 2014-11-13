@@ -266,6 +266,7 @@ class Report extends Admin_Controller
 		$post = $this->input->post('post');
 		$this->data['year'] = date('Y');
 		
+		
 		// load helper
 		$this->load->helper('datetime');
 		$this->load->helper('amountformat');
@@ -292,9 +293,9 @@ class Report extends Admin_Controller
 		// load m_referensi
 		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
 		
-		//~ var_dump($id_ref_kanwil);
 		
-		// if kanwil pengeluaran
+		
+		// if kanwil or pkn pengeluaran
 		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 			&& $this->input->post('post') === 'pengeluaran'
 			&& $this->input->post('year') == TRUE
@@ -306,6 +307,8 @@ class Report extends Admin_Controller
 			$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
 			// period
 			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
+			// filename
+			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
 			
 			// fetch rekap
 			$detil_lpjs = $this->m_report->detil_lpj_pengeluaran($id_ref_kanwil, $this->data['year'], $this->data['month']);
@@ -315,18 +318,22 @@ class Report extends Admin_Controller
 
 			foreach ($detil_lpjs->result_array() as $detil_lpj) 
 			{
+
 				if ( !isset($detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']]) ) 
 				{
 					$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']] = array();
 				}
 				
 				$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']][$detil_lpj['kd_kementerian'] . ' &nbsp;' . $detil_lpj['nm_kementerian']][] = $detil_lpj;
+				
 			}
 			
 			$this->data['detil_kanwil'] = $detil_kanwil;
 			
+		
+			
 		}
-		// if kanwil penerimaan
+		// if kanwil or pkn penerimaan
 		else if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 			&& $this->input->post('post') === 'penerimaan'
 			&& $this->input->post('year') == TRUE
@@ -338,6 +345,8 @@ class Report extends Admin_Controller
 			$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
 			// period
 			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
+			// filename
+			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
 			
 			// fetch rekap
 			$detil_lpjs = $this->m_report->detil_lpj_penerimaan($id_ref_kanwil, $this->data['year'], $this->data['month']);
@@ -358,12 +367,21 @@ class Report extends Admin_Controller
 			$this->data['detil_kanwil_penerimaan'] = $detil_kanwil_penerimaan;
 			
 		}
-
-		// path to page folder view
-		$this->data['subview'] = 'admin/report/form_detil_lpj';
-		$this->load->view('admin/template/_layout_admin', $this->data);
 		
-			
+		
+		// Tampilkan
+		if ($this->input->post('submit') === 'Tampilkan'
+			OR 	$this->input->post() == FALSE)
+		{
+			// path to page folder view
+			$this->data['subview'] = 'admin/report/form_detil_lpj';
+			$this->load->view('admin/template/_layout_admin', $this->data);
+		}
+		// XLSX
+		else if ($this->input->post('submit') === 'XLSX')
+		{
+			$this->load->view('admin/report/report_detil_lpj', $this->data);
+		}
 	}
 	
 	public function report_detil_lpj_pengeluaran()

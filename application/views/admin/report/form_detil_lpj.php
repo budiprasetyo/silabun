@@ -391,8 +391,6 @@
 							</tbody>
 						  </table>
 					  <?php 
-							
-							
 						}
 					  ?>
 					</div><!--/responsive-table-->
