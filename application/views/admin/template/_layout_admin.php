@@ -205,12 +205,8 @@
 					  </li>
 					  <?php } ?>
 					  <li class="">
-						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekap_lpj/pengeluaran">
-						  <i class="fa fa-angle-right"></i>&nbsp;Rekap LPJ Pengeluaran</a> 
-					  </li>
-					  <li class="">
-						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekap_lpj/penerimaan">
-						  <i class="fa fa-angle-right"></i>&nbsp;Rekap LPJ Penerimaan</a> 
+						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekap_lpj">
+						  <i class="fa fa-angle-right"></i>&nbsp;Rekap LPJ</a> 
 					  </li>
 					  <?php if ($id_entities === '2' || $id_entities === '3') {?>
 					  <li class="">
