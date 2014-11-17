@@ -90,19 +90,80 @@ class Report extends Admin_Controller
 	
 	public function rekap_lpj($post)
 	{
+		// load helper
+		$this->load->helper('datetime');
+		$this->load->helper('amountformat');
 		$this->data['year'] = date('Y');
-		// if entity is kppn or kanwil or pkn
-		if($this->data['id_entities'] === '1'
-			OR $this->data['id_entities'] === '2'
-			OR $this->data['id_entities'] === '3'
-		)
+		// load m_referensi model
+		$this->load->model('m_referensi');
+		// get id_ref_kppn
+		$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+		// get id_ref_kanwil
+		$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+		// load m_referensi
+		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
+
+		
+		if ( ($this->data['id_entities'] === '1')
+			&& $this->input->post('post') === 'pengeluaran'
+			&& $this->input->post('year') == TRUE
+			&& $this->input->post('month') == TRUE)
 		{
-			$this->data['title'] = ucfirst($post);
-			$this->data['action'] = APPURL . '/' . $this->uri->segment(1) . '/' . $this->uri->segment(2) . '/report_rekap_lpj_' . $post;
+			// month
+			$this->data['month'] = $this->input->post('month');
+			// post
+			$this->data['post'] = $this->input->post('post');
+			
+			// subtitle
+			$this->data['subtitle'] = 'Daftar LPJ ' . $this->data['post'] . ' Bendahara Pengeluaran';
+			
+			// nama entity
+			$this->data['nm_entity'] = 'KPPN ' . ucwords(strtolower($kppn->nm_kppn));
+			
+			// period
+			$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
+			
+			// filename
+			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_' . $this->data['post'];
+			
+			// fetch rekap
+			$rekap_lpjs = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+			
+			// parent array
+			$rekap_satker = array();
+			
+			foreach ($rekap_lpjs->result_array() as $rekap_lpj) 
+			{
+
+				if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_lpj['nm_kementerian']]) ) 
+				{
+					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']] = array();
+				}
+				
+				$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
+				
+			}
+			
+			$this->data['rekap_satker'] = $rekap_satker;
+			
+		}
+		else if ( ($this->data['id_entities'] === '1')
+			&& $this->input->post('post') === 'penerimaan'
+			&& $this->input->post('year') == TRUE
+			&& $this->input->post('month') == TRUE)
+		{
+			
+		}
+		
+		
+		if ($this->input->post('submit') === 'Tampilkan'
+			OR 	$this->input->post() == FALSE)
+		{
 			// path to page folder view
 			$this->data['subview'] = 'admin/report/form_rekap_lpj';
 			$this->load->view('admin/template/_layout_admin', $this->data);
 		}
+		
 	}
 	
 	public function report_rekap_lpj_pengeluaran()
@@ -329,8 +390,6 @@ class Report extends Admin_Controller
 			}
 			
 			$this->data['detil_kanwil'] = $detil_kanwil;
-			
-		
 			
 		}
 		// if kanwil or pkn penerimaan

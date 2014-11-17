@@ -143,7 +143,7 @@ class M_report extends MY_Model
 				
 			if($query_kppn->num_rows() > 0)
 			{
-				return $query_kppn->result();
+				return $query_kppn;
 				$query_kppn->free_result();
 			}
 		}
