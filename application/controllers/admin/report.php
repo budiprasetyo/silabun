@@ -105,7 +105,6 @@ class Report extends Admin_Controller
 
 		
 		if ( ($this->data['id_entities'] === '1')
-			&& $this->input->post('post') === 'pengeluaran'
 			&& $this->input->post('year') == TRUE
 			&& $this->input->post('month') == TRUE)
 		{
@@ -115,7 +114,7 @@ class Report extends Admin_Controller
 			$this->data['post'] = $this->input->post('post');
 			
 			// subtitle
-			$this->data['subtitle'] = 'Daftar LPJ ' . $this->data['post'] . ' Bendahara Pengeluaran';
+			$this->data['subtitle'] = 'Daftar LPJ ' . $this->data['post'] . ' Bendahara ' . $this->data['post'];
 			
 			// nama entity
 			$this->data['nm_entity'] = 'KPPN ' . ucwords(strtolower($kppn->nm_kppn));
@@ -126,32 +125,54 @@ class Report extends Admin_Controller
 			// filename
 			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_' . $this->data['post'];
 			
-			// fetch rekap
-			$rekap_lpjs = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
-			
-			// parent array
-			$rekap_satker = array();
-			
-			foreach ($rekap_lpjs->result_array() as $rekap_lpj) 
+			// pengeluaran
+			if ($this->input->post('post') === 'pengeluaran')
 			{
-
-				if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_lpj['nm_kementerian']]) ) 
+			
+				// fetch rekap
+				$rekap_lpjs = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+				
+				// parent array
+				$rekap_satker = array();
+				
+				foreach ($rekap_lpjs->result_array() as $rekap_lpj) 
 				{
-					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']] = array();
+
+					if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_lpj['nm_kementerian']]) ) 
+					{
+						$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']] = array();
+					}
+					
+					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
+					
 				}
 				
-				$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
+				$this->data['rekap_satker'] = $rekap_satker;
 				
 			}
-			
-			$this->data['rekap_satker'] = $rekap_satker;
-			
-		}
-		else if ( ($this->data['id_entities'] === '1')
-			&& $this->input->post('post') === 'penerimaan'
-			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE)
-		{
+			// penerimaan
+			else if ($this->input->post('post') === 'penerimaan')
+			{
+				// fetch rekap
+				$rekap_penerimaan_lpjs = $this->m_report->rekap_lpj_penerimaan($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+				
+				// parent array
+				$rekap_satker_penerimaan = array();
+				
+				foreach ($rekap_penerimaan_lpjs->result_array() as $rekap_penerimaan_lpj) 
+				{
+
+					if ( !isset($rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']]) ) 
+					{
+						$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']] = array();
+					}
+					
+					$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']][] = $rekap_penerimaan_lpj;
+					
+				}
+				
+				$this->data['rekap_satker_penerimaan'] = $rekap_satker_penerimaan;
+			}
 			
 		}
 		

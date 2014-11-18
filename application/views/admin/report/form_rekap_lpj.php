@@ -91,6 +91,7 @@
 							  <h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
 							  <?php echo $nm_entity; ?><br /></h4>
 							  <h5 class="text-center"><?php echo $period; ?></h5>
+							  <br />
 							  <div class="table-responsive">
 							  <!-- table -->
 							  <table class="table table-bordered table-condensed">
@@ -182,10 +183,111 @@
 											<td align="right"><?php echo amount_format($sum_kuitansi); ?></td>
 											<td align="right"><?php echo amount_format($sum_total_saldo_up); ?></td>
 										</tr>
-										<?php
-									?>
 								</tbody>
 							  </table>
+							<?php
+							}
+							else if (count($rekap_satker_penerimaan))
+							{
+						
+							?>
+							  <hr />
+							  <h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
+							  <?php echo $nm_entity; ?><br /></h4>
+							  <h5 class="text-center"><?php echo $period; ?></h5>
+							  <br />
+							  <div class="table-responsive">
+							  <!-- table -->
+							  <table class="table table-bordered table-condensed">
+								<thead style="font-size:11px;">
+									<tr class="bg-light lter">
+										<th colspan="2">Kode</th>
+										<th rowspan="2">Uraian Satker</th>
+										<th colspan="3">Saldo Kas</th>
+										<th colspan="4">Saldo Penerimaan dan Penyetoran</th>
+									</tr>
+									<tr class="bg-light lter">
+										
+										<th>B.A.</th>
+										<th>Satker</th>
+										
+										<th>
+											Kas Tunai
+										</th>
+										<th>
+											Kas Bank
+										</th>
+										<th>
+											Jumlah
+										</th>
+										<th>
+											Saldo Awal
+										</th>
+										<th>Penerimaan</th>
+										<th>Penyetoran</th>
+										<th>Saldo</th>
+									</tr>
+								</thead>
+								<tbody>
+									<?php 
+										foreach ($rekap_satker_penerimaan as $kementerian => $groups) 
+										{
+										?>
+											<tr style="font-weight: bold; font-size:11px;">
+												<td class="bg-light dk" colspan="10"><?php echo $kementerian; ?></td>
+											</tr>
+											
+										<?php
+											foreach ($groups as $satker) 
+											{
+												// sum total
+												$sum_kas_tunai 	+= $satker['kas_tunai'];
+												$sum_kas_bank 	+= $satker['kas_bank'];
+												$sum_saldo_awal	+= $satker['saldo_awal'];
+												$sum_penerimaan += $satker['penerimaan'];
+												$sum_penyetoran	+= $satker['penyetoran'];
+												
+												$sum_saldo_kas_penerimaan = $satker['kas_tunai'] + $satker['kas_bank'];
+												$sum_saldo_penerimaan_setor = $satker['saldo_awal'] + $satker['penerimaan'] - $satker['penyetoran'];
+												
+												?>
+													
+													<tr style="font-size:11px;">
+														<td></td>
+														<td><?php echo $satker['kd_satker']; ?></td>
+														<td style='white-space:normal;'><?php echo $satker['nm_satker']; ?></td>
+														<td align="right"><?php echo amount_format($satker['kas_tunai']); ?></td>
+														<td align="right"><?php echo amount_format($satker['kas_bank']); ?></td>
+														<td align="right" style="font-weight:bold;"><?php echo amount_format($sum_saldo_kas_penerimaan); ?></td>
+														<td align="right"><?php echo amount_format($satker['saldo_awal']); ?></td>
+														<td align="right"><?php echo amount_format($satker['penerimaan']); ?></td>
+														<td align="right"><?php echo amount_format($satker['penyetoran']); ?></td>
+														<td align="right" style="font-weight:bold;"><?php echo amount_format($sum_saldo_penerimaan_setor); ?></td>
+													</tr>
+													
+												<?php
+											
+											}
+										}
+										
+										$sum_total_saldo_kas_penerimaan = $sum_kas_tunai + $sum_kas_bank;
+										$sum_total_saldo_penerimaan_setor = $sum_saldo_awal + $sum_penerimaan - $sum_penyetoran;
+										
+										?>
+										
+										<tr style="font-size:11px;font-weight:bold;" class="bg-light dk">
+											<td colspan="3" style="white-space:normal;">JUMLAH TOTAL <?php echo strtoupper($nm_entity); ?></td>
+											<td align="right"><?php echo amount_format($sum_kas_tunai); ?></td>
+											<td align="right"><?php echo amount_format($sum_kas_bank); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_kas_penerimaan); ?></td>
+											<td align="right"><?php echo amount_format($sum_saldo_awal); ?></td>
+											<td align="right"><?php echo amount_format($sum_penerimaan); ?></td>
+											<td align="right"><?php echo amount_format($sum_penyetoran); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_penerimaan_setor); ?></td>
+										</tr>
+								</tbody>
+							  </table>
+							  
 							<?php
 							}
 					   ?>
