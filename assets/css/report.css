@@ -79,8 +79,17 @@
 }
 .content-report .title{
 	text-align: center;
-	font-size: 11px;
+	font-size: 13px;
 	font-weight: bold;
+}
+.content-report .bgcolor{
+	background-color: #F0F0F0;
+}
+.content-report th{
+	height: 30px;
+}
+.content-report td{
+	height:35px;
 }
 #footer {
 	float: left;
