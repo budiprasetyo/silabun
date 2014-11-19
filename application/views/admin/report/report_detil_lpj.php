@@ -6,6 +6,10 @@
 		header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		
 		?>
+			
+		  <h3><?php echo ucwords($subtitle); ?><br />
+		  <?php echo $nm_entity; ?><br /></h3>
+		  <h4><?php echo $period; ?></h4>
 			<table border="1">
 				<thead>
 					<tr>
@@ -161,6 +165,10 @@
 		header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		
 		?>
+		
+		  <h3><?php echo ucwords($subtitle); ?><br />
+		  <?php echo $nm_entity; ?><br /></h3>
+		  <h4 class="text-center"><?php echo $period; ?></h4>
 			<table border="1">
 				<thead>
 					<tr>

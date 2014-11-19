@@ -74,8 +74,13 @@
 									echo form_submit('submit', 'XLSX', $attributes);
 								?>
 								<?php 
-									$attributes = 'class = "btn btn-danger btn-grad"';
-									echo form_submit('submit', 'PDF', $attributes);
+									$submit_pdf = array(
+										'name'		=> 'submit',
+										'value'		=> 'PDF',
+										'class'		=> 'btn btn-danger btn-grad',
+										//~ 'onClick'	=> "this.form.target='_blank';return true;"
+									);
+									echo form_submit($submit_pdf);
 								?>
 							</div><!--/.col-lg-12 -->
 						</div><!--/.btn-group -->
