@@ -190,6 +190,10 @@ span.pull-right{
 .fa .fa-twitter { background-image: url(images/icon.twitter.gif) no-repeat; }
 .fa .fa-google-plus { background-image: url(images/icon.gplus.gif) no-repeat; }
 .fa .fa-linkedin { background-image: url(images/icon.linkedin.gif) no-repeat; }
+/* export to excel */
+.xlsstr6{
+	mso-number-format:"000000";
+}
 /* retina display */
 /*
 @media 
