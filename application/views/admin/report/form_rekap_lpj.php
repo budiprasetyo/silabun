@@ -89,7 +89,8 @@
 					  </form>
 					  
 					  <?php 
-							if (count($rekap_satker))
+							if (count($rekap_satker)
+								&& $id_entities === '1')
 							{
 							?>
 							  <hr />
@@ -192,9 +193,10 @@
 							  </table>
 							<?php
 							}
-							else if (count($rekap_satker_penerimaan))
+							else if (count($rekap_satker_penerimaan)
+									&& $id_entities === '1')
 							{
-						
+								
 							?>
 							  <hr />
 							  <h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
@@ -271,7 +273,6 @@
 													</tr>
 													
 												<?php
-											
 											}
 										}
 										
@@ -293,6 +294,184 @@
 								</tbody>
 							  </table>
 							  
+							<?php
+							}
+							// Rekap Kanwil Pengeluaran
+							else if ( count($rekap_lpjs)
+									&& $id_entities === '2')
+							{
+							?>
+								<hr />
+								<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
+								<?php echo $nm_entity; ?><br /></h4>
+								<h5 class="text-center"><?php echo $period; ?></h5>
+								<br />
+								<div class="table-responsive">
+								<!-- table -->
+								<table class="table table-bordered table-condensed table-striped">
+									<thead style="font-size:11px;">
+										<tr class="bg-light lter">
+											<th rowspan="2">B.A.</th>
+											<th rowspan="2">Kementerian/<br />Lembaga</th>
+											<th rowspan="2">Jml.<br />LPJ</th>
+											<th colspan="5">Saldo Kas Menurut Buku Pembantu</th>
+											<th colspan="3">Uang Persediaan</th>
+										</tr>
+										<tr class="bg-light lter">
+											<th>
+												BP Uang<br />
+												Persediaan
+											</th>
+											<th>
+												BP<br />
+												LS Bendahara
+											</th>
+											<th>
+												BP<br />
+												Pajak
+											</th>
+											<th>
+												BP<br />
+												Lain-Lain
+											</th>
+											<th>Jumlah</th>
+											<th>Saldo</th>
+											<th>Kuitansi</th>
+											<th>Jumlah</th>
+										</tr>
+									</thead>
+									<tbody style="font-size:11px;">
+										<?php 
+											foreach ($rekap_lpjs as $rekap_lpj) 
+											{
+												// total sum
+												$sum_total_jml_lpj += $rekap_lpj->jml_lpj;
+												$sum_total_uang_persediaan += $rekap_lpj->uang_persediaan;
+												$sum_total_ls_bendahara += $rekap_lpj->ls_bendahara;
+												$sum_total_pajak += $rekap_lpj->pajak;
+												$sum_total_pengeluaran_lain += $rekap_lpj->pengeluaran_lain;
+												$sum_total_saldo += $rekap_lpj->saldo;
+												$sum_total_kuitansi += $rekap_lpj->kuitansi;
+												
+												$sum_total_saldo_kas_bp = $sum_total_uang_persediaan + $sum_total_ls_bendahara + $sum_total_pajak + $sum_total_pengeluaran_lain;
+												$sum_total_saldo_up = $sum_total_saldo + $sum_total_kuitansi;
+												
+												$saldo_kas = $rekap_lpj->uang_persediaan + $rekap_lpj->ls_bendahara + $rekap_lpj->pajak + $rekap_lpj->pengeluaran_lain;
+												$saldo_penerimaan = $rekap_lpj->saldo + $rekap_lpj->kuitansi;
+										?>
+											<tr>
+												<td align="center"><?php echo $rekap_lpj->kd_kementerian; ?></td>
+												<td style="white-space:normal;"><?php echo ucwords(strtolower($rekap_lpj->nm_kementerian)); ?></td>
+												<td align="center"><?php echo amount_format($rekap_lpj->jml_lpj); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->uang_persediaan); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->ls_bendahara); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->pajak); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->pengeluaran_lain); ?></td>
+												<td align="right"><?php echo amount_format($saldo_kas); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->saldo); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->kuitansi); ?></td>
+												<td align="right"><?php echo amount_format($saldo_penerimaan); ?></td>
+											</tr>
+										<?php
+											}
+										?>
+										<tr style="font-weight:bold;">
+											<td colspan="2" align="center">Jumlah</td>
+											<td align="center"><?php echo amount_format($sum_total_jml_lpj); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_uang_persediaan); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_ls_bendahara); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_pajak); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_pengeluaran_lain); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_kas_bp); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_kuitansi); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_up); ?></td>
+										</tr>
+									</tbody>
+								</table>
+							<?php
+							}
+							// Rekap Kanwil Penerimaan
+							else if ( count($rekap_penerimaan_lpjs)
+									&& $id_entities === '2')
+							{
+							?>
+								<hr />
+								<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
+								<?php echo $nm_entity; ?><br /></h4>
+								<h5 class="text-center"><?php echo $period; ?></h5>
+								<br />
+								<div class="table-responsive">
+								<!-- table -->
+								<table class="table table-bordered table-condensed table-striped">
+									<thead style="font-size:11px;">
+										<tr class="bg-light lter">
+											<th rowspan="2">B.A.</th>
+											<th rowspan="2">Kementerian/<br />Lembaga</th>
+											<th rowspan="2">Jml.<br />LPJ</th>
+											<th colspan="3">Saldo Kas</th>
+											<th colspan="4">Saldo Penerimaan dan Penyetoran</th>
+										</tr>
+										<tr class="bg-light lter">
+											<th>
+												Kas Tunai
+											</th>
+											<th>
+												Kas Bank
+											</th>
+											<th>Jumlah</th>
+											<th>Saldo Awal</th>
+											<th>Penerimaan</th>
+											<th>Penyetoran ke Kas Negara</th>
+											<th>Saldo</th>
+										</tr>
+									</thead>
+									<tbody style="font-size:11px;">
+										<?php 
+											foreach ($rekap_penerimaan_lpjs as $rekap_lpj) 
+											{
+												// total sum
+												$sum_total_jml_lpj += $rekap_lpj->jml_lpj;
+												$sum_total_kas_tunai += $rekap_lpj->kas_tunai;
+												$sum_total_kas_bank += $rekap_lpj->kas_bank;
+												$sum_total_saldo_awal += $rekap_lpj->saldo_awal;
+												$sum_total_penerimaan += $rekap_lpj->penerimaan;
+												$sum_total_penyetoran += $rekap_lpj->penyetoran;
+												
+												$sum_total_saldo_kas = $sum_total_kas_tunai + $sum_total_kas_bank;
+												$sum_total_saldo_penerimaan_setor = $sum_total_saldo_awal + $sum_total_penerimaan - $sum_total_penyetoran;
+												
+												$saldo_kas = $rekap_lpj->kas_tunai + $rekap_lpj->kas_bank;
+												$saldo_penerimaan_setor = $rekap_lpj->saldo_awal + $rekap_lpj->penerimaan - $rekap_lpj->penyetoran;
+										?>
+											<tr>
+												<td align="center"><?php echo $rekap_lpj->kd_kementerian; ?></td>
+												<td style="white-space:normal;"><?php echo ucwords(strtolower($rekap_lpj->nm_kementerian)); ?></td>
+												<td align="center"><?php echo amount_format($rekap_lpj->jml_lpj); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->kas_tunai); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->kas_bank); ?></td>
+												<td align="right"><?php echo amount_format($saldo_kas); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->saldo_awal); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->penerimaan); ?></td>
+												<td align="right"><?php echo amount_format($rekap_lpj->penyetoran); ?></td>
+												<td align="right"><?php echo amount_format($saldo_penerimaan_setor); ?></td>
+											</tr>
+										<?php
+											}
+										?>
+										<tr style="font-weight:bold;">
+											<td colspan="2" align="center">Jumlah</td>
+											<td align="center"><?php echo amount_format($sum_total_jml_lpj); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_kas_tunai); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_kas_bank); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_kas); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_awal); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_penerimaan); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_penyetoran); ?></td>
+											<td align="right"><?php echo amount_format($sum_total_saldo_penerimaan_setor); ?></td>
+										</tr>
+									</tbody>
+								</table>
 							<?php
 							}
 					   ?>
