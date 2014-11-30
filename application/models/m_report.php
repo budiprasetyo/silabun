@@ -75,6 +75,25 @@ class M_report extends MY_Model
 					)
 	);
 	
+	// rekap lpj
+	public $rules_rekap_lpj = array (
+					'year'			=> array (
+						'field'	=> 'year',
+						'label'	=> 'tahun',
+						'rules'	=> 'trim|required|max_length[4]'
+					),
+					'month'			=> array (
+						'field'	=> 'month',
+						'label'	=> 'bulan',
+						'rules'	=> 'trim|required|max_length[2]'
+					),
+					'post'			=> array (
+						'field'	=> 'post',
+						'label'	=> 'pos penerimaan/pengeluaran',
+						'rules'	=> 'trim|required'
+					)
+	);
+	
 	/**
 	 * @brief rekap_lpj_pengeluaran
 	 * @param $id_ref_satker give limitation only it's own kppn or kanwil or pkn
@@ -145,6 +164,10 @@ class M_report extends MY_Model
 			{
 				return $query_kppn;
 				$query_kppn->free_result();
+			}
+			else
+			{
+				return FALSE;
 			}
 		}
 		
@@ -362,6 +385,10 @@ class M_report extends MY_Model
 			return $query_kanwil;
 			$query_kanwil->free_result();
 		}
+		else
+		{
+			return FALSE;
+		}
 	}
 	
 	public function detil_lpj_penerimaan($id_ref_kanwil, $year, $month)
@@ -386,6 +413,10 @@ class M_report extends MY_Model
 		{
 			return $query_kanwil;
 			$query_kanwil->free_result();
+		}
+		else
+		{
+			return FALSE;
 		}
 	}
 }
