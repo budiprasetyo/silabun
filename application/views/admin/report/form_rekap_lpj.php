@@ -296,14 +296,15 @@
 							  
 							<?php
 							}
-							// Rekap Kanwil Pengeluaran
+							// Rekap Kanwil & PKN Pengeluaran
 							else if ( count($rekap_lpjs)
-									&& $id_entities === '2')
+									&& ( $id_entities === '2' 
+									OR $id_entities === '3' ))
 							{
 							?>
 								<hr />
 								<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
-								<?php echo $nm_entity; ?><br /></h4>
+								<?php if($id_entities === '2') { echo $nm_entity; } ?><br /></h4>
 								<h5 class="text-center"><?php echo $period; ?></h5>
 								<br />
 								<div class="table-responsive">
@@ -393,12 +394,13 @@
 							}
 							// Rekap Kanwil Penerimaan
 							else if ( count($rekap_penerimaan_lpjs)
-									&& $id_entities === '2')
+									&& ( $id_entities === '2' 
+									OR $id_entities === '3' ))
 							{
 							?>
 								<hr />
 								<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
-								<?php echo $nm_entity; ?><br /></h4>
+								<?php if($id_entities === '2') { echo $nm_entity; } ?><br /></h4>
 								<h5 class="text-center"><?php echo $period; ?></h5>
 								<br />
 								<div class="table-responsive">
@@ -422,7 +424,7 @@
 											<th>Jumlah</th>
 											<th>Saldo Awal</th>
 											<th>Penerimaan</th>
-											<th>Penyetoran ke Kas Negara</th>
+											<th>Penyetoran <br />ke Kas Negara</th>
 											<th>Saldo</th>
 										</tr>
 									</thead>
