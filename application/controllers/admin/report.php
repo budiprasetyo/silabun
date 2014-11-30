@@ -88,6 +88,7 @@ class Report extends Admin_Controller
 		}
 	}
 	
+	// used =====>
 	public function rekap_lpj($post)
 	{
 		// load helper
@@ -96,18 +97,19 @@ class Report extends Admin_Controller
 		$this->data['year'] = date('Y');
 		// load m_referensi model
 		$this->load->model('m_referensi');
-		// get id_ref_kppn
-		$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-		// get id_ref_kanwil
-		$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
 		// load m_referensi
 		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
 
+		// rules section
+		$rules = $this->m_report->rules_rekap_lpj;
+		$this->form_validation->set_rules($rules);
 		
 		if ( ($this->data['id_entities'] === '1')
-			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE)
+			&& $this->form_validation->run() == TRUE ) 
 		{
+		
+			// get id_ref_kppn
+			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
 			// month
 			$this->data['month'] = $this->input->post('month');
 			// post
@@ -131,6 +133,13 @@ class Report extends Admin_Controller
 			
 				// fetch rekap
 				$rekap_lpjs = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
+				
+				// if rekap_lpjs is false
+				if ( $rekap_lpjs == FALSE )
+				{
+					$this->session->set_flashdata('method', 'rekap_lpj');
+					redirect('admin/report/message');
+				}
 				
 				// parent array
 				$rekap_satker = array();
@@ -156,6 +165,13 @@ class Report extends Admin_Controller
 				// fetch rekap
 				$rekap_penerimaan_lpjs = $this->m_report->rekap_lpj_penerimaan($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
 				
+				// if rekap_lpjs is false
+				if ( $rekap_penerimaan_lpjs == FALSE )
+				{
+					$this->session->set_flashdata('method', 'rekap_lpj');
+					redirect('admin/report/message');
+				}
+				
 				// parent array
 				$rekap_satker_penerimaan = array();
 				
@@ -176,10 +192,90 @@ class Report extends Admin_Controller
 			
 		}
 		// if kanwil
-		else if ( ($this->data['id_entities'] === '2')
-			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE)
+		else if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
+				&& $this->form_validation->run() == TRUE )
 		{
+			// pengeluaran
+			if ($this->input->post('post') === 'pengeluaran')
+			{
+				
+				// get id_ref_kanwil
+				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+				// month
+				$this->data['month'] = $this->input->post('month');
+				// post
+				$this->data['post'] = $this->input->post('post');
+				
+				// period
+				$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . $this->data['post'];
+				
+				// if kanwil
+				if ($this->data['id_entities'] === '2')
+				{
+					// subtitle
+					$this->data['subtitle'] = 'Rekapitulasi LPJ Bendahara ' . $this->data['post'];
+				
+					// nama entity
+					$this->data['nm_entity'] = 'Kanwil ' . ucwords(strtolower($kanwil->nm_kanwil));
+					
+					// fetch rekap
+					$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+				}
+				// if pkn
+				else if ($this->data['id_entities'] === '3')
+				{
+					// subtitle
+					$this->data['subtitle'] = 'Rekapitulasi LPJ Bendahara ' . $this->data['post'] . '<br />' . 'Per Bagian Anggaran Tingkat Nasional';
+				
+					// fetch rekap
+					$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month'], FALSE);
+				}
+				
+				
+				
+			}
+			else if ($this->input->post('post') === 'penerimaan')
+			{
+				
+				// get id_ref_kanwil
+				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+				// month
+				$this->data['month'] = $this->input->post('month');
+				// post
+				$this->data['post'] = $this->input->post('post');
+				
+				// period
+				$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . $this->data['post'];
+				
+				// if kanwil
+				if ($this->data['id_entities'] === '2')
+				{
+					// subtitle
+					$this->data['subtitle'] = 'Rekapitulasi LPJ Bendahara ' . $this->data['post'];
+				
+					// nama entity
+					$this->data['nm_entity'] = 'Kanwil ' . ucwords(strtolower($kanwil->nm_kanwil));
+					
+					// fetch rekap
+					$this->data['rekap_penerimaan_lpjs'] = $this->m_report->rekap_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+				}
+				// if pkn
+				else if ($this->data['id_entities'] === '3')
+				{
+					// subtitle
+					$this->data['subtitle'] = 'Rekapitulasi LPJ Bendahara ' . $this->data['post'] . '<br />' . 'Per Bagian Anggaran Tingkat Nasional';
+					
+					// fetch rekap
+					$this->data['rekap_penerimaan_lpjs'] = $this->m_report->rekap_lpj_penerimaan(NULL, $this->data['year'], $this->data['month'], FALSE);
+				}
+				
+			}
 			
 		}
 		
@@ -384,6 +480,7 @@ class Report extends Admin_Controller
 		$this->mpdf->Output();
 	}
 	
+	// used ====>
 	public function detil_lpj()
 	{
 		$post = $this->input->post('post');
@@ -416,79 +513,94 @@ class Report extends Admin_Controller
 		// load m_referensi
 		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
 		
+		// rules section
+		$rules = $this->m_report->rules_rekap_lpj;
+		$this->form_validation->set_rules($rules);
 		
-		
-		// if kanwil or pkn pengeluaran
-		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
-			&& $this->input->post('post') === 'pengeluaran'
-			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE)
+		if ( $this->form_validation->run() == TRUE ) 
 		{
-			// subtitle
-			$this->data['subtitle'] = 'LPJ ' . $post . ' Per Satuan Kerja Tingkat Wilayah';
-			// nama entity
-			$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
-			// period
-			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
-			// filename
-			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
-			
-			// fetch rekap
-			$detil_lpjs = $this->m_report->detil_lpj_pengeluaran($id_ref_kanwil, $this->data['year'], $this->data['month']);
-
-			// parent array
-			$detil_kanwil = array();
-
-			foreach ($detil_lpjs->result_array() as $detil_lpj) 
+		
+			// if kanwil or pkn pengeluaran
+			if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
+				&& $this->input->post('post') === 'pengeluaran')
 			{
-
-				if ( !isset($detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']]) ) 
+				// subtitle
+				$this->data['subtitle'] = 'LPJ ' . $post . ' Per Satuan Kerja Tingkat Wilayah';
+				// nama entity
+				$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
+				// period
+				$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
+				
+				// fetch rekap
+				$detil_lpjs = $this->m_report->detil_lpj_pengeluaran($id_ref_kanwil, $this->data['year'], $this->data['month']);
+				
+				// if detil lpjs is not exists
+				if ( $detil_lpjs == FALSE )
 				{
-					$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']] = array();
+					$this->session->set_flashdata('method', 'detil_lpj');
+					redirect('admin/report/message');
 				}
 				
-				$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']][$detil_lpj['kd_kementerian'] . ' &nbsp;' . $detil_lpj['nm_kementerian']][] = $detil_lpj;
-				
-			}
-			
-			$this->data['detil_kanwil'] = $detil_kanwil;
-			
-		}
-		// if kanwil or pkn penerimaan
-		else if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
-			&& $this->input->post('post') === 'penerimaan'
-			&& $this->input->post('year') == TRUE
-			&& $this->input->post('month') == TRUE) 
-		{
-			// subtitle
-			$this->data['subtitle'] = 'LPJ ' . $post . ' Per Satuan Kerja Tingkat Wilayah';
-			// nama entity
-			$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
-			// period
-			$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
-			// filename
-			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
-			
-			// fetch rekap
-			$detil_lpjs = $this->m_report->detil_lpj_penerimaan($id_ref_kanwil, $this->data['year'], $this->data['month']);
+				// parent array
+				$detil_kanwil = array();
 
-			// parent array
-			$detil_kanwil_penerimaan = array();
-
-			foreach ($detil_lpjs->result_array() as $detil_lpj) 
-			{
-				if ( !isset($detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']]) ) 
+				foreach ($detil_lpjs->result_array() as $detil_lpj) 
 				{
-					$detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']] = array();
+
+					if ( !isset($detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']]) ) 
+					{
+						$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']] = array();
+					}
+					
+					$detil_kanwil[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']][$detil_lpj['kd_kementerian'] . ' &nbsp;' . $detil_lpj['nm_kementerian']][] = $detil_lpj;
+					
 				}
 				
-				$detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']][$detil_lpj['kd_kementerian'] . ' &nbsp;' . $detil_lpj['nm_kementerian']][] = $detil_lpj;
+				$this->data['detil_kanwil'] = $detil_kanwil;
+				
 			}
-			
-			$this->data['detil_kanwil_penerimaan'] = $detil_kanwil_penerimaan;
-			
+			// if kanwil or pkn penerimaan
+			else if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
+				&& $this->input->post('post') === 'penerimaan') 
+			{
+				// subtitle
+				$this->data['subtitle'] = 'LPJ ' . $post . ' Per Satuan Kerja Tingkat Wilayah';
+				// nama entity
+				$this->data['nm_entity'] = 'Kanwil DJPBN ' . ucwords(strtolower($kanwil->nm_kanwil));
+				// period
+				$this->data['period'] = 'Bulan ' . get_month_name($this->input->post('month')) . ' ' . $this->input->post('year');
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $id_ref_kanwil . '_' . $post;
+				
+				// fetch rekap
+				$detil_lpjs = $this->m_report->detil_lpj_penerimaan($id_ref_kanwil, $this->data['year'], $this->data['month']);
+
+				// if detil lpjs is not exists
+				if ( $detil_lpjs == FALSE )
+				{
+					$this->session->set_flashdata('method', 'detil_lpj');
+					redirect('admin/report/message');
+				}
+				
+				// parent array
+				$detil_kanwil_penerimaan = array();
+
+				foreach ($detil_lpjs->result_array() as $detil_lpj) 
+				{
+					if ( !isset($detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']]) ) 
+					{
+						$detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']] = array();
+					}
+					
+					$detil_kanwil_penerimaan[$detil_lpj['kd_kppn'] . ' ' . $detil_lpj['nm_kppn']][$detil_lpj['kd_kementerian'] . ' &nbsp;' . $detil_lpj['nm_kementerian']][] = $detil_lpj;
+				}
+				
+				$this->data['detil_kanwil_penerimaan'] = $detil_kanwil_penerimaan;
+				
+			}
 		}
-		
 		
 		// Tampilkan
 		if ($this->input->post('submit') === 'Tampilkan'
@@ -501,7 +613,36 @@ class Report extends Admin_Controller
 		// XLSX
 		else if ($this->input->post('submit') === 'XLSX')
 		{
+			$this->data['output'] = $this->input->post('submit');
 			$this->load->view('admin/report/report_detil_lpj', $this->data);
+		}
+		// PDF
+		else if ($this->input->post('submit') === 'PDF')
+		{
+			
+			$this->data['output'] = $this->input->post('submit');
+			// load m_referensi
+			$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
+			// send data to view
+			$this->data['content'] = $this->load->view('admin/report/report_detil_lpj', $this->data, TRUE);
+			
+			// send to report view
+			// pdf section
+			$this->load->library('mpdf');
+			$this->mpdf = new mPDF();
+			$this->mpdf->AddPage('L', 	// L - landscape, P - portrait
+				'', '', '', '',
+				12, 					// margin_left
+				12, 					// margin right
+				10, 					// margin top
+				10, 					// margin bottom
+				'', 					// margin header
+				''); 					// margin footer
+			$css	= file_get_contents('assets/css/report.css');
+			$html 	= $this->load->view('admin/components/report_header_laporan', $this->data, TRUE);
+			$this->mpdf->WriteHTML($css, 1);
+			$this->mpdf->WriteHTML($html, 2);
+			$this->mpdf->Output($this->data['filename'] . '.pdf','D');
 		}
 	}
 	
@@ -551,5 +692,19 @@ class Report extends Admin_Controller
 			$this->load->view('admin/template/_layout_admin', $this->data);
 			
 		}
+	}
+	
+	
+	public function message()
+	{
+		$this->data['message_title'] = 'Informasi Data';
+		$this->data['message'] = 'Data bulan ini tidak ada';
+		// load view message
+		$this->load->view('admin/components/message', $this->data);
+		// get flash variable
+		$method = $this->session->flashdata('method');
+		
+		// redirect to index page
+		$this->output->set_header('refresh:1; url=' . $method);
 	}
 }
