@@ -178,10 +178,10 @@ class Report extends Admin_Controller
 
 					if ( !isset($rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']]) ) 
 					{
-						$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']] = array();
+						$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']] = array();
 					}
 					
-					$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']][] = $rekap_penerimaan_lpj;
+					$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']][] = $rekap_penerimaan_lpj;
 					
 				}
 				
