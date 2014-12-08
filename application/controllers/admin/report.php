@@ -143,21 +143,19 @@ class Report extends Admin_Controller
 				
 				// parent array
 				$rekap_satker = array();
-				
+
 				foreach ($rekap_lpjs->result_array() as $rekap_lpj) 
 				{
-
-					if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_lpj['nm_kementerian']]) ) 
+					if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']]) )
 					{
-						$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']] = array();
+						$rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']] = array();
 					}
 					
-					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
+					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
 					
 				}
 				
 				$this->data['rekap_satker'] = $rekap_satker;
-				
 			}
 			// penerimaan
 			else if ($this->input->post('post') === 'penerimaan')
@@ -324,6 +322,7 @@ class Report extends Admin_Controller
 		
 	}
 	
+	/*
 	public function report_rekap_lpj_pengeluaran()
 	{
 		// load helper
@@ -401,7 +400,9 @@ class Report extends Admin_Controller
 		$this->mpdf->WriteHTML($html, 2);
 		$this->mpdf->Output();
 	}
+	*/
 	
+	/*
 	public function report_rekap_lpj_penerimaan()
 	{
 		// load helper
@@ -479,13 +480,13 @@ class Report extends Admin_Controller
 		$this->mpdf->WriteHTML($html, 2);
 		$this->mpdf->Output();
 	}
+	*/
 	
 	// used ====>
 	public function detil_lpj()
 	{
 		$post = $this->input->post('post');
-		$this->data['year'] = date('Y');
-		
+		//~ $this->data['year'] = date('Y');
 		
 		// load helper
 		$this->load->helper('datetime');
@@ -644,6 +645,25 @@ class Report extends Admin_Controller
 			$this->mpdf->WriteHTML($html, 2);
 			$this->mpdf->Output($this->data['filename'] . '.pdf','D');
 		}
+	}
+	
+	public function rekening_bendahara()
+	{
+		// get year
+		$this->data['year'] = date('Y');
+
+		// load helper
+		$this->load->helper('datetime');
+		
+		// Tampilkan
+		if ($this->input->post('submit') === 'Tampilkan'
+			OR 	$this->input->post() == FALSE)
+		{
+			// path to page folder view
+			$this->data['subview'] = 'admin/report/form_rekening_bendahara';
+			$this->load->view('admin/template/_layout_admin', $this->data);
+		}
+		
 	}
 	
 	public function report_detil_lpj_pengeluaran()

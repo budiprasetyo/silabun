@@ -157,8 +157,8 @@ class M_report extends MY_Model
 				WHERE id_ref_kppn = ".$id_ref_satker."
 				AND tahun = '".$year."'
 				AND bulan = '".$month."'
-				GROUP BY kd_kementerian, kd_satker
-				ORDER BY kd_kementerian, kd_satker");
+				GROUP BY kd_kementerian, nm_kementerian, kd_satker, nm_satker
+				ORDER BY kd_kementerian, nm_kementerian, kd_satker, nm_satker");
 				
 			if($query_kppn->num_rows() > 0)
 			{
@@ -174,6 +174,7 @@ class M_report extends MY_Model
 		
 	}
 	
+	/*
 	public function total_sum_lpj_pengeluaran($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
 	{
 		if($is_kppn == FALSE)
@@ -234,6 +235,7 @@ class M_report extends MY_Model
 			}
 		}
 	}
+	*/
 	
 	public function rekap_lpj_penerimaan($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
 	{
@@ -301,6 +303,7 @@ class M_report extends MY_Model
 		
 	}
 	
+	/*
 	public function total_sum_lpj_penerimaan($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
 	{
 		if($is_kppn == FALSE)
@@ -361,6 +364,7 @@ class M_report extends MY_Model
 			}
 		}
 	}
+	*/
 	
 	public function detil_lpj_pengeluaran($id_ref_kanwil, $year, $month)
 	{
@@ -417,6 +421,26 @@ class M_report extends MY_Model
 		else
 		{
 			return FALSE;
+		}
+	}
+	
+	public function rekening_bendahara_pengeluaran($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
+	{
+		if($is_kppn == FALSE)
+		{
+			// conditional for pkn else for kanwil
+			if($id_ref_satker == NULL)
+			{
+				$where = " ";
+				$group = " ";
+			}
+			else
+			{
+				$where = " id_ref_kanwil = ".$id_ref_satker." AND ";
+				$group = " kd_kanwil, ";
+			}
+			
+			
 		}
 	}
 }

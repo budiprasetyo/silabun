@@ -31,7 +31,7 @@
 						<?php echo validation_errors(); ?>
 						</div>
 					<?php } ?>
-					<hr />
+
 					<form class="form-horizontal" method="post" action="">
 					  
 					  <div class="form-group">
