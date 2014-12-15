@@ -62,7 +62,7 @@ class M_upload extends MY_Model
 						  ->select('dsp_status_kirim_pengeluaran.pos_kirim')
 						  ->from('ref_satker')
 						  ->join('dsp_status_kirim_pengeluaran', 'ref_satker.id_ref_satker = dsp_status_kirim_pengeluaran.id_ref_satker', 'left')
-						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
+						  ->where('dsp_status_kirim_pengeluaran.id_ref_kppn', $id_ref_kppn)
 						  ->where('dsp_status_kirim_pengeluaran.tahun', $year)
 						  ->where('dsp_status_kirim_pengeluaran.bulan', $month)
 						  ->where('ref_satker.lpj_status_pengeluaran', 1)
@@ -80,7 +80,7 @@ class M_upload extends MY_Model
 						  ->select('dsp_status_kirim_penerimaan.pos_kirim')
 						  ->from('ref_satker')
 						  ->join('dsp_status_kirim_penerimaan', 'ref_satker.id_ref_satker = dsp_status_kirim_penerimaan.id_ref_satker', 'left')
-						  ->where('ref_satker.id_ref_kppn', $id_ref_kppn)
+						  ->where('dsp_status_kirim_penerimaan.id_ref_kppn', $id_ref_kppn)
 						  ->where('dsp_status_kirim_penerimaan.tahun', $year)
 						  ->where('dsp_status_kirim_penerimaan.bulan', $month)
 						  ->where('ref_satker.lpj_status_penerimaan', 1)
@@ -108,7 +108,6 @@ class M_upload extends MY_Model
 	public function import_csv_rekening($path, $tables)
 	{
 		
-		
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' 
 		(id_dsp, kdsatker, nokarwas, kdrek, norek, nmrek, nmbank, nosrt, @tglsrt, saldo, kdbpp, kdkppn)
 		SET tgsrt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
@@ -124,7 +123,7 @@ class M_upload extends MY_Model
 				FROM `ref_satker`
 				LEFT JOIN `dsp_status_kirim_pengeluaran` 
 				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
-				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				WHERE `dsp_status_kirim_pengeluaran`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_pengeluaran`.`tahun` is null
 				AND `dsp_status_kirim_pengeluaran`.`bulan` is null
 				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` is null
@@ -137,7 +136,7 @@ class M_upload extends MY_Model
 				FROM `ref_satker`
 				LEFT JOIN `dsp_status_kirim_pengeluaran` 
 				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
-				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
+				WHERE `dsp_status_kirim_pengeluaran`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_pengeluaran`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_pengeluaran`.`bulan` = '".$month."'
 				AND `dsp_status_kirim_pengeluaran`.`pos_kirim` = 'K'

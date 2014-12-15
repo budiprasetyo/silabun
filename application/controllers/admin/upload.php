@@ -340,9 +340,4 @@ class Upload extends Admin_Controller
 		
 	}
 	
-	public function delete($id)
-	{
-		$this->m_page->delete($id);
-		redirect('admin/page');
-	}
 }
