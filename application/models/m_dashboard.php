@@ -49,6 +49,9 @@ class M_dashboard extends MY_Model
 							->group_by('dsp_report_rekap_lpjk.id_ref_kanwil')
 							->group_by('dsp_report_rekap_lpjk.kd_kanwil')
 							->group_by('dsp_report_rekap_lpjk.nm_kanwil')
+							->order_by('dsp_report_rekap_lpjk.tahun')
+							->order_by('dsp_report_rekap_lpjk.bulan')
+							->order_by('dsp_report_rekap_lpjk.kd_kanwil')
 							->get();
 							
 		$rekap_penerimaan = $this->db->select('dsp_report_rekap_lpjt.tahun')
@@ -70,6 +73,9 @@ class M_dashboard extends MY_Model
 							->group_by('dsp_report_rekap_lpjt.id_ref_kanwil')
 							->group_by('dsp_report_rekap_lpjt.kd_kanwil')
 							->group_by('dsp_report_rekap_lpjt.nm_kanwil')
+							->order_by('dsp_report_rekap_lpjt.tahun')
+							->order_by('dsp_report_rekap_lpjt.bulan')
+							->order_by('dsp_report_rekap_lpjt.kd_kanwil')
 							->get();
 		
 							
