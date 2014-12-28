@@ -214,6 +214,10 @@
 						  <i class="fa fa-angle-right"></i>&nbsp;Detil LPJ</a> 
 					  </li>
 					  <?php } ?>
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/report/rekening_bendahara">
+						  <i class="fa fa-angle-right"></i>&nbsp;Rekening Bendahara</a> 
+					  </li>
 					</ul>
 				  </li>
 				  
