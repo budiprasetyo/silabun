@@ -137,6 +137,7 @@ class Report extends Admin_Controller
 				// if rekap_lpjs is false
 				if ( $rekap_lpjs == FALSE )
 				{
+					$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
 					$this->session->set_flashdata('method', 'rekap_lpj');
 					redirect('admin/report/message');
 				}
@@ -166,6 +167,7 @@ class Report extends Admin_Controller
 				// if rekap_lpjs is false
 				if ( $rekap_penerimaan_lpjs == FALSE )
 				{
+					$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
 					$this->session->set_flashdata('method', 'rekap_lpj');
 					redirect('admin/report/message');
 				}
@@ -221,6 +223,14 @@ class Report extends Admin_Controller
 					
 					// fetch rekap
 					$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+					
+					// if rekap_lpjs is false
+					if ( $this->data['rekap_lpjs'] === NULL )
+					{
+						$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
+						$this->session->set_flashdata('method', 'rekap_lpj');
+						redirect('admin/report/message');
+					}
 				}
 				// if pkn
 				else if ($this->data['id_entities'] === '3')
@@ -262,6 +272,14 @@ class Report extends Admin_Controller
 					
 					// fetch rekap
 					$this->data['rekap_penerimaan_lpjs'] = $this->m_report->rekap_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
+					
+					// if rekap_penerimaan_lpjs is false
+					if ( $this->data['rekap_penerimaan_lpjs'] === NULL )
+					{
+						$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
+						$this->session->set_flashdata('method', 'rekap_lpj');
+						redirect('admin/report/message');
+					}
 				}
 				// if pkn
 				else if ($this->data['id_entities'] === '3')
@@ -540,6 +558,7 @@ class Report extends Admin_Controller
 				// if detil lpjs is not exists
 				if ( $detil_lpjs == FALSE )
 				{
+					$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
 					$this->session->set_flashdata('method', 'detil_lpj');
 					redirect('admin/report/message');
 				}
@@ -581,6 +600,7 @@ class Report extends Admin_Controller
 				// if detil lpjs is not exists
 				if ( $detil_lpjs == FALSE )
 				{
+					$this->session->set_flashdata('message', 'Data bulan ini tidak ada');
 					$this->session->set_flashdata('method', 'detil_lpj');
 					redirect('admin/report/message');
 				}
@@ -655,6 +675,118 @@ class Report extends Admin_Controller
 		// load helper
 		$this->load->helper('datetime');
 		
+		// load m_referensi model
+		$this->load->model('m_referensi');
+
+		// rules section
+		$rules = $this->m_report->rules_rekap_lpj;
+		$this->form_validation->set_rules($rules);
+		
+		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
+				&& $this->form_validation->run() == TRUE )
+		{
+			// get id_ref_kanwil
+			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+			// month
+			$this->data['month'] = $this->input->post('month');
+			// post
+			$this->data['post'] = $this->input->post('post');
+			
+			// period
+			$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
+				
+			if ( $this->input->post('post') === 'pengeluaran' ) {
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
+				
+				// if kanwil
+				if ($this->data['id_entities'] === '2') {
+					
+					// subtitle
+					$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
+					
+					// fetch rekening pengeluaran
+					$rekening_pengeluarans = $this->m_report->rekening_bendahara_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], $is_kppn = FALSE);
+					
+					// if rekening_pengeluarans is null
+					if ( $rekening_pengeluarans === NULL )
+					{
+						$this->session->set_flashdata('message', 'Data rekening bulan ini tidak mengalami perubahan dari bulan-bulan sebelumnya');
+						$this->session->set_flashdata('method', 'rekening_bendahara');
+						redirect('admin/report/message');
+					}
+					
+					$parent_rekening_pengeluaran = array();
+					
+					foreach ($rekening_pengeluarans->result_array() as $rekening_pengeluaran) 
+					{
+						if ( !isset($parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]) )
+						{
+							$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']] = array();
+						}
+						
+						$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]['('.$rekening_pengeluaran['kd_kementerian'] . ') KEMENTERIAN ' . $rekening_pengeluaran['nm_kementerian']][] = $rekening_pengeluaran;
+						
+					}
+					
+					$this->data['parent_rekening_pengeluaran'] = $parent_rekening_pengeluaran;
+					
+				}
+				// if pkn
+				elseif ($this->data['id_entities'] === '3') {
+					
+				}
+				
+				
+			}
+			elseif ( $this->input->post('post') === 'penerimaan' ) {
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
+				
+				// if kanwil
+				if ($this->data['id_entities'] === '2') {
+					
+					// subtitle
+					$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
+					
+					// fetch rekening pengeluaran
+					$rekening_penerimaans = $this->m_report->rekening_bendahara_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], $is_kppn = FALSE);
+					
+					// if rekening_penerimaans is null
+					if ( $rekening_penerimaans === NULL )
+					{
+						$this->session->set_flashdata('message', 'Data rekening bulan ini tidak mengalami perubahan dari bulan-bulan sebelumnya');
+						$this->session->set_flashdata('method', 'rekening_bendahara');
+						redirect('admin/report/message');
+					}
+					
+					$parent_rekening_penerimaan = array();
+					
+					foreach ($rekening_penerimaans->result_array() as $rekening_penerimaan) 
+					{
+						if ( !isset($parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']]) )
+						{
+							$parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']] = array();
+						}
+						
+						$parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']]['('.$rekening_penerimaan['kd_kementerian'] . ') KEMENTERIAN ' . $rekening_penerimaan['nm_kementerian']][] = $rekening_penerimaan;
+						
+					}
+					
+					$this->data['parent_rekening_penerimaan'] = $parent_rekening_penerimaan;
+					
+				}
+				// if pkn
+				elseif ($this->data['id_entities'] === '3') {
+					
+				}
+			}
+			
+		}
+		
+		
 		// Tampilkan
 		if ($this->input->post('submit') === 'Tampilkan'
 			OR 	$this->input->post() == FALSE)
@@ -718,13 +850,17 @@ class Report extends Admin_Controller
 	public function message()
 	{
 		$this->data['message_title'] = 'Informasi Data';
-		$this->data['message'] = 'Data bulan ini tidak ada';
+		
+		$message = $this->session->flashdata('message');
+		
+		$this->data['message'] = $message;
+		
 		// load view message
 		$this->load->view('admin/components/message', $this->data);
 		// get flash variable
 		$method = $this->session->flashdata('method');
 		
 		// redirect to index page
-		$this->output->set_header('refresh:1; url=' . $method);
+		$this->output->set_header('refresh:2; url=' . $method);
 	}
 }

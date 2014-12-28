@@ -440,6 +440,52 @@ class M_report extends MY_Model
 				$group = " kd_kanwil, ";
 			}
 			
+			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
+									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+								FROM 
+									dsp_report_rekening_lpjk
+								WHERE " .$where. "tahun = '".$year."'
+								AND bulan = '".$month."'
+								GROUP BY " . $group . " kd_kementerian
+								ORDER BY " . $group . " kd_kementerian");
+								
+			if($query_kanwil_pkn->num_rows() > 0)
+			{
+				return $query_kanwil_pkn;
+			}
+			
+		}
+	}
+	
+	public function rekening_bendahara_penerimaan($id_ref_satker = NULL, $year, $month, $is_kppn = FALSE)
+	{
+		if($is_kppn == FALSE)
+		{
+			// conditional for pkn else for kanwil
+			if($id_ref_satker == NULL)
+			{
+				$where = " ";
+				$group = " ";
+			}
+			else
+			{
+				$where = " id_ref_kanwil = ".$id_ref_satker." AND ";
+				$group = " kd_kanwil, ";
+			}
+			
+			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
+									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+								FROM 
+									dsp_report_rekening_lpjt
+								WHERE " .$where. "tahun = '".$year."'
+								AND bulan = '".$month."'
+								GROUP BY " . $group . " kd_kementerian
+								ORDER BY " . $group . " kd_kementerian");
+								
+			if($query_kanwil_pkn->num_rows() > 0)
+			{
+				return $query_kanwil_pkn;
+			}
 			
 		}
 	}
