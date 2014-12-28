@@ -800,6 +800,33 @@ class Report extends Admin_Controller
 			$this->data['output'] = $this->input->post('submit');
 			$this->load->view('admin/report/report_rekening_bendahara', $this->data);
 		}
+		// PDF
+		else if ($this->input->post('submit') === 'PDF')
+		{
+			$this->data['output'] = $this->input->post('submit');
+			// load m_referensi
+			$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
+			// send data to view
+			$this->data['content'] = $this->load->view('admin/report/report_rekening_bendahara', $this->data, TRUE);
+			
+			// send to report view
+			// pdf section
+			$this->load->library('mpdf');
+			$this->mpdf = new mPDF();
+			$this->mpdf->AddPage('L', 	// L - landscape, P - portrait
+				'', '', '', '',
+				12, 					// margin_left
+				12, 					// margin right
+				10, 					// margin top
+				10, 					// margin bottom
+				'', 					// margin header
+				''); 					// margin footer
+			$css	= file_get_contents('assets/css/report.css');
+			$html 	= $this->load->view('admin/components/report_header_laporan', $this->data, TRUE);
+			$this->mpdf->WriteHTML($css, 1);
+			$this->mpdf->WriteHTML($html, 2);
+			$this->mpdf->Output($this->data['filename'] . '.pdf','D');
+		}
 		
 	}
 	
