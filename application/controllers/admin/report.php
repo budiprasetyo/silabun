@@ -786,7 +786,6 @@ class Report extends Admin_Controller
 			
 		}
 		
-		
 		// Tampilkan
 		if ($this->input->post('submit') === 'Tampilkan'
 			OR 	$this->input->post() == FALSE)
@@ -794,6 +793,12 @@ class Report extends Admin_Controller
 			// path to page folder view
 			$this->data['subview'] = 'admin/report/form_rekening_bendahara';
 			$this->load->view('admin/template/_layout_admin', $this->data);
+		}
+		// XLSX
+		else if ($this->input->post('submit') === 'XLSX')
+		{
+			$this->data['output'] = $this->input->post('submit');
+			$this->load->view('admin/report/report_rekening_bendahara', $this->data);
 		}
 		
 	}
