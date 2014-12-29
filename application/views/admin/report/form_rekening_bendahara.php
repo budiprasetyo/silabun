@@ -88,7 +88,9 @@
 					  
 					  <?php 
 						if (count($parent_rekening_pengeluaran)
-							&& $id_entities === '2') 
+							&& ($id_entities === '2'
+							OR $id_entities === '3')
+							) 
 						{
 					  ?>
 							<hr />
@@ -118,7 +120,7 @@
 									{
 								?>
 										<tr style="font-weight: bold; font-size:11px;">
-											<td class="bg-green lter" colspan="7">KPPN <?php echo $rekening_pengeluaran; ?></td>
+											<td class="bg-green lter" colspan="7"><?php echo $rekening_pengeluaran; ?></td>
 										</tr>
 								<?php
 										foreach ( $groups as $kementerian => $results ) 
@@ -151,7 +153,9 @@
 					  <?php
 						}
 						elseif (count($parent_rekening_penerimaan)
-							&& $id_entities === '2') 
+							&& ($id_entities === '2'
+							OR $id_entities === '3')
+							) 
 						{
 						?>
 							<hr />
@@ -181,7 +185,7 @@
 								{
 								?>
 										<tr style="font-weight: bold; font-size:11px;">
-											<td class="bg-green lter" colspan="7">KPPN <?php echo $rekening_penerimaan; ?></td>
+											<td class="bg-green lter" colspan="7"><?php echo $rekening_penerimaan; ?></td>
 										</tr>
 								<?php
 										foreach ( $groups as $kementerian => $results ) 
@@ -212,6 +216,113 @@
 							</table>
 							
 					  <?php
+						}
+						else if ( count($parent_rekening_kppn_pengeluaran)
+								&& $id_entities === '1' )
+						{
+						?>
+							<hr />
+							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
+							<?php echo $nm_entity; ?></h4>
+							<h5 class="text-center"><?php echo $period; ?></h5>
+							<br />
+							<div class="table-responsive">
+								<!-- table -->
+								<table class="table table-bordered table-condensed">
+									<thead style="font-size:11px;">
+										<tr class="bg-green dker">
+											<th>Kementerian</th>
+											<th>Satker</th>
+											<th>Nama Bank</th>
+											<th>Nama Rekening</th>
+											<th>No. Rekening</th>
+											<th>No. Surat</th>
+											<th>Tgl. Surat</th>
+										</tr>
+									</thead>
+									<tbody>
+									<?php 
+									foreach ( $parent_rekening_kppn_pengeluaran as $rekening_pengeluaran => $results ) 
+									{
+										
+										?>
+											<tr style="font-weight: bold; font-size:11px;">
+												<td class="bg-green" colspan="7"><?php echo $rekening_pengeluaran; ?></td>
+											</tr>
+										<?php
+											foreach ($results as $detil) 
+											{
+											?>
+												<tr style="font-size:10px;white-space:normal;height:50px;">
+													<td></td>
+													<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
+													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+												</tr>
+											<?php
+											}
+										}
+									 ?>
+									</tbody>
+								</table>
+							
+						<?php
+						}
+						else if ( count($parent_rekening_kppn_penerimaan)
+								&& $id_entities === '1' )
+						{
+						?>
+							<hr />
+							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($subtitle); ?><br />
+							<?php echo $nm_entity; ?></h4>
+							<h5 class="text-center"><?php echo $period; ?></h5>
+							<br />
+							<div class="table-responsive">
+								<!-- table -->
+								<table class="table table-bordered table-condensed">
+									<thead style="font-size:11px;">
+										<tr class="bg-green dker">
+											<th>Kementerian</th>
+											<th>Satker</th>
+											<th>Nama Bank</th>
+											<th>Nama Rekening</th>
+											<th>No. Rekening</th>
+											<th>No. Surat</th>
+											<th>Tgl. Surat</th>
+										</tr>
+									</thead>
+									<tbody>
+									<?php 
+									foreach ( $parent_rekening_kppn_penerimaan as $rekening_penerimaan => $results ) 
+									{
+										
+										?>
+											<tr style="font-weight: bold; font-size:11px;">
+												<td class="bg-green" colspan="7"><?php echo $rekening_penerimaan; ?></td>
+											</tr>
+										<?php
+											foreach ($results as $detil) 
+											{
+											?>
+												<tr style="font-size:10px;white-space:normal;height:50px;">
+													<td></td>
+													<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
+													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+												</tr>
+											<?php
+											}
+										}
+									 ?>
+									</tbody>
+								</table>
+						<?php
 						}
 					  ?>
 					  

@@ -446,12 +446,30 @@ class M_report extends MY_Model
 									dsp_report_rekening_lpjk
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
-								GROUP BY " . $group . " kd_kementerian
-								ORDER BY " . $group . " kd_kementerian");
+								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
+								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker");
 								
 			if($query_kanwil_pkn->num_rows() > 0)
 			{
 				return $query_kanwil_pkn;
+			}
+			
+		}
+		else if ( $is_kppn == TRUE )
+		{
+			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
+									nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+								FROM 
+									dsp_report_rekening_lpjk
+								WHERE tahun = '".$year."'
+								AND bulan = '".$month."'
+								AND id_ref_kppn = '".$id_ref_satker."'
+								GROUP BY kd_kementerian, kd_satker
+								ORDER BY kd_kementerian, kd_satker");
+								
+			if ($query_kppn->num_rows() > 0)
+			{
+				return $query_kppn;
 			}
 			
 		}
@@ -479,8 +497,8 @@ class M_report extends MY_Model
 									dsp_report_rekening_lpjt
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
-								GROUP BY " . $group . " kd_kementerian
-								ORDER BY " . $group . " kd_kementerian");
+								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
+								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker");
 								
 			if($query_kanwil_pkn->num_rows() > 0)
 			{
@@ -488,5 +506,24 @@ class M_report extends MY_Model
 			}
 			
 		}
+		else if ( $is_kppn == TRUE )
+		{
+			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
+									nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+								FROM 
+									dsp_report_rekening_lpjt
+								WHERE tahun = '".$year."'
+								AND bulan = '".$month."'
+								AND id_ref_kppn = '".$id_ref_satker."'
+								GROUP BY kd_kementerian, kd_satker
+								ORDER BY kd_kementerian, kd_satker");
+								
+			if ($query_kppn->num_rows() > 0)
+			{
+				return $query_kppn;
+			}
+			
+		}
+		
 	}
 }

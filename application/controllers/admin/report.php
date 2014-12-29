@@ -682,6 +682,7 @@ class Report extends Admin_Controller
 		$rules = $this->m_report->rules_rekap_lpj;
 		$this->form_validation->set_rules($rules);
 		
+		// if kanwil or pkn
 		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 				&& $this->form_validation->run() == TRUE )
 		{
@@ -694,15 +695,13 @@ class Report extends Admin_Controller
 			
 			// period
 			$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
-				
+			
+			// pengeluaran
 			if ( $this->input->post('post') === 'pengeluaran' ) {
 				
-				// filename
-				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
+					// filename
+					$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
 				
-				// if kanwil
-				if ($this->data['id_entities'] === '2') {
-					
 					// subtitle
 					$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
 					
@@ -731,12 +730,6 @@ class Report extends Admin_Controller
 					}
 					
 					$this->data['parent_rekening_pengeluaran'] = $parent_rekening_pengeluaran;
-					
-				}
-				// if pkn
-				elseif ($this->data['id_entities'] === '3') {
-					
-				}
 				
 				
 			}
@@ -744,9 +737,6 @@ class Report extends Admin_Controller
 				
 				// filename
 				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
-				
-				// if kanwil
-				if ($this->data['id_entities'] === '2') {
 					
 					// subtitle
 					$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
@@ -777,13 +767,96 @@ class Report extends Admin_Controller
 					
 					$this->data['parent_rekening_penerimaan'] = $parent_rekening_penerimaan;
 					
-				}
-				// if pkn
-				elseif ($this->data['id_entities'] === '3') {
-					
-				}
 			}
 			
+		}
+		// if kppn 
+		else if ( $this->data['id_entities'] === '1'
+				&& $this->form_validation->run() == TRUE )
+		{
+			// get id_ref_kppn
+			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+			// month
+			$this->data['month'] = $this->input->post('month');
+			// post
+			$this->data['post'] = $this->input->post('post');
+			
+			// period
+			$this->data['period'] = 'Bulan ' . get_month_name($this->data['month']) . ' ' . $this->data['year'];
+			
+			// pengeluaran
+			if ( $this->input->post('post') === 'pengeluaran' ) {
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_' . '_rekening_' . $this->data['post'];
+			
+				// subtitle
+				$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
+				
+				// fetch rekening pengeluaran
+				$rekening_kppn_pengeluarans = $this->m_report->rekening_bendahara_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], $is_kppn = TRUE);
+				
+				// if rekening_kppn_pengeluarans is null
+				if ( $rekening_kppn_pengeluarans === NULL )
+				{
+					$this->session->set_flashdata('message', 'Data rekening bulan ini tidak mengalami perubahan dari bulan-bulan sebelumnya');
+					$this->session->set_flashdata('method', 'rekening_bendahara');
+					redirect('admin/report/message');
+				}
+				
+				$parent_rekening_kppn_pengeluaran = array();
+				
+				foreach ( $rekening_kppn_pengeluarans->result_array() as $rekening_kppn_pengeluaran ) 
+				{
+					if ( !isset($parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']]) )
+					{
+						$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']] = array();
+					}
+					
+					$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']][] = $rekening_kppn_pengeluaran;
+					
+				}
+				
+				$this->data['parent_rekening_kppn_pengeluaran'] = $parent_rekening_kppn_pengeluaran;
+				
+			}
+			// penerimaan
+			else if ( $this->input->post('post') === 'penerimaan' ) {
+				
+				// filename
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_' . '_rekening_' . $this->data['post'];
+			
+				// subtitle
+				$this->data['subtitle'] = 'Rekening Bendahara ' . ucfirst($this->data['post']);
+				
+				// fetch rekening pengeluaran
+				$rekening_kppn_penerimaans = $this->m_report->rekening_bendahara_penerimaan($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], $is_kppn = TRUE);
+				
+				// if rekening_kppn_pengeluarans is null
+				if ( $rekening_kppn_penerimaans === NULL )
+				{
+					$this->session->set_flashdata('message', 'Data rekening bulan ini tidak mengalami perubahan dari bulan-bulan sebelumnya');
+					$this->session->set_flashdata('method', 'rekening_bendahara');
+					redirect('admin/report/message');
+				}
+				
+				$parent_rekening_kppn_penerimaan = array();
+				
+				foreach ( $rekening_kppn_penerimaans->result_array() as $rekening_kppn_penerimaan ) 
+				{
+					if ( !isset($parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']]) )
+					{
+						$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']] = array();
+					}
+					
+					$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']][] = $rekening_kppn_penerimaan;
+					
+				}
+				
+				$this->data['parent_rekening_kppn_penerimaan'] = $parent_rekening_kppn_penerimaan;
+				
+			}
+				
 		}
 		
 		// Tampilkan
