@@ -94,11 +94,14 @@ class Report extends Admin_Controller
 		// load helper
 		$this->load->helper('datetime');
 		$this->load->helper('amountformat');
-		$this->data['year'] = date('Y');
 		// load m_referensi model
 		$this->load->model('m_referensi');
 		// load m_referensi
 		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
+		// get year
+		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
+		// get month
+		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 
 		// rules section
 		$rules = $this->m_report->rules_rekap_lpj;
@@ -110,8 +113,10 @@ class Report extends Admin_Controller
 		
 			// get id_ref_kppn
 			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-			// month
-			$this->data['month'] = $this->input->post('month');
+			//~ // year
+			//~ $this->data['year'] = $this->input->post('year');
+			//~ // month
+			//~ $this->data['month'] = $this->input->post('month');
 			// post
 			$this->data['post'] = $this->input->post('post');
 			
@@ -201,8 +206,10 @@ class Report extends Admin_Controller
 				
 				// get id_ref_kanwil
 				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-				// month
-				$this->data['month'] = $this->input->post('month');
+				//~ // year
+				//~ $this->data['year'] = $this->input->post('year');
+				//~ // month
+				//~ $this->data['month'] = $this->input->post('month');
 				// post
 				$this->data['post'] = $this->input->post('post');
 				
@@ -250,8 +257,10 @@ class Report extends Admin_Controller
 				
 				// get id_ref_kanwil
 				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-				// month
-				$this->data['month'] = $this->input->post('month');
+				//~ // year
+				//~ $this->data['year'] = $this->input->post('year');
+				//~ // month
+				//~ $this->data['month'] = $this->input->post('month');
 				// post
 				$this->data['post'] = $this->input->post('post');
 				
@@ -340,171 +349,11 @@ class Report extends Admin_Controller
 		
 	}
 	
-	/*
-	public function report_rekap_lpj_pengeluaran()
-	{
-		// load helper
-		$this->load->helper('datetime');
-		$this->load->helper('amountformat');
-		// get year
-		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
-		// get month
-		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
-		// load m_referensi model
-		$this->load->model('m_referensi');
-		// get id_ref_kppn
-		$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-		// get id_ref_kanwil
-		$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-		// load m_referensi
-		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
-		
-		// if kppn
-		if ($this->data['id_entities'] === '1')
-		{
-			// nama entity
-			$this->data['nm_entity'] = 'kppn ' . $kppn->nm_kppn;
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE, NULL);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_pengeluaran_kppn', $this->data, TRUE);
-		}
-		// if kanwil
-		else if ($this->data['id_entities'] === '2')
-		{
-			$this->data['subtitle'] = 'Per Bagian Anggaran Tingkat Wilayah';
-			// nama entity
-			$this->data['nm_entity'] = 'kanwil djpbn ' . $kanwil->nm_kanwil;
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_pengeluaran_kanwil_pkn', $this->data, TRUE);
-		}
-		// if pkn
-		else if ($this->data['id_entities'] === '3')
-		{
-			$this->data['subtitle'] = 'Per Bagian Anggaran Tingkat Nasional';
-			// nama entity
-			$this->data['nm_entity'] = 'direktorat pengelolaan kas negara';
-			// id_ref_kanwil
-			$id_ref_kanwil = $this->input->post('id_ref_kanwil');
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month'], FALSE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_pengeluaran(NULL, $this->data['year'], $this->data['month']);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_pengeluaran_kanwil_pkn', $this->data, TRUE);
-		}
-		
-		// send to report view
-		// pdf section
-		$this->load->library('mpdf');
-		$this->mpdf = new mPDF();
-		$this->mpdf->AddPage('L', 	// L - landscape, P - portrait
-            '', '', '', '',
-            12, 					// margin_left
-            12, 					// margin right
-            10, 					// margin top
-            10, 					// margin bottom
-            '', 					// margin header
-            ''); 					// margin footer
-		$css	= file_get_contents('assets/css/report.css');
-		$html 	= $this->load->view('admin/components/report_header_laporan', $this->data, true);
-		$this->mpdf->WriteHTML($css, 1);
-		$this->mpdf->WriteHTML($html, 2);
-		$this->mpdf->Output();
-	}
-	*/
-	
-	/*
-	public function report_rekap_lpj_penerimaan()
-	{
-		// load helper
-		$this->load->helper('datetime');
-		$this->load->helper('amountformat');
-		// get year
-		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
-		// get month
-		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
-		// load m_referensi model
-		$this->load->model('m_referensi');
-		// get id_ref_kppn
-		$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-		// get id_ref_kanwil
-		$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-		// load m_referensi
-		$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
-		
-		// if kppn
-		if ($this->data['id_entities'] === '1')
-		{
-			// nama entity
-			$this->data['nm_entity'] = 'kppn ' . $kppn->nm_kppn;
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_penerimaan($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_penerimaan($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], TRUE, NULL);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_penerimaan_kppn', $this->data, TRUE);
-		}
-		// if kanwil
-		else if ($this->data['id_entities'] === '2')
-		{
-			$this->data['subtitle'] = 'Per Bagian Anggaran Tingkat Wilayah';
-			// nama entity
-			$this->data['nm_entity'] = 'kanwil djpbn ' . $kanwil->nm_kanwil;
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_penerimaan($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_penerimaan_kanwil_pkn', $this->data, TRUE);
-		}
-		// if pkn
-		else if ($this->data['id_entities'] === '3')
-		{
-			$this->data['subtitle'] = 'Per Bagian Anggaran Tingkat Nasional';
-			// nama entity
-			$this->data['nm_entity'] = 'direktorat pengelolaan kas negara';
-			// id_ref_kanwil
-			$id_ref_kanwil = $this->input->post('id_ref_kanwil');
-			// fetch rekap
-			$this->data['rekap_lpjs'] = $this->m_report->rekap_lpj_penerimaan(NULL, $this->data['year'], $this->data['month'], FALSE);
-			// get total sum
-			$this->data['total_rekap_lpj'] = $this->m_report->total_sum_lpj_penerimaan(NULL, $this->data['year'], $this->data['month']);
-			// send data to view
-			$this->data['content'] = $this->load->view('admin/report/report_rekap_lpj_penerimaan_kanwil_pkn', $this->data, TRUE);
-		}
-		
-		// send to report view
-		// pdf section
-		$this->load->library('mpdf');
-		$this->mpdf = new mPDF();
-		$this->mpdf->AddPage('L', 	// L - landscape, P - portrait
-            '', '', '', '',
-            12, 					// margin_left
-            12, 					// margin right
-            10, 					// margin top
-            10, 					// margin bottom
-            '', 					// margin header
-            ''); 					// margin footer
-		$css	= file_get_contents('assets/css/report.css');
-		$html 	= $this->load->view('admin/components/report_header_laporan', $this->data, true);
-		$this->mpdf->WriteHTML($css, 1);
-		$this->mpdf->WriteHTML($html, 2);
-		$this->mpdf->Output();
-	}
-	*/
 	
 	// used ====>
 	public function detil_lpj()
 	{
 		$post = $this->input->post('post');
-		//~ $this->data['year'] = date('Y');
 		
 		// load helper
 		$this->load->helper('datetime');
@@ -669,14 +518,16 @@ class Report extends Admin_Controller
 	
 	public function rekening_bendahara()
 	{
-		// get year
-		$this->data['year'] = date('Y');
 
 		// load helper
 		$this->load->helper('datetime');
 		
 		// load m_referensi model
 		$this->load->model('m_referensi');
+		// get year
+		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
+		// get month
+		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 
 		// rules section
 		$rules = $this->m_report->rules_rekap_lpj;
@@ -688,8 +539,10 @@ class Report extends Admin_Controller
 		{
 			// get id_ref_kanwil
 			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
-			// month
-			$this->data['month'] = $this->input->post('month');
+			//~ // year
+			//~ $this->data['year'] = $this->input->post('year');
+			//~ // month
+			//~ $this->data['month'] = $this->input->post('month');
 			// post
 			$this->data['post'] = $this->input->post('post');
 			
@@ -776,8 +629,10 @@ class Report extends Admin_Controller
 		{
 			// get id_ref_kppn
 			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
-			// month
-			$this->data['month'] = $this->input->post('month');
+			//~ // year
+			//~ $this->data['year'] = $this->input->post('year');
+			//~ // month
+			//~ $this->data['month'] = $this->input->post('month');
 			// post
 			$this->data['post'] = $this->input->post('post');
 			
