@@ -115,6 +115,21 @@ class M_upload extends MY_Model
 		return $query;
 	}
 	
+	public function import_csv_lpjp($path, $tables)
+	{
+		
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
+		(noba, @tglba, tipeba, periode, thang, kddept, kdunit, kdkabkota, kdlokasi, 
+		kdsatker, nokarwas, updateke, status, kdkppn, norek, saldorek, kdbuku, nmbuku, kastunai,
+		kasbank, setor, belumsetor, saldoakhirbku, nobukti, saldoawal, debet, kredit, saldoakhir,
+		brankas, rekbank, haksaldoawal, hakterima, haksetor, setoruakpa, uakpa, selisihkas, ketselkas,
+		ketseluakpa, @tglakhirba, nipkpa, nmkpa, nipbend, nmbend)
+		SET tgba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
+			tgakhirba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y')", array($path));
+		
+		return $query;
+	}
+	
 	public function get_status_sent_satker($id_ref_kppn, $year, $month)
 	{
 		$query_pengeluaran_unsent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,

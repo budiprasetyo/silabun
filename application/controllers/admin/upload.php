@@ -64,10 +64,6 @@ class Upload extends Admin_Controller
 			$status_data_p = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
 			$this->data['data_sent_p'] = $status_data_p['query_penerimaan_sent'];
 			$this->data['data_unsent_p'] = $status_data_p['query_penerimaan_unsent'];
-			//~ // load m_monitoring
-			//~ $this->load->model('m_monitoring');
-			//~ $this->data['data_sent_k'] = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month'], 'K');
-			//~ var_dump($this->data['data_sent_k']);
 			
 			// path to page folder view
 			$this->data['subview'] = 'admin/upload/index';
@@ -116,6 +112,14 @@ class Upload extends Admin_Controller
 		
 	}
 	
+	/**
+	 * Sent 
+	 * @brief		extract all compressed ADK to certain folder and final destination
+	 * 				extracted files is in /tmp folder
+	 * @returns 	extracted file
+	 * 
+	 * 
+	 */
 	public function sent()
 	{
 		if($this->input->post('submit') === 'Upload');
@@ -135,7 +139,6 @@ class Upload extends Admin_Controller
 			// set file types
 			$this->upload->set_allowed_types($file_types);
 			
-		
 			// Handle the file upload from the name of input type is 'upload_lpj'
 			if( ! $this->upload->do_upload('upload_lpj') )
 			{
@@ -149,7 +152,7 @@ class Upload extends Admin_Controller
 				if(strlen(substr(strrchr($_FILES['upload_lpj']['name'],'.'),1)) === 3)
 				{
 					$adk_filename = $_FILES['upload_lpj']['name'];
-					
+					 
 					// Specified upload path and name
 					$filepath = $config['upload_path'] . '/' . $adk_filename;
 					// Specified compressed path and name
@@ -160,68 +163,115 @@ class Upload extends Admin_Controller
 					$movingpath = realpath() . sys_get_temp_dir() . '/';
 					
 					// Upload the file
+					//~ $data = $this->upload->data();
 					$data = $this->upload->data();
 					
-					// Load spark & Load unzip library created by phil sturgeon
-					$this->load->spark('unzip/1.0.0');
-					$this->load->library('unzip');
-					// Extracting to specified folder
-					$this->unzip->extract($filepath, $extractpath);
+					// load library from CSVReader by Pierre-Jean Turpeau
+					$this->load->library('csvreader');
+					$this->data['csvdatas'] = $this->csvreader;
 					
-					
-					foreach (glob($extractpath . '*.*') as $filename) 
-					{
-						$oldname = $extractpath . basename($filename);
-						$newname = $movingpath . basename($filename);
-						//~ $newname = $movingpath . basename(substr(strrchr($filename,'\\'),1)); -- old setting before tamp1 was removed
-					
-						// array newnames for hidden value
-						$this->data['newnames'][] = $movingpath . basename($filename);
-
-						// rename function should be included path
-						rename($oldname, $newname);
-						// load library from CSVReader by Pierre-Jean Turpeau
-						$this->load->library('csvreader');
-						$this->data['csvdatas'] = $this->csvreader;
-						$this->data['movingpaths'] = $movingpath;
+					// If ADK from silabi
+					if(substr($data['file_name'], 0, 4) === 'LPJP'){
 						
-						if (substr($newname,0,9) === '/tmp/temp') 
+						$pass_zip = "indahlaminatingrum";
+						// execute unzip and move to tmp folder
+						exec("unzip -P indahlaminatingrum "  . $compressedpath . $data['file_name'] . " -d /tmp");
+						
+						foreach (glob($movingpath . '*.TXT') as $filename) 
 						{
-							if (substr($newname,0,11) === '/tmp/temp\K')
+							// array newnames for hidden value
+							$this->data['newnames'][] = $movingpath . basename($filename);
+							$this->data['movingpaths'] = $movingpath;
+
+							if (substr($filename,0,9) === '/tmp/temp') 
 							{
-								$this->data['message_title'] = 'Informasi Load & Insert Data';
-								$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda Salah';
-								$this->load->view('admin/components/message', $this->data);
-							
-							}
-							else if (substr($newname,0,11) === '/tmp/temp\T')
-							{
-								$this->data['message_title'] = 'Informasi Load & Insert Data';
-								$this->data['message'] = 'Format ADK LPJ Penerimaan Anda Salah';
-								$this->load->view('admin/components/message', $this->data);
-							}
-							else if (substr($newname,0,11) === '/tmp/temp\R')
-							{
+								if (substr($filename,0,14) === '/tmp/temp\LPJP')
+								{
+									$this->data['message_title'] = 'Informasi Load & Insert Data';
+									$this->data['message'] = 'Format ADK LPJ Penerimaan Anda Salah';
+									$this->load->view('admin/components/message', $this->data);
+								}
+								else if (substr($filename,0,18) === '/tmp/temp\T_BALPJP')
+								{
+									
+									$this->data['message_title'] = 'Informasi Load & Insert Data';
+									$this->data['message'] = 'Format ADK Rekening Anda Salah';
+									$this->load->view('admin/components/message', $this->data);
+									
+								}
 								
-								$this->data['message_title'] = 'Informasi Load & Insert Data';
-								$this->data['message'] = 'Format ADK Rekening Anda Salah';
-								$this->load->view('admin/components/message', $this->data);
+								// delete extracted file with unsupported format
+								unlink(substr($filename,0,9));
 								
-							}
+								// redirect to index page
+								$this->output->set_header('refresh:2; url=index');
+							}	
+						}
+					}
+					// If ADK from silabun desktop
+					else if (substr($data['file_name'], 0, 1) === 'T'
+						OR substr($data['file_name'], 0, 1) === 'K'){
 							
-							// delete extracted file with unsupported format
-							unlink($extractpath . '*');
+						// Load spark & Load unzip library created by phil sturgeon
+						$this->load->spark('unzip/1.0.0');
+						$this->load->library('unzip');
+						// Extracting to specified folder
+						$this->unzip->extract($filepath, $extractpath);
 							
-							// redirect to index page
-							$this->output->set_header('refresh:2; url=index');
-						}	
+						foreach (glob($extractpath . '*.*') as $filename) 
+						{
+							$oldname = $extractpath . basename($filename);
+							$newname = $movingpath . basename($filename);
+							//~ $newname = $movingpath . basename(substr(strrchr($filename,'\\'),1)); -- old setting before tamp1 was removed
+						
+							// array newnames for hidden value
+							$this->data['newnames'][] = $movingpath . basename($filename);
+
+							// rename function should be included path
+							rename($oldname, $newname);
+							$this->data['movingpaths'] = $movingpath;
+							
+							if (substr($newname,0,9) === '/tmp/temp') 
+							{
+								if (substr($newname,0,11) === '/tmp/temp\K')
+								{
+									$this->data['message_title'] = 'Informasi Load & Insert Data';
+									$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda Salah';
+									$this->load->view('admin/components/message', $this->data);
+								
+								}
+								else if (substr($newname,0,11) === '/tmp/temp\T')
+								{
+									$this->data['message_title'] = 'Informasi Load & Insert Data';
+									$this->data['message'] = 'Format ADK LPJ Penerimaan Anda Salah';
+									$this->load->view('admin/components/message', $this->data);
+								}
+								else if (substr($newname,0,11) === '/tmp/temp\R')
+								{
+									
+									$this->data['message_title'] = 'Informasi Load & Insert Data';
+									$this->data['message'] = 'Format ADK Rekening Anda Salah';
+									$this->load->view('admin/components/message', $this->data);
+									
+								}
+								
+								// delete extracted file with unsupported format
+								unlink($extractpath . '*.*');
+								
+								// redirect to index page
+								$this->output->set_header('refresh:2; url=index');
+							}	
+						}
+						
 					}
 					
-					// Delete all footprints
+					
+					// Delete all footprints from public/data_lpj
 					if(file($compressedpath . $adk_filename))
 					{
 						unlink($compressedpath . $adk_filename);
 					}
+					
 				}
 				
 			}
@@ -234,7 +284,7 @@ class Upload extends Admin_Controller
 	public function approve()
 	{
 		$data = $this->input->post();
-		
+				
 		$filetemps = $data['filetemps'];
 		
 		foreach ($filetemps as $filetemp) 
@@ -321,6 +371,24 @@ class Upload extends Admin_Controller
 					}
 					
 				}
+				else if (substr($file,0,4) === 'LPJP')
+				{
+					$importlpjp = $this->m_upload->import_csv_lpjp($movingpath . $file, 't_balpjp');
+					
+					if($importlpjp) 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data LPJ Penerimaan berhasil';
+						$this->load->view('admin/components/message', $this->data);
+					}
+					else 
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = 'load dan insert data LPJ Penerimaan gagal';
+						$this->load->view('admin/components/message', $this->data);
+					}
+				}
+				
 				
 				// Delete all footprints
 				if(file($movingpath . $file))

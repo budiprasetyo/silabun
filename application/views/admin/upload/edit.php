@@ -205,6 +205,37 @@
 											<?php
 										}
 									}
+									else if (substr(basename($filenames),0,4) === 'LPJP')
+									{
+										$file_lpjp = $csvdatas->parse_file($filenames);
+										
+										if ($file_lpjp !== false) 
+										{
+											$count_penerimaan_lpjp = count($file_lpjp) + 1;
+											?>
+											
+											Jumlah data penerimaan <span class="label label-info"><?php echo $count_penerimaan_lpjp; ?> records</span>
+											<br />
+											<hr />
+											<?php
+										}
+									}
+									else if (substr(basename($filenames),0,8) === 'T_BALPJP')
+									{
+										$file_rek_lpjp = $csvdatas->parse_file($filenames);
+										
+										if ($file_rek_lpjp !== false) 
+										{
+											$count_penerimaan_rek_lpjp = count($file_rek_lpjp) + 1;
+											?>
+											
+											Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_penerimaan_rek_lpjp ; ?> records</span>
+											<br />
+											<hr />
+											<?php
+										}
+									}
+									
 									
 								}
 								$this->benchmark->mark('code_end');
