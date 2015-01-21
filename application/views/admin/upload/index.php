@@ -58,7 +58,7 @@
 									<li>Jumlah LPJ Bendahara <span class="label label-danger">K</span> yang diterima <?php echo $data_sent_k->jml_lpj ? $data_sent_k->jml_lpj : 0; ?> satker</li>
 									<li>Jumlah LPJ Bendahara <span class="label label-danger">K</span> yang belum diterima <?php echo $data_unsent_k->jml_lpj ? $data_unsent_k->jml_lpj : 0; ?> satker</li>
 									<li>Jumlah LPJ Bendahara <span class="label label-info">P</span> yang diterima <?php echo $data_sent_p->jml_lpj ? $data_sent_p->jml_lpj : 0; ?> satker</li>
-									<li>Jumlah LPJ Bendahara <span class="label label-info">P</span> yang diterima <?php echo $data_unsent_p->jml_lpj ? $data_unsent_p->jml_lpj : 0; ?> satker</li>
+									<li>Jumlah LPJ Bendahara <span class="label label-info">P</span> yang belum diterima <?php echo $data_unsent_p->jml_lpj ? $data_unsent_p->jml_lpj : 0; ?> satker</li>
 									<li><span class="label label-info">P</span> : Data LPJ Penerimaan</li>
 									<li><span class="label label-danger">K</span> : Data LPJ Pengeluaran</li>
 								</ul>
