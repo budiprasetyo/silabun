@@ -1,0 +1,18 @@
+CREATE TABLE `dsp_lpj`.`t_lpjprek` (
+  `id_lpjprek` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `kdsatker` VARCHAR(6) NOT NULL,
+  `nokarwas` VARCHAR(4) NOT NULL,
+  `noba` VARCHAR(30) NOT NULL,
+  `tgba` DATE NOT NULL,
+  `tipeba` VARCHAR(1) NOT NULL,
+  `thang` VARCHAR(4) NOT NULL,
+  `periode` VARCHAR(2) NOT NULL,
+  `kdrek` VARCHAR(3) NOT NULL,
+  `updateke` SMALLINT(4) UNSIGNED NOT NULL,
+  `norek` VARCHAR(30) NOT NULL,
+  `nmrek` VARCHAR(100) NOT NULL,
+  `nmbank` VARCHAR(100) NOT NULL,
+  `nosrt` VARCHAR(50) NOT NULL,
+  `tgsrt` DATE NOT NULL,
+  `saldo` BIGINT(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`id_lpjprek`));
