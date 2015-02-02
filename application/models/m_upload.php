@@ -113,20 +113,69 @@ class M_upload extends MY_Model
 		SET tgsrt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
 		
 		return $query;
+		
 	}
 	
 	public function import_csv_lpjp($path, $tables)
 	{
 		
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
-		(noba, @tglba, tipeba, periode, thang, kddept, kdunit, kdkabkota, kdlokasi, 
-		kdsatker, nokarwas, updateke, status, kdkppn, norek, saldorek, kdbuku, nmbuku, kastunai,
-		kasbank, setor, belumsetor, saldoakhirbku, nobukti, saldoawal, debet, kredit, saldoakhir,
-		brankas, rekbank, haksaldoawal, hakterima, haksetor, setoruakpa, uakpa, selisihkas, ketselkas,
-		ketseluakpa, @tglakhirba, nipkpa, nmkpa, nipbend, nmbend)
-		SET tgba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
-			tgakhirba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y')", array($path));
+		(no_ba, @tglba, tipe_ba, bulan, tahun, kd_kementerian, kd_unit, kd_kabkota, kd_lokasi, 
+		kd_satker, no_karwas, update_ke, status, kd_kppn, no_rekening, saldo_rekening, kd_buku, nm_buku,
+		kas_tunai, kas_bank, setor, belum_setor, saldo_akhir_bku, no_bukti, saldo_awal, debet, kredit, 
+		saldo_akhir, brankas, rekening_bank, hak_saldo_awal, hak_terima, hak_setor, setor_uakpa, uakpa, 
+		selisih_kas, ket_selisih_kas, ket_selisih_uakpa, @tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend,
+		@create)
+		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
+			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
+			created_at = now()", array($path));
 		
+		return $query;
+	}
+	
+	public function import_csv_rekening_lpjp($path, $tables)
+	{
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
+		(kd_satker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke, no_rekening,
+		nm_rekening, nm_bank, no_srt, @tglsrt,saldo)
+		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
+			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
+			
+		return $query;
+	}
+	
+	public function import_csv_lpjk($path, $tables)
+	{
+		
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
+		(jenis, no_ba, @tgba, kd_kementerian, kd_unit, kd_lokasi, kd_kabkota, kd_satker, kd_bpp,
+		no_karwas, kd_dekon, kd_jendok, no_dok, @tgdok, tahun, kd_kppn, no_bukti, no_rekening,
+		saldo_awal_tunai, debet_tunai, kredit_tunai, saldo_akhir_tunai, saldo_awal_bank, debet_bank,
+		kredit_bank, saldo_akhir_bank, saldo_awal_bku, debet_bku, kredit_bku, saldo_awal_um, debet_um,
+		kredit_um, saldo_akhir_um, saldo_awal_bpp, debet_bpp, kredit_bpp, saldo_akhir_bpp, saldo_awal_up,
+		debet_up, kredit_up, saldo_akhir_up, saldo_awal_lsbend, debet_lsbend, kredit_lsbend,
+		saldo_akhir_lsbend, saldo_awal_pajak, debet_pajak, kredit_pajak, saldo_akhir_pajak, saldo_akhir_bku,
+		saldo_awal_lain, debet_lain, kredit_lain, saldo_akhir_lain, saldo_up, kuitansi_up, brankas,
+		rekening_bank, saldo_up_uakpa, selisih_up, selisih_kas, ket_selisih_kas, ket_selisih_up, bulan,
+		@tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend, nip_bend2, nm_bend2, encode, valc, @tglcreate,
+		user_nip, @create)
+		SET tgl_ba = STR_TO_DATE(@tgba, '%d-%m-%Y'),
+			tgl_dok = STR_TO_DATE(@tgdok, '%d-%m-%Y'), 
+			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
+			tgl_create = STR_TO_DATE(@tglcreate, '%d-%m-%Y'),
+			created_at = now()", array($path));
+		
+		return $query;
+	}
+	
+	public function import_csv_rekening_lpjk($path, $tables)
+	{
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
+		(@dummy, kd_satker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
+		no_rekening, nm_rekening, nm_bank, no_srt, @tglsrt, saldo)
+		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
+			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
+			
 		return $query;
 	}
 	

@@ -174,7 +174,8 @@
 											<?php
 										}
 									}
-									else if( substr(basename($filenames),0,1) === 'T' )
+									else if( substr(basename($filenames),0,1) === 'T'
+											&& substr(basename($filenames),0,8) !== 'T_BALPJP')
 									{
 										$file_t = $csvdatas->parse_file($filenames);
 										
@@ -207,6 +208,8 @@
 									}
 									else if (substr(basename($filenames),0,4) === 'LPJP')
 									{
+										$csvdatas->separator = '|';
+										
 										$file_lpjp = $csvdatas->parse_file($filenames);
 										
 										if ($file_lpjp !== false) 
@@ -222,11 +225,14 @@
 									}
 									else if (substr(basename($filenames),0,8) === 'T_BALPJP')
 									{
-										$file_rek_lpjp = $csvdatas->parse_file($filenames);
+										$csvdatas->separator = '|';
+										
+										$file_rek_lpjp = $csvdatas->parse_file($filenames, false);
+										
 										
 										if ($file_rek_lpjp !== false) 
 										{
-											$count_penerimaan_rek_lpjp = count($file_rek_lpjp) + 1;
+											$count_penerimaan_rek_lpjp = count($file_rek_lpjp);
 											?>
 											
 											Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_penerimaan_rek_lpjp ; ?> records</span>
@@ -234,8 +240,46 @@
 											<hr />
 											<?php
 										}
+										
 									}
-									
+									else if (substr(basename($filenames),-3,3) === 'LPJ'
+											&& substr(basename($filenames),0,2) === 'C1')
+									{
+										$csvdatas->separator = "\t";
+										
+										$file_lpjk = $csvdatas->parse_file($filenames, FALSE);
+										
+										if ($file_lpjk !== false) 
+										{
+											$count_penerimaan_lpjk = count($file_lpjk);
+											?>
+											
+											Jumlah data pengeluaran <span class="label label-info"><?php echo $count_penerimaan_lpjk; ?> records</span>
+											<br />
+											<hr />
+											<?php
+										}
+									}
+									else if (substr(basename($filenames),-3,3) === 'LPJ'
+											&& substr(basename($filenames),0,2) === 'C2')
+									{
+										$csvdatas->separator = "\t";
+										
+										$file_rek_lpjk = $csvdatas->parse_file($filenames, false);
+										
+										
+										if ($file_rek_lpjk !== false) 
+										{
+											$count_penerimaan_rek_lpjk = count($file_rek_lpjk);
+											?>
+											
+											Jumlah data rekening penerimaan <span class="label label-info"><?php echo $count_penerimaan_rek_lpjk ; ?> records</span>
+											<br />
+											<hr />
+											<?php
+										}
+										
+									}
 									
 								}
 								$this->benchmark->mark('code_end');

@@ -55,16 +55,18 @@ class CSVReader {
         if($p_NamedFields) {
             $this->fields = fgetcsv($file, $this->max_row_size, $this->separator, $this->enclosure);
             // modify here
-            //~ var_dump($this->fields);
+           //~ var_dump($this->fields);
         }
+        
         while( ($row = fgetcsv($file, $this->max_row_size, $this->separator, $this->enclosure)) != false ) {      
 			
             if( $row[0] != null ) { // skip empty lines
 				
+				
                 if( !$content ) {
                     $content = array();
                 }
-                
+               
                 if( $p_NamedFields ) {
                 
                     $items = array();
@@ -86,6 +88,7 @@ class CSVReader {
             }
             
         }
+        
         fclose($file);
         return $content;
     }
