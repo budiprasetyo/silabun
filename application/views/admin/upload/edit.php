@@ -33,6 +33,8 @@
 						</div>
 					<?php } ?>
 					<hr />
+						<span class="label label-danger">Upload ADK Tahun 2014 Tidak Dapat Dilakukan Lagi</span>
+					<hr />
 					<form class="form-horizontal" method="post" enctype="multipart/form-data" action="<?php echo base_url(); ?>companies.php/admin/upload/sent">
 						
 					  <div class="form-group">

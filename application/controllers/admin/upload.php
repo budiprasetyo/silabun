@@ -343,7 +343,8 @@ class Upload extends Admin_Controller
 				// LPJ Pengeluaran
 				if (substr($file,0,1) === 'K') 
 				{
-					$importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
+					//~ $importlpjk = $this->m_upload->import_csv($movingpath . $file, 'd_lpjk');
+					
 					if($importlpjk) 
 					{
 						$this->data['message_title'] = 'Informasi Load & Insert Data';
@@ -359,7 +360,7 @@ class Upload extends Admin_Controller
 				}
 				else if (substr($file,0,5) === 'REF_K') 
 				{
-					$importrefk = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjk_refrek');
+					//~ $importrefk = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjk_refrek');
 					
 					if($importrefk) 
 					{
@@ -417,7 +418,7 @@ class Upload extends Admin_Controller
 				if (substr($file,0,1) === 'T'
 					&& substr($file,0,8) !== 'T_BALPJP')
 				{
-					$importlpjt = $this->m_upload->import_csv($movingpath . $file, 'd_lpjt');
+					//~ $importlpjt = $this->m_upload->import_csv($movingpath . $file, 'd_lpjt');
 					
 					if($importlpjt) 
 					{
@@ -435,7 +436,7 @@ class Upload extends Admin_Controller
 				}
 				else if (substr($file,0,5) === 'REF_T')
 				{
-					$importreft = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjp_refrek');
+					//~ $importreft = $this->m_upload->import_csv_rekening($movingpath . $file, 't_lpjp_refrek');
 				
 					if($importreft) 
 					{
