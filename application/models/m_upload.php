@@ -127,6 +127,36 @@ class M_upload extends MY_Model
 		
 	}
 	
+	public function validate_adk($kd_kppn, $kd_satker, $year, $month)
+	{
+		$validate_pengeluaran = $this->db->query("SELECT 
+			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan,
+			a.saldo_awal_tunai, a.debet_tunai, a.kredit_tunai, a.saldo_akhir_tunai,
+			a.saldo_awal_bank, a.debet_bank, a.kredit_bank, a.saldo_akhir_bank,
+			a.saldo_awal_bku, a.debet_bku, a.kredit_bku, a.saldo_akhir_bku,
+			a.saldo_awal_um, a.debet_um, a.kredit_um, a.saldo_akhir_um,
+			a.saldo_awal_bpp, a.debet_bpp, a.kredit_bpp, a.saldo_akhir_bpp,
+			a.saldo_awal_up, a.debet_up, a.kredit_up, a.saldo_akhir_up,
+			a.saldo_awal_lsbend, a.debet_lsbend, a.kredit_lsbend, a.saldo_akhir_lsbend,
+			a.saldo_awal_pajak, a.debet_pajak, a.kredit_pajak, a.saldo_akhir_pajak
+				FROM
+			dsp_ba_lpjk a
+				LEFT JOIN 
+			ref_satker b
+				ON a.kd_satker = b.kd_satker
+				WHERE 
+			a.kd_kppn 	= '" .$kd_kppn. "' AND
+			a.kd_satker	= '" .$kd_satker. "' AND
+			a.tahun		= '" .$year. "' AND
+			a.bulan		= '" .$month. "' 
+				GROUP BY
+			a.kd_kppn, a.kd_satker, a.tahun, a.bulan");
+		
+		return array (
+			'validate_pengeluaran'	=> $validate_pengeluaran
+		);
+	}
+	
 	public function import_csv($path, $tables)
 	{
 		

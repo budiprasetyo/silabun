@@ -51,6 +51,22 @@ class Upload extends Admin_Controller
 			// get month
 			$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 			
+			// show the result of validation
+			if ($this->uri->segment(4) !== FALSE)
+			{
+				$this->load->helper('amountformat');
+				$this->load->helper('datetime');
+				$kd_satker 	= $this->uri->segment(4);
+				$year 		= $this->uri->segment(5);
+				$month 		= $this->uri->segment(6);
+				
+				// fetch validate adk
+				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
+				$this->data['validate_pengeluaran']	= $data_adk['validate_pengeluaran'];
+				
+			}
+			
+
 			// fetch all upload
 			 $data_uploads = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
 			 $this->data['pengeluaran_uploads'] = $data_uploads['query_pengeluaran'];
