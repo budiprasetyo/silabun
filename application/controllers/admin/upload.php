@@ -51,12 +51,13 @@ class Upload extends Admin_Controller
 			// get month
 			$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 			
-			var_dump($kppn->kd_kppn);
-			
 			// fetch all upload
 			 $data_uploads = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
 			 $this->data['pengeluaran_uploads'] = $data_uploads['query_pengeluaran'];
-			 $this->data['penerimaan_uploads'] = $data_uploads['query_penerimaan'];
+			 $this->data['penerimaan_uploads'] 	= $data_uploads['query_penerimaan'];
+			 $this->data['pengeluaran_kirims']	= $data_uploads['query_kirim_pengeluaran'];
+			 $this->data['penerimaan_kirims']	= $data_uploads['query_kirim_penerimaan'];
+			 
 			
 			// get sent and unsent pos kirim = K
 			$status_data_k = $this->m_upload->get_status_sent_satker($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);

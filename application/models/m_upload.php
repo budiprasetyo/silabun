@@ -88,9 +88,39 @@ class M_upload extends MY_Model
 						  ->order_by('dsp_status_kirim_penerimaan.pos_kirim')
 						  ->get();
 		
+		$query_kirim_pengeluaran = $this->db->select('dsp_ba_lpjk.kd_satker')
+									->select('dsp_ba_lpjk.tahun')
+									->select('dsp_ba_lpjk.bulan')
+									->select('dsp_ba_lpjk.updated_at')
+									->from('dsp_ba_lpjk')
+									->join('ref_kppn', 'dsp_ba_lpjk.kd_kppn = ref_kppn.kd_kppn', 'left')
+									->where('ref_kppn.id_ref_kppn', $id_ref_kppn)
+									->where('dsp_ba_lpjk.tahun', $year)
+									->where('dsp_ba_lpjk.bulan', $month)
+									->order_by('dsp_ba_lpjk.updated_at', 'desc')
+									->get();
+		
+		$query_kirim_penerimaan = $this->db->select('dsp_ba_lpjp.kd_satker')
+									->select('dsp_ba_lpjp.tahun')
+									->select('dsp_ba_lpjp.bulan')
+									->select('dsp_ba_lpjp.updated_at')
+									->from('dsp_ba_lpjp')
+									->join('ref_kppn', 'dsp_ba_lpjp.kd_kppn = ref_kppn.kd_kppn', 'left')
+									->where('ref_kppn.id_ref_kppn', $id_ref_kppn)
+									->where('dsp_ba_lpjp.tahun', $year)
+									->where('dsp_ba_lpjp.bulan', $month)
+									->group_by('dsp_ba_lpjp.kd_satker')
+									->group_by('dsp_ba_lpjp.tahun')
+									->group_by('dsp_ba_lpjp.bulan')
+									->group_by('dsp_ba_lpjp.updated_at')
+									->order_by('dsp_ba_lpjp.updated_at', 'desc')
+									->get();
+		
 		return array(
-			'query_pengeluaran'	=> $query_pengeluaran,
-			'query_penerimaan'	=> $query_penerimaan
+			'query_pengeluaran'			=> $query_pengeluaran,
+			'query_penerimaan'			=> $query_penerimaan,
+			'query_kirim_pengeluaran'	=> $query_kirim_pengeluaran,
+			'query_kirim_penerimaan'	=> $query_kirim_penerimaan
 		);
 		
 		$query_pengeluaran->free_result();

@@ -85,9 +85,26 @@
 						</thead>
                       <tbody>
 						<?php 
-							if (count($pengeluaran_uploads)) 
+							$i = 0;
+							
+							if (count($pengeluaran_kirims))
 							{
-								$i = 0;
+								foreach ($pengeluaran_kirims->result() as $pengeluaran_kirim) 
+								{
+						?>
+									<tr>
+										<td><?php echo ++$i; ?></td>
+										<td><?php echo $pengeluaran_kirim->kd_satker; ?></td>
+										<td><?php echo $pengeluaran_kirim->tahun; ?></td>
+										<td><?php echo $pengeluaran_kirim->bulan; ?></td>
+										<td><span class="label label-success"><?php echo $pengeluaran_kirim->updated_at; ?></span></td>
+										<td><span class="label label-danger"><?php echo 'K'; ?></span></td>
+									</tr>
+						<?php
+								}
+							}
+							else if (count($pengeluaran_uploads)) 
+							{
 								foreach ($pengeluaran_uploads->result() as $upload) 
 								{
 						?>
@@ -133,10 +150,27 @@
 						</thead>
                       <tbody>
 						<?php 
-							if (count($penerimaan_uploads)) 
+							$i = 0;
+							
+							if (count($penerimaan_kirims))
+							{
+								foreach ($penerimaan_kirims->result() as $penerimaan_kirim) 
+								{
+						?>
+									<tr>
+										<td><?php echo ++$i; ?></td>
+										<td><?php echo $penerimaan_kirim->kd_satker; ?></td>
+										<td><?php echo $penerimaan_kirim->tahun; ?></td>
+										<td><?php echo $penerimaan_kirim->bulan; ?></td>
+										<td><span class="label label-success"><?php echo $penerimaan_kirim->updated_at; ?></span></td>
+										<td><span class="label label-info"><?php echo 'P'; ?></span></td>
+									</tr>
+						<?php
+								}
+							}
+							else if (count($penerimaan_uploads)) 
 							{
 								
-								$i = 0;
 								foreach ($penerimaan_uploads->result() as $upload) 
 								{
 						?>
