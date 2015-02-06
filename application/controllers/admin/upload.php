@@ -338,6 +338,10 @@ class Upload extends Admin_Controller
 						unlink($compressedpath . $adk_filename);
 					}
 					
+					// Delete file that contains bugs
+					exec("rm -r /tmp/temp");
+					exec("rm -r /tmp/APLIKASISAS2015");
+					
 				}
 				
 			}
