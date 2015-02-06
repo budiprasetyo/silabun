@@ -71,7 +71,7 @@
 						if (count($validate_pengeluaran))
 						{
 							$komponen_pengeluaran = $validate_pengeluaran->row();
-							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_bku = $komponen_pengeluaran->saldo_awal_bku + $komponen_pengeluaran->debet_bku - $komponen_pengeluaran->kredit_bku;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
+							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
 					?>
 					
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN<br /></h5>
@@ -119,25 +119,6 @@
 										<td>
 											<?php 
 												if($hasil_perhitungan_bank == $komponen_pengeluaran->saldo_akhir_bank){
-											?>
-													<span class="label label-success">Hasil Benar</span>
-											<?php
-												} else {
-											?>
-													<span class="label label-danger">Hasil Salah</span>
-											<?php } ?>
-										</td>
-									</tr>
-									<tr>
-										<th>Buku Kas Umum</th>
-										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_bku); ?></td>
-										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_bku); ?></td>
-										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_bku); ?></td>
-										<td align="right" class="bg-blue dker"><?php echo amount_format($hasil_perhitungan_bku); ?></td>
-										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
-										<td>
-											<?php 
-												if($hasil_perhitungan_bku == $komponen_pengeluaran->saldo_akhir_bku){
 											?>
 													<span class="label label-success">Hasil Benar</span>
 											<?php

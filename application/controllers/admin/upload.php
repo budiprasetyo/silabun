@@ -232,27 +232,33 @@ class Upload extends Admin_Controller
 					{
 						$pass_zip = "d77f2eda617514497171d42a2c588295";
 						// execute unzip and move to tmp folder
-						exec("unzip -P " . $pass_zip . " " . $compressedpath . $data['file_name'] . " -d /tmp");
-						
+						$test = exec("unzip -P " . $pass_zip . " " . $compressedpath . $data['file_name'] . " -d /tmp");
+						//~ var_dump($test);
+						//~ var_dump(glob($compressedpath . '*.lpj'));
 						foreach (glob($movingpath . '*.LPJ') as $filename) 
 						{
+							//~ foreach(glob($movingpath . 'temp') as $temp)
+							//~ {
+								//~ var_dump(substr($filename,0,12));
+							//~ }
+							
 							// array newnames for hidden value
 							$this->data['newnames'][] = $movingpath . basename($filename);
 							$this->data['movingpaths'] = $movingpath;
 							
 							if (substr($filename,0,9) === '/tmp/temp') 
 							{
-								if (substr($filename,0,14) === '/tmp/temp\LPJP')
+								if (substr($filename,0,9) === '/tmp/temp')
 								{
 									$this->data['message_title'] = 'Informasi Load & Insert Data';
-									$this->data['message'] = 'Format ADK LPJ Penerimaan Anda Salah';
+									$this->data['message'] = 'Format ADK LPJ Penerimaan Anda tidak sesuai persyaratan karena terbentuk folder temp';
 									$this->load->view('admin/components/message', $this->data);
 								}
-								else if (substr($filename,0,18) === '/tmp/temp\T_BALPJP')
+								else if (substr($filename,0,9) === '/tmp/temp')
 								{
 									
 									$this->data['message_title'] = 'Informasi Load & Insert Data';
-									$this->data['message'] = 'Format ADK Rekening Anda Salah';
+									$this->data['message'] = 'Format ADK Rekening Anda tidak sesuai persyaratan karena terbentuk folder temp';
 									$this->load->view('admin/components/message', $this->data);
 									
 								}
@@ -504,13 +510,15 @@ class Upload extends Admin_Controller
 					}
 				}
 				
-				
 				// Delete all footprints
 				if(file($movingpath . $file))
 				{
-					unlink($movingpath . $file);
+					var_dump(unlink($movingpath . $file));
+					var_dump(unlink($movingpath . 'T_BALPJP*'));
+					var_dump(unlink($movingpath . 'temp'));
+					var_dump(unlink($movingpath . 'APLIKASISAS2015'));
 					// delete extracted file with unsupported format
-					unlink($extractpath . '*');
+					var_dump(unlink($extractpath . '*'));
 				}
 				
 			}
