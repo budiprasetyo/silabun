@@ -138,7 +138,8 @@ class M_upload extends MY_Model
 			a.saldo_awal_bpp, a.debet_bpp, a.kredit_bpp, a.saldo_akhir_bpp,
 			a.saldo_awal_up, a.debet_up, a.kredit_up, a.saldo_akhir_up,
 			a.saldo_awal_lsbend, a.debet_lsbend, a.kredit_lsbend, a.saldo_akhir_lsbend,
-			a.saldo_awal_pajak, a.debet_pajak, a.kredit_pajak, a.saldo_akhir_pajak
+			a.saldo_awal_pajak, a.debet_pajak, a.kredit_pajak, a.saldo_akhir_pajak,
+			a.saldo_awal_lain, a.debet_lain, a.kredit_lain, a.saldo_akhir_lain
 				FROM
 			dsp_ba_lpjk a
 				LEFT JOIN 
