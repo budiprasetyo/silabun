@@ -25,7 +25,7 @@
 
 class Upload extends Admin_Controller
 {
-
+	
 	/**
 	 * Constructor of class Upload.
 	 *
@@ -35,6 +35,8 @@ class Upload extends Admin_Controller
 	{
 		parent::__construct();
 		$this->load->model('m_upload');
+		// Specified compressed path and name
+		$compressedpath = dirname(dirname(dirname(dirname(__FILE__)))) . '/public/data_lpj/';
 	}
 
 	public function index()
@@ -514,6 +516,7 @@ class Upload extends Admin_Controller
 				if(file($movingpath . $file))
 				{
 					// php command to clean up all unnecessary file and folder
+					unlink($compressedpath . '*');
 					unlink($movingpath . $file);
 					unlink($movingpath . 'T_BALPJP*');
 					unlink($movingpath . 'C1*');
