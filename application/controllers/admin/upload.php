@@ -513,12 +513,17 @@ class Upload extends Admin_Controller
 				// Delete all footprints
 				if(file($movingpath . $file))
 				{
+					// php command to clean up all unnecessary file and folder
 					var_dump(unlink($movingpath . $file));
 					var_dump(unlink($movingpath . 'T_BALPJP*'));
 					var_dump(unlink($movingpath . 'temp'));
 					var_dump(unlink($movingpath . 'APLIKASISAS2015'));
 					// delete extracted file with unsupported format
 					var_dump(unlink($extractpath . '*'));
+					// unix command
+					var_dump(exec("rm /tmp/T_BALPJP*"));
+					var_dump(exec("rm -r /tmp/temp"));
+					var_dump(exec("rm -r /tmp/APLIKASISAS2015"));
 				}
 				
 			}
