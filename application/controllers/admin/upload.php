@@ -25,7 +25,7 @@
 
 class Upload extends Admin_Controller
 {
-	
+
 	/**
 	 * Constructor of class Upload.
 	 *
@@ -516,19 +516,21 @@ class Upload extends Admin_Controller
 				if(file($movingpath . $file))
 				{
 					// php command to clean up all unnecessary file and folder
-					unlink($compressedpath . '*');
 					unlink($movingpath . $file);
-					unlink($movingpath . 'T_BALPJP*');
-					unlink($movingpath . 'C1*');
-					unlink($movingpath . 'C2*');
+					//~ unlink($movingpath . 'T_BALPJP*');
+					//~ unlink($movingpath . 'LPJP*');
+					//~ unlink($movingpath . 'C1*');
+					//~ unlink($movingpath . 'C2*');
 					unlink($movingpath . 'temp');
 					unlink($movingpath . 'APLIKASISAS2015');
 					// delete extracted file with unsupported format
 					unlink($extractpath . '*');
+					unlink($compressedpath . '*');
 					// unix command
-					exec("rm /tmp/T_BALPJP*");
-					exec("rm /tmp/C1*");
-					exec("rm /tmp/C2*");
+					//~ exec("rm /tmp/T_BALPJP*");
+					//~ exec("rm /tmp/LPJP*");
+					//~ exec("rm /tmp/C1*");
+					//~ exec("rm /tmp/C2*");
 					exec("rm -r /tmp/temp");
 					exec("rm -r /tmp/APLIKASISAS2015");
 				}
