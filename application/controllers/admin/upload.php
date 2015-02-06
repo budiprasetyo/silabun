@@ -523,6 +523,8 @@ class Upload extends Admin_Controller
 					//~ unlink($movingpath . 'C2*');
 					unlink($movingpath . 'temp');
 					unlink($movingpath . 'APLIKASISAS2015');
+					unlink($movingpath . 'LPJ.LPJ');
+					unlink($movingpath . 'REK_LPJ.LPJ');
 					// delete extracted file with unsupported format
 					unlink($extractpath . '*');
 					unlink($compressedpath . '*');
