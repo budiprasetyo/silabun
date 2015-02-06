@@ -529,6 +529,7 @@ class Upload extends Admin_Controller
 					unlink($movingpath . 'APLIKASISAS2015');
 					unlink($movingpath . 'LPJ.LPJ');
 					unlink($movingpath . 'REK_LPJ.LPJ');
+					unlink($movingpath . '*.DBF');
 					// delete extracted file with unsupported format
 					unlink($extractpath . '*');
 					unlink($compressedpath . '*');
