@@ -152,9 +152,26 @@ class M_upload extends MY_Model
 			a.bulan		= '" .$month. "' 
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan");
+			
+		$validate_penerimaan = $this->db->query("SELECT
+			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
+			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir
+				FROM
+			dsp_ba_lpjp a
+				LEFT JOIN
+			ref_satker b
+				ON a.kd_satker = b.kd_satker
+				WHERE
+			a.kd_kppn 	= {$kd_kppn} AND
+			a.kd_satker	= {$kd_satker} AND
+			a.tahun		= {$year} AND
+			a.bulan		= {$month}
+				GROUP BY
+			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
 		
 		return array (
-			'validate_pengeluaran'	=> $validate_pengeluaran
+			'validate_pengeluaran'	=> $validate_pengeluaran,
+			'validate_penerimaan'	=> $validate_penerimaan
 		);
 	}
 	

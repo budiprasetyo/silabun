@@ -41,6 +41,9 @@ class Upload extends Admin_Controller
 
 	public function index()
 	{
+		// load helper
+		$this->load->helper('amountformat');
+		$this->load->helper('datetime');
 		// if entity is kppn
 		if($this->data['id_entities'] === '1')
 		{
@@ -54,20 +57,29 @@ class Upload extends Admin_Controller
 			$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 			
 			// show the result of validation
-			if ($this->uri->segment(4) !== FALSE)
+			if ($this->uri->segment(5) !== FALSE
+				&& $this->uri->segment(4) === 'K')
 			{
-				$this->load->helper('amountformat');
-				$this->load->helper('datetime');
-				$kd_satker 	= $this->uri->segment(4);
-				$year 		= $this->uri->segment(5);
-				$month 		= $this->uri->segment(6);
+				$kd_satker 	= $this->uri->segment(5);
+				$year 		= $this->uri->segment(6);
+				$month 		= $this->uri->segment(7);
 				
 				// fetch validate adk
 				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
 				$this->data['validate_pengeluaran']	= $data_adk['validate_pengeluaran'];
 				
 			}
-			
+			else if ($this->uri->segment(5) !== FALSE
+				&& $this->uri->segment(4) === 'P')
+			{
+				$kd_satker 	= $this->uri->segment(5);
+				$year 		= $this->uri->segment(6);
+				$month 		= $this->uri->segment(7);
+				// fetch validate adk
+				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
+				$this->data['validate_penerimaan']	= $data_adk['validate_penerimaan'];
+				
+			}
 
 			// fetch all upload
 			 $data_uploads = $this->m_upload->get_uploaded($kppn->id_ref_kppn, $this->data['year'], $this->data['month']);
@@ -331,7 +343,6 @@ class Upload extends Admin_Controller
 						
 					}
 					
-					
 					// Delete all footprints from public/data_lpj
 					if(file($compressedpath . $adk_filename))
 					{
@@ -341,6 +352,7 @@ class Upload extends Admin_Controller
 					// Delete file that contains bugs
 					exec("rm -r /tmp/temp");
 					exec("rm -r /tmp/APLIKASISAS2015");
+					unlink($movingpath . 'T_BALPJP*');
 					
 				}
 				
