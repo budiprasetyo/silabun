@@ -278,8 +278,8 @@
 											<td align="right"><?php echo amount_format($komponen_penerimaan->saldo_awal); ?></td>
 											<td align="right"><?php echo amount_format($komponen_penerimaan->debet); ?></td>
 											<td align="right"><?php echo amount_format($komponen_penerimaan->kredit); ?></td>
-											<td align="right"><?php echo amount_format($hasil_perhitungan_akhir); ?></td>
-											<td align="right"><?php echo amount_format($komponen_penerimaan->saldo_akhir); ?></td>
+											<td align="right" class="bg-blue dker"><?php echo amount_format($hasil_perhitungan_akhir); ?></td>
+											<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_penerimaan->saldo_akhir); ?></td>
 											<td>
 												<?php 
 													if($hasil_perhitungan_akhir == $komponen_penerimaan->saldo_akhir){
