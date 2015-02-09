@@ -352,7 +352,8 @@ class Upload extends Admin_Controller
 					// Delete file that contains bugs
 					exec("rm -r /tmp/temp");
 					exec("rm -r /tmp/APLIKASISAS2015");
-					unlink($movingpath . 'T_BALPJP*');
+					exec("rm -r /tmp/LPJ.LPJ");
+					exec("rm -r /tmp/REK_LPJ.LPJ");
 					
 				}
 				
