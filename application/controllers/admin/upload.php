@@ -218,7 +218,7 @@ class Upload extends Admin_Controller
 						exec("rm -r /tmp/*.DBF");
 						// Delete file 
 						exec("rm /tmp/LPJP*");
-						exec("rm /tmp/T_BALPJP*");
+						exec("rm /tmp/T_BALPJP_REK.TXT");
 						// Delete file in data_lpj
 						$adk_lpjs = glob($compressedpath . '*');
 						foreach ($adk_lpjs as $adk_lpj) 
@@ -277,6 +277,7 @@ class Upload extends Admin_Controller
 						// Delete file 
 						exec("rm /tmp/C1.*");
 						exec("rm /tmp/C2.*");
+						exec("rm /tmp/T_BALPJP_REK.TXT");
 						// Delete file in data_lpj
 						$adk_lpjs = glob($compressedpath . '*');
 						foreach ($adk_lpjs as $adk_lpj) 
