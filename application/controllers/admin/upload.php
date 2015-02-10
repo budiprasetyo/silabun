@@ -159,20 +159,23 @@ class Upload extends Admin_Controller
 		if($this->input->post('submit') === 'Upload');
 		{
 				
-			$file_types	= '*';
+			$file_types	= 'ZIP|lpj';
 			// Upload section
-			$config['upload_path'] 		= './public/data_lpj';
-			$config['max_size'] 		= '0';
-			$config['max_width'] 		= '0';
-			$config['max_height'] 		= '0';
+			$config = array (
+				'allowed_types'	=> '*',
+				//~ 'allowed_types'	=> '*',
+				'upload_path'	=> './public/data_lpj'
+			);
+			//~ $config['allowed_types']	= "ZIP|lpj";
+			//~ $config['upload_path'] 		= './public/data_lpj';
+			//~ $config['max_size'] 		= '0';
+			//~ $config['max_width'] 		= '0';
+			//~ $config['max_height'] 		= '0';
 
 			// Load the upload library
 			$this->load->library('upload',$config);
 			// initialize
 			$this->upload->initialize($config);
-			// set file types
-			$this->upload->set_allowed_types($file_types);
-			
 			// Handle the file upload from the name of input type is 'upload_lpj'
 			if( ! $this->upload->do_upload('upload_lpj') )
 			{
@@ -204,18 +207,38 @@ class Upload extends Admin_Controller
 					$this->data['csvdatas'] = $this->csvreader;
 					
 					// If ADK from silabi penerimaan
-					if(substr($data['file_name'], 0, 4) === 'LPJP'){
+					if(substr($data['file_name'], 0, 4) === 'LPJP'
+						&& $data['file_ext'] === '.ZIP'){
+						
+						// Delete file that contains bugs
+						exec("rm -r /tmp/temp");
+						exec("rm -r /tmp/APLIKASISAS2015");
+						exec("rm -r /tmp/LPJ.LPJ");
+						exec("rm -r /tmp/REK_LPJ.LPJ");
+						exec("rm -r /tmp/*.DBF");
+						// Delete file 
+						exec("rm /tmp/LPJP*");
+						exec("rm /tmp/T_BALPJP*");
+						// Delete file in data_lpj
+						$adk_lpjs = glob($compressedpath . '*');
+						foreach ($adk_lpjs as $adk_lpj) 
+						{
+							if($data['file_name'] !== basename($adk_lpj))
+							{
+								unlink($adk_lpj);
+							}
+						}
 						
 						$pass_zip = "indahlaminatingrum";
 						// execute unzip and move to tmp folder
-						exec("unzip -P indahlaminatingrum "  . $compressedpath . $data['file_name'] . " -d /tmp");
+						exec("unzip -P " . $pass_zip . " " . $compressedpath . $data['file_name'] . " -d /tmp");
 						
 						foreach (glob($movingpath . '*.TXT') as $filename) 
 						{
 							// array newnames for hidden value
-							$this->data['newnames'][] = $movingpath . basename($filename);
+							$this->data['penerimaan_newnames'][] = $movingpath . basename($filename);
 							$this->data['movingpaths'] = $movingpath;
-
+							
 							if (substr($filename,0,9) === '/tmp/temp') 
 							{
 								if (substr($filename,0,14) === '/tmp/temp\LPJP')
@@ -242,22 +265,37 @@ class Upload extends Admin_Controller
 						}
 					}
 					// If ADK from silabi pengeluaran
-					else if (substr($data['file_name'], -3, 3) === 'lpj')
+					else if ($data['file_ext'] === '.lpj')
 					{
+						
+						// Delete file that contains bugs
+						exec("rm -r /tmp/temp");
+						exec("rm -r /tmp/APLIKASISAS2015");
+						exec("rm -r /tmp/LPJ.LPJ");
+						exec("rm -r /tmp/REK_LPJ.LPJ");
+						exec("rm -r /tmp/*.DBF");
+						// Delete file 
+						exec("rm /tmp/C1.*");
+						exec("rm /tmp/C2.*");
+						// Delete file in data_lpj
+						$adk_lpjs = glob($compressedpath . '*');
+						foreach ($adk_lpjs as $adk_lpj) 
+						{
+							if($data['file_name'] !== basename($adk_lpj))
+							{
+								unlink($adk_lpj);
+							}
+						}
+						
 						$pass_zip = "d77f2eda617514497171d42a2c588295";
 						// execute unzip and move to tmp folder
 						$test = exec("unzip -P " . $pass_zip . " " . $compressedpath . $data['file_name'] . " -d /tmp");
-						//~ var_dump($test);
-						//~ var_dump(glob($compressedpath . '*.lpj'));
+
 						foreach (glob($movingpath . '*.LPJ') as $filename) 
 						{
-							//~ foreach(glob($movingpath . 'temp') as $temp)
-							//~ {
-								//~ var_dump(substr($filename,0,12));
-							//~ }
 							
 							// array newnames for hidden value
-							$this->data['newnames'][] = $movingpath . basename($filename);
+							$this->data['pengeluaran_newnames'][] = $movingpath . basename($filename);
 							$this->data['movingpaths'] = $movingpath;
 							
 							if (substr($filename,0,9) === '/tmp/temp') 
@@ -342,6 +380,17 @@ class Upload extends Admin_Controller
 						}
 						
 					}
+					// prohibited format
+					else if ($data['file_ext'] !== 'lpj'
+							&& $data['file_ext'] !== 'ZIP')
+					{
+						$this->data['message_title'] = 'Informasi Load & Insert Data';
+						$this->data['message'] = "Format ADK LPJ dengan ekstensi {$data['file_ext']} tidak diijinkan";
+						$this->load->view('admin/components/message', $this->data);
+						
+						// redirect to index page
+						$this->output->set_header('refresh:2; url=index');
+					}
 					
 					// Delete all footprints from public/data_lpj
 					if(file($compressedpath . $adk_filename))
@@ -368,9 +417,10 @@ class Upload extends Admin_Controller
 	{
 		$data = $this->input->post();
 				
-		$filetemps = $data['filetemps'];
+		$penerimaan_filetemps = $data['penerimaan_filetemps'];
+		$pengeluaran_filetemps = $data['pengeluaran_filetemps'];
 		
-		foreach ($filetemps as $filetemp) 
+		foreach ($pengeluaran_filetemps as $filetemp) 
 		{
 			foreach ($filetemp as $filename) 
 			{
@@ -455,6 +505,48 @@ class Upload extends Admin_Controller
 					}
 					
 				}
+				
+				
+				// Delete all footprints
+				if(file($movingpath . $file))
+				{
+					// php command to clean up all unnecessary file and folder
+					unlink($movingpath . $file);
+					//~ unlink($movingpath . 'T_BALPJP*');
+					//~ unlink($movingpath . 'LPJP*');
+					//~ unlink($movingpath . 'C1*');
+					//~ unlink($movingpath . 'C2*');
+					unlink($movingpath . 'temp');
+					unlink($movingpath . 'APLIKASISAS2015');
+					unlink($movingpath . 'LPJ.LPJ');
+					unlink($movingpath . 'REK_LPJ.LPJ');
+					unlink($movingpath . '*.DBF');
+					// delete extracted file with unsupported format
+					unlink($extractpath . '*');
+					unlink($compressedpath . '*');
+					// unix command
+					//~ exec("rm /tmp/T_BALPJP*");
+					//~ exec("rm /tmp/LPJP*");
+					//~ exec("rm /tmp/C1*");
+					//~ exec("rm /tmp/C2*");
+					exec("rm -r /tmp/temp");
+					exec("rm -r /tmp/APLIKASISAS2015");
+				}
+				
+			}
+			
+		}
+		
+		// LPJ Penerimaan
+		foreach ($penerimaan_filetemps as $filetemp) 
+		{
+			foreach ($filetemp as $filename) 
+			{
+				
+				// Specified moving extracted file path
+				$movingpath = realpath() . sys_get_temp_dir() . '/';
+				// Get only filenames, used for unlink file from tmp :)
+				$file = substr(strrchr($filename,'/'),1);
 				
 				// LPJ Penerimaan
 				if (substr($file,0,1) === 'T'
@@ -556,7 +648,6 @@ class Upload extends Admin_Controller
 				}
 				
 			}
-			
 		}
 		
 		// redirect to index page

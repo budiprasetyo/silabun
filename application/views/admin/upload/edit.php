@@ -103,8 +103,17 @@
 							  
 						  <?php 
 								// send filenames to approval method
-								$filetemps[] = $newnames;
-								echo form_hidden('filetemps', $filetemps);
+								if (count($penerimaan_newnames))
+								{
+									$penerimaan_filetemps[] = $penerimaan_newnames;
+									echo form_hidden('penerimaan_filetemps', $penerimaan_filetemps);
+								}
+								if (count($pengeluaran_newnames))
+								{
+									$pengeluaran_filetemps[] = $pengeluaran_newnames;
+									echo form_hidden('pengeluaran_filetemps', $pengeluaran_filetemps);
+								}
+								
 						  ?>
 						  
 							<div class="col-lg-12 controls">
