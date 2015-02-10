@@ -212,6 +212,7 @@ class Upload extends Admin_Controller
 						
 						// Delete file that contains bugs
 						exec("rm -r /tmp/temp");
+						exec("rm -r /tmp/tmp");
 						exec("rm -r /tmp/APLIKASISAS2015");
 						exec("rm -r /tmp/LPJ.LPJ");
 						exec("rm -r /tmp/REK_LPJ.LPJ");
@@ -270,6 +271,7 @@ class Upload extends Admin_Controller
 						
 						// Delete file that contains bugs
 						exec("rm -r /tmp/temp");
+						exec("rm -r /tmp/tmp");
 						exec("rm -r /tmp/APLIKASISAS2015");
 						exec("rm -r /tmp/LPJ.LPJ");
 						exec("rm -r /tmp/REK_LPJ.LPJ");
@@ -401,6 +403,7 @@ class Upload extends Admin_Controller
 					
 					// Delete file that contains bugs
 					exec("rm -r /tmp/temp");
+					exec("rm -r /tmp/tmp");
 					exec("rm -r /tmp/APLIKASISAS2015");
 					exec("rm -r /tmp/LPJ.LPJ");
 					exec("rm -r /tmp/REK_LPJ.LPJ");
@@ -531,6 +534,7 @@ class Upload extends Admin_Controller
 					//~ exec("rm /tmp/C1*");
 					//~ exec("rm /tmp/C2*");
 					exec("rm -r /tmp/temp");
+					exec("rm -r /tmp/tmp");
 					exec("rm -r /tmp/APLIKASISAS2015");
 				}
 				
