@@ -130,16 +130,17 @@ class M_upload extends MY_Model
 	public function validate_adk($kd_kppn, $kd_satker, $year, $month)
 	{
 		$validate_pengeluaran = $this->db->query("SELECT 
-			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan,
+			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.no_bukti,
 			a.saldo_awal_tunai, a.debet_tunai, a.kredit_tunai, a.saldo_akhir_tunai,
 			a.saldo_awal_bank, a.debet_bank, a.kredit_bank, a.saldo_akhir_bank,
 			a.saldo_awal_bku, a.debet_bku, a.kredit_bku, a.saldo_akhir_bku,
 			a.saldo_awal_um, a.debet_um, a.kredit_um, a.saldo_akhir_um,
 			a.saldo_awal_bpp, a.debet_bpp, a.kredit_bpp, a.saldo_akhir_bpp,
-			a.saldo_awal_up, a.debet_up, a.kredit_up, a.saldo_akhir_up,
+			a.saldo_awal_up, a.debet_up, a.kredit_up, a.saldo_akhir_up, a.kuitansi_up,
 			a.saldo_awal_lsbend, a.debet_lsbend, a.kredit_lsbend, a.saldo_akhir_lsbend,
 			a.saldo_awal_pajak, a.debet_pajak, a.kredit_pajak, a.saldo_akhir_pajak,
-			a.saldo_awal_lain, a.debet_lain, a.kredit_lain, a.saldo_akhir_lain
+			a.saldo_awal_lain, a.debet_lain, a.kredit_lain, a.saldo_akhir_lain,
+			a.brankas, a.rekening_bank, a.saldo_up_uakpa, a.ket_selisih_kas, a.ket_selisih_up
 				FROM
 			dsp_ba_lpjk a
 				LEFT JOIN 

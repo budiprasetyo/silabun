@@ -388,7 +388,7 @@ class Upload extends Admin_Controller
 							&& $data['file_ext'] !== 'ZIP')
 					{
 						$this->data['message_title'] = 'Informasi Load & Insert Data';
-						$this->data['message'] = "Format ADK LPJ dengan ekstensi {$data['file_ext']} tidak diijinkan";
+						$this->data['message'] = "Format ADK LPJ Anda tidak diijinkan";
 						$this->load->view('admin/components/message', $this->data);
 						
 						// redirect to index page
@@ -509,7 +509,6 @@ class Upload extends Admin_Controller
 					}
 					
 				}
-				
 				
 				// Delete all footprints
 				if(file($movingpath . $file))
@@ -660,6 +659,9 @@ class Upload extends Admin_Controller
 		
 	}
 	
-	
+	protected function remove_tmp($unlink_file = TRUE, $rm_file = TRUE)
+	{
+		
+	}
 	
 }

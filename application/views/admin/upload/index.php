@@ -72,6 +72,7 @@
 						{
 							$komponen_pengeluaran = $validate_pengeluaran->row();
 							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
+							$validasi_saldo_akhir_bku = $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain;
 					?>
 					
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN<br /></h5>
@@ -242,8 +243,308 @@
 											<?php } ?>
 										</td>
 									</tr>
+									<tr>
+										<td colspan="4">&nbsp;</td>
+										<th>*) Hasil Penjumlahan</th>
+										<th>Saldo Akhir BKU</th>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td colspan="4" style="white-space:normal;"><strong>Validasi Saldo Akhir BKU</strong><br />
+											Saldo Akhir BKU = Saldo Akhir UP + Saldo Akhir LS Bendahara + Saldo Akhir Pajak + Saldo Akhir Pengeluaran Lain *)</td>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
+										<td>
+											<?php 
+												if($validasi_saldo_akhir_bku == $komponen_pengeluaran->saldo_akhir_bku){
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?></td>
+									</tr>
 								</tbody>
 							</table>
+							<hr />
+							<?php 
+								// BP Kas (Tunai & Bank)
+								$saldo_awal_bp_kas 	= $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->saldo_awal_bank;
+								$debet_bp_kas 		= $komponen_pengeluaran->debet_tunai + $komponen_pengeluaran->debet_bank;
+								$kredit_bp_kas 		= $komponen_pengeluaran->kredit_tunai + $komponen_pengeluaran->kredit_bank;
+								$saldo_akhir_bp_kas	= $komponen_pengeluaran->saldo_akhir_tunai + $komponen_pengeluaran->saldo_akhir_bank;
+								// Jumlah kas
+								$jumlah_kas			= $komponen_pengeluaran->brankas + $komponen_pengeluaran->rekening_bank;
+								// Selisih kas
+								$selisih_kas		= $saldo_akhir_bp_kas - $jumlah_kas;
+								// Jumlah UP
+								$jumlah_up			= $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->kuitansi_up;
+								// Selisih pembukuan UP
+								$selisih_pembukuan_up	= $jumlah_up - $komponen_pengeluaran->saldo_up_uakpa;
+								// BP Kas, BPP, dan Uang Muka (Voucher)
+								$saldo_awal_kas_bpp_um	= $saldo_awal_bp_kas + $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->saldo_awal_bpp;
+								$debet_kas_bpp_um	= $debet_bp_kas + $komponen_pengeluaran->debet_um + $komponen_pengeluaran->debet_bpp;
+								$kredit_kas_bpp_um	= $kredit_bp_kas + $komponen_pengeluaran->kredit_um + $komponen_pengeluaran->kredit_bpp;
+								$saldo_akhir_kas_bpp_um	= $saldo_akhir_bp_kas + $komponen_pengeluaran->saldo_akhir_um + $komponen_pengeluaran->saldo_akhir_bpp;
+								// BP selain Kas, BPP, dan Uang Muka (Voucher)
+								$saldo_awal_non_kas_bpp_um	= $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->saldo_awal_lain; 
+								$debet_non_kas_bpp_um	= $komponen_pengeluaran->debet_up + $komponen_pengeluaran->debet_lsbend + $komponen_pengeluaran->debet_pajak + $komponen_pengeluaran->debet_lain; 
+								$kredit_non_kas_bpp_um	= $komponen_pengeluaran->kredit_up + $komponen_pengeluaran->kredit_lsbend + $komponen_pengeluaran->kredit_pajak + $komponen_pengeluaran->kredit_lain; 
+								$saldo_akhir_non_kas_bpp_um	= $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain; 
+							?>
+							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENGELUARAN</h5><br />
+							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_um); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?><br />
+							<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr style="font-weight:bold;">
+										<td align="center">No</td>
+										<td align="center">Jenis Buku Pembantu</td>
+										<td align="center">Saldo Awal</td>
+										<td align="center">Penambahan</td>
+										<td align="center">Pengurangan</td>
+										<td align="center">Saldo Akhir</td>
+									</tr>
+									<tr>
+										<td align="center">(1)</td>
+										<td align="center">(2)</td>
+										<td align="center">(3)</td>
+										<td align="center">(4)</td>
+										<td align="center">(5)</td>
+										<td align="center">(6)</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="font-weight:bold;">
+										<td align="center">A</td>
+										<td>BP Kas, BPP, dan Uang Muka (Voucher)</td>
+										<td align="right"><?php echo amount_format($saldo_awal_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($debet_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($kredit_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($saldo_akhir_kas_bpp_um); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>1. BP Kas (Tunai dan Bank)</td>
+										<td align="right"><?php echo amount_format($saldo_awal_bp_kas); ?></td>
+										<td align="right"><?php echo amount_format($debet_bp_kas); ?></td>
+										<td align="right"><?php echo amount_format($kredit_bp_kas); ?></td>
+										<td align="right"><?php echo amount_format($saldo_akhir_bp_kas); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>2. BP Uang Muka (Voucher)</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_um); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_um); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_um); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_um); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>3. BP BPP (Kas pada BPP)</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_bpp); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_bpp); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_bpp); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bpp); ?></td>
+									</tr>
+									<tr style="font-weight:bold;">
+										<td align="center">B</td>
+										<td>BP selain Kas, BPP, dan Uang Muka (Voucher)</td>
+										<td align="right"><?php echo amount_format($saldo_awal_non_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($debet_non_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($kredit_non_kas_bpp_um); ?></td>
+										<td align="right"><?php echo amount_format($saldo_akhir_non_kas_bpp_um); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>1. BP UP *)</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_up); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_up); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_up); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_up); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>2. BP LS-Bendahara</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_lsbend); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_lsbend); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_lsbend); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_lsbend); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>3. BP Pajak</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_pajak); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_pajak); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_pajak); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_pajak); ?></td>
+									</tr>
+									<tr>
+										<td></td>
+										<td>4. BP Lain</td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_awal_lain); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->debet_lain); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->kredit_lain); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_lain); ?></td>
+									</tr>
+								</tbody>
+							</table>
+							*) jumlah pengurangan sudah termasuk kuitansi UP yang belum di-SPMGU-kan sebesar Rp <?php echo amount_format($komponen_pengeluaran->kuitansi_up); ?><br /><br />
+							<strong>Keadaan kas pada akhir bulan pelaporan</strong>
+							<div class="row">
+								<div class="col-md-6">
+									1. Uang tunai di brankas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_pengeluaran->brankas); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									2. Uang rekening di bank (terlampir Daftar Rincian Kas di Rekening)
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_pengeluaran->rekening_bank); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(+)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Jumlah kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_kas); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Selisih kas</strong>
+							<div class="row">
+								<div class="col-md-6">
+									1. Saldo akhir BP Kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($saldo_akhir_bp_kas); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									2. Jumlah kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_kas); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(-)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Selisih kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($selisih_kas); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Hasil rekonsiliasi internal dengan UAKPA</strong>
+							<div class="row">
+								<div class="col-md-6">
+									1. Saldo UP
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_pengeluaran->saldo_akhir_up); ?>
+									</div>
+								</div>
+								<div class="col-md-6">
+									2. Kuitansi UP
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_pengeluaran->kuitansi_up); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(+)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Jumlah UP
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_up); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									4. Saldo UP menurut UAKPA
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_pengeluaran->saldo_up_uakpa); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(-)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									5. Selisih pembukuan UP
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($selisih_pembukuan_up); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Penjelasan selisih kas dan/atau selisih pembukuan:</strong><br />
+							1. <?php echo $komponen_pengeluaran->ket_selisih_kas; ?><br />
+							2. <?php echo $komponen_pengeluaran->ket_selisih_up; ?>
+							
+							<br />
+							<hr />
 					<?php
 						}
 						// validate penerimaan
