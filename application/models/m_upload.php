@@ -169,10 +169,29 @@ class M_upload extends MY_Model
 			a.bulan		= {$month}
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
+			
+		$int_month = (int) $month - 1;
+		$month_before = sprintf("%02s", $int_month);
+		
+		$validate_pengeluaran_1m = $this->db->query("SELECT
+		kd_kppn, kd_satker, tahun, bulan, 
+		saldo_akhir_tunai, saldo_akhir_bank, saldo_akhir_bku, saldo_akhir_um,
+		saldo_akhir_bpp, saldo_akhir_up, saldo_akhir_lsbend, saldo_akhir_pajak,
+		saldo_akhir_lain
+			FROM
+		dsp_ba_lpjk
+			WHERE
+		kd_kppn = {$kd_kppn} AND
+		kd_satker = {$kd_kppn} AND
+		tahun = {$year} AND
+		bulan = {$month_before}
+				GROUP BY
+		kd_kppn, kd_satker, tahun, bulan");
 		
 		return array (
-			'validate_pengeluaran'	=> $validate_pengeluaran,
-			'validate_penerimaan'	=> $validate_penerimaan
+			'validate_pengeluaran'		=> $validate_pengeluaran,
+			'validate_penerimaan'		=> $validate_penerimaan,
+			'validate_pengeluaran_1m'	=> $validate_pengeluaran_1m
 		);
 	}
 	

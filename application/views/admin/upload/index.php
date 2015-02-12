@@ -294,7 +294,7 @@
 								$saldo_akhir_non_kas_bpp_um	= $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain; 
 							?>
 							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENGELUARAN</h5><br />
-							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_um); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?><br />
+							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?><br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
 									<tr style="font-weight:bold;">
