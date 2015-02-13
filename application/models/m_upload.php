@@ -127,8 +127,20 @@ class M_upload extends MY_Model
 		
 	}
 	
-	public function validate_adk($kd_kppn, $kd_satker, $year, $month)
+	public function validate_adk($kd_kppn, $kd_satker, $year, $month, $kd_buku = null)
 	{
+		
+		if ($kd_buku != null)
+		{
+			$kd_buku_penerimaan = " AND kd_buku = '{$kd_buku}' ";
+		}
+		else 
+		{
+			$kd_buku_penerimaan = "";
+		}
+		
+		
+		
 		$validate_pengeluaran = $this->db->query("SELECT 
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.no_bukti,
 			a.saldo_awal_tunai, a.debet_tunai, a.kredit_tunai, a.saldo_akhir_tunai,
@@ -156,7 +168,9 @@ class M_upload extends MY_Model
 			
 		$validate_penerimaan = $this->db->query("SELECT
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
-			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir
+			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir,
+			a.no_bukti, a.brankas, a.kas_bank, a.hak_saldo_awal, a.hak_terima, a.hak_setor,
+			a.setor_uakpa, a.uakpa, a.ket_selisih_kas, a.ket_selisih_uakpa
 				FROM
 			dsp_ba_lpjp a
 				LEFT JOIN
@@ -166,13 +180,14 @@ class M_upload extends MY_Model
 			a.kd_kppn 	= {$kd_kppn} AND
 			a.kd_satker	= {$kd_satker} AND
 			a.tahun		= {$year} AND
-			a.bulan		= {$month}
+			a.bulan		= {$month} {$kd_buku_penerimaan}
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
-			
+
 		$int_month = (int) $month - 1;
 		$month_before = sprintf("%02s", $int_month);
 		
+		// get data lpj pengeluaran 1 month before
 		$validate_pengeluaran_1m = $this->db->query("SELECT
 		kd_kppn, kd_satker, tahun, bulan, 
 		saldo_akhir_tunai, saldo_akhir_bank, saldo_akhir_bku, saldo_akhir_um,

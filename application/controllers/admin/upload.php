@@ -78,9 +78,18 @@ class Upload extends Admin_Controller
 				$kd_satker 	= $this->uri->segment(5);
 				$year 		= $this->uri->segment(6);
 				$month 		= $this->uri->segment(7);
+				
 				// fetch validate adk
-				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
+				$data_adk 		 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, null);
 				$this->data['validate_penerimaan']	= $data_adk['validate_penerimaan'];
+				
+				// where kd_buku = 02 (BP Kas)
+				$data_adk_02 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, '02');
+				$this->data['validate_penerimaan_02']	= $data_adk_02['validate_penerimaan'];
+				
+				// where kd_buku = 01 (BKU)
+				$data_adk_01 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, '01');
+				$this->data['validate_penerimaan_01']	= $data_adk_01['validate_penerimaan'];
 				
 			}
 

@@ -294,7 +294,18 @@
 								$saldo_akhir_non_kas_bpp_um	= $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain; 
 							?>
 							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENGELUARAN</h5><br />
-							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?><br />
+							Keadaan pembukuan bulan pelaporan dengan <span class="text-primary">saldo akhir pada BKU</span> sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?>
+							<?php 
+								if ($komponen_pengeluaran->saldo_akhir_bku !== $saldo_akhir_kas_bpp_um)
+								{
+							?>
+									<span class="text-danger" style="white-space: normal;"><strong>(Saldo akhir BKU harus sama dengan saldo akhir BP Kas, BPP, dan Uang Muka (Voucher))</strong></span>
+									<span class="label label-danger">Hasil Salah</span>
+							<?php
+								}
+								
+							?>
+							<br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
 									<tr style="font-weight:bold;">
@@ -551,7 +562,15 @@
 						else if (count($validate_penerimaan))
 						{
 							$header_penerimaan = $validate_penerimaan->row();
+							$komponen_penerimaan_02 = $validate_penerimaan_02->row();
+							$komponen_penerimaan_01 = $validate_penerimaan_01->row();
 							$komponen_penerimaans = $validate_penerimaan->result();
+							// calculation LPJ Penerimaan
+							$jumlah_kas_penerimaan = $komponen_penerimaan_02->brankas + $komponen_penerimaan_02->kas_bank;
+							$selisih_kas_penerimaan = $komponen_penerimaan_02->saldo_akhir - $jumlah_kas_penerimaan;
+							$jumlah_penerimaan_negara = $komponen_penerimaan_01->hak_saldo_awal + $komponen_penerimaan_01->hak_terima;
+							$saldo_akhir_penerimaan = $jumlah_penerimaan_negara - $komponen_penerimaan_01->hak_setor;
+							$selisih_uakpa = $komponen_penerimaan_01->setor_uakpa - $komponen_penerimaan_01->uakpa;
 					?>
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENERIMAAN<br /></h5>
 							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($header_penerimaan->nm_satker); ?><br /></h4>
@@ -573,6 +592,15 @@
 									foreach ($komponen_penerimaans as $komponen_penerimaan) 
 									{
 										$hasil_perhitungan_akhir = $komponen_penerimaan->saldo_awal + $komponen_penerimaan->debet - $komponen_penerimaan->kredit; 
+										if ($komponen_penerimaan->kd_buku !== '02')
+										{
+											// calculation for LPJ penerimaan
+											$saldo_awal_bp	+= $komponen_penerimaan->saldo_awal;
+											$debet_bp		+= $komponen_penerimaan->debet;
+											$kredit_bp		+= $komponen_penerimaan->kredit;
+											$saldo_akhir_bp	+= $komponen_penerimaan->saldo_akhir;
+										}
+										
 					?>
 										<tr>
 											<td><?php echo '(' . $komponen_penerimaan->kd_buku . ') ' . $komponen_penerimaan->nm_buku; ?></td>
@@ -598,6 +626,266 @@
 					?>
 								</tbody>
 							</table>
+							
+							<hr />
+							
+							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENERIMAAN</h5><br />
+							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?> dan Nomor Bukti terakhir Nomor <?php echo $header_penerimaan->no_bukti; ?>
+							<br />
+							<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr style="font-weight:bold;">
+										<td align="center">No</td>
+										<td align="center">Jenis Buku Pembantu</td>
+										<td align="center">Saldo Awal</td>
+										<td align="center">Penambahan</td>
+										<td align="center">Pengurangan</td>
+										<td align="center">Saldo Akhir</td>
+									</tr>
+									<tr>
+										<td align="center">(1)</td>
+										<td align="center">(2)</td>
+										<td align="center">(3)</td>
+										<td align="center">(4)</td>
+										<td align="center">(5)</td>
+										<td align="center">(6)</td>
+									</tr>
+								</thead>
+								<tbody>
+									<tr style="font-weight:bold;">
+										<td align="center">A</td>
+										<td>BP Kas</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<td>&nbsp;</td>
+										<td>BP Kas (Tunai dan Bank)</td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->saldo_awal); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->debet); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->kredit); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?></td>
+									</tr>
+									<tr style="font-weight:bold;">
+										<td align="center">B</td>
+										<td>Buku Pembantu</td>
+										<td align="right"><?php echo amount_format($saldo_awal_bp); ?></td>
+										<td align="right"><?php echo amount_format($debet_bp); ?></td>
+										<td align="right"><?php echo amount_format($kredit_bp); ?></td>
+										<td align="right"><?php echo amount_format($saldo_akhir_bp); ?></td>
+									</tr>
+							<?php 
+								$i = 0;
+								foreach ($komponen_penerimaans as $komponen_penerimaan) 
+								{
+									if($komponen_penerimaan->kd_buku !== '02'){
+							?>
+									<tr>
+										<td>&nbsp;</td>
+										<td><?php echo ++$i . '. ' . $komponen_penerimaan->nm_buku; ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan->saldo_awal); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan->debet); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan->kredit); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan->saldo_akhir); ?></td>
+									</tr>
+							<?php
+									}
+								}
+							?>
+								</tbody>
+							</table>
+							<strong>Keadaan kas pada akhir bulan pelaporan</strong><br />
+							<div class="row">
+								<div class="col-md-6">
+									1. Uang Tunai di Brankas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_02->brankas); ?>
+									</div>
+								</div>
+								<div class="col-md-6">
+									2. Uang di Rekening Bank (terlampir Daftar Rincian Kas di Rekening)
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_02->kas_bank); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(+)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Jumlah Kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_kas_penerimaan); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Selisih Kas</strong><br />
+							<div class="row">
+								<div class="col-md-6">
+									1. Saldo Akhir BP Kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?>
+									</div>
+								</div>
+								<div class="col-md-6">
+									2. Jumlah Kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_kas_penerimaan);  ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(-)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Selisih Kas
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($selisih_kas_penerimaan); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Saldo Uang yang Sudah Menjadi Hak Negara</strong><br />
+							<div class="row">
+								<div class="col-md-6">
+									1. Saldo Awal
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_01->hak_saldo_awal); ?>
+									</div>
+								</div>
+								<div class="col-md-6">
+									2. Penerimaan yang Sudah Menjadi Hak Negara Bulan Ini
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_01->hak_terima); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(+)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Jumlah Penerimaan Negara
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($jumlah_penerimaan_negara); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									4. Setoran Atas Penerimaan yang Sudah Menjadi Hak Negara Bulan Ini
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_01->hak_setor); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(-)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									5. Saldo Akhir
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($saldo_akhir_penerimaan); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Hasil Rekonsiliasi Internal Dengan UAKPA</strong><br />
+							<div class="row">
+								<div class="col-md-6">
+									1. Penyetoran Menurut Pembukuan Bendahara
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_01->setor_uakpa); ?>
+									</div>
+								</div>
+								<div class="col-md-6">
+									2. Penyetoran Menurut UAKPA (Sesuai Bukti Setor)
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($komponen_penerimaan_01->uakpa); ?>
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-9">
+									<hr />
+								</div>
+								<div class="col-md-1">(-)</div>
+							</div>
+							<div class="row">
+								<div class="col-md-6">
+									3. Selisih
+								</div>
+								<div class="col-md-1">Rp</div>
+								<div class="col-md-1 col-md-offset-1">
+									<div class="pull-right">
+										<?php echo amount_format($selisih_uakpa); ?>
+									</div>
+								</div>
+							</div>
+							<br />
+							<strong>Penjelasan selisih kas dan/atau selisih pembukuan:</strong><br />
+							1. <?php echo $komponen_penerimaan_02->ket_selisih_kas; ?><br />
+							2. <?php echo $komponen_penerimaan_01->ket_selisih_uakpa; ?>
+							
+							<br />
+							<hr />
 					<?php
 						}
 						
