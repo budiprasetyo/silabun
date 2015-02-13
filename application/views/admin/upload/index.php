@@ -413,6 +413,18 @@
 									</div>
 								</div>
 							</div>
+							<?php 
+								if ($komponen_pengeluaran->brankas > 50000000)
+								{
+							?>
+								<div class="row">
+									<div class="col-md-8">
+										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai di brankas tidak boleh melebihi Rp 50.000.000,00 (PER-3/PB/2014 Bab III Pasal 7 (1))</strong></span>
+									</div>
+								</div>
+							<?php
+								}
+							?>
 							<div class="row">
 								<div class="col-md-6">
 									2. Uang rekening di bank (terlampir Daftar Rincian Kas di Rekening)
@@ -630,7 +642,7 @@
 							<hr />
 							
 							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENERIMAAN</h5><br />
-							Keadaan pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp <?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?> dan Nomor Bukti terakhir Nomor <?php echo $header_penerimaan->no_bukti; ?>
+							Keadaan pembukuan bulan pelaporan dengan <span class="text-primary">saldo akhir pada BKU</span> sebesar Rp <?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?> dan Nomor Bukti terakhir Nomor <?php echo $header_penerimaan->no_bukti; ?>
 							<br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
@@ -655,10 +667,10 @@
 									<tr style="font-weight:bold;">
 										<td align="center">A</td>
 										<td>BP Kas</td>
-										<td>&nbsp;</td>
-										<td>&nbsp;</td>
-										<td>&nbsp;</td>
-										<td>&nbsp;</td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->saldo_awal); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->debet); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->kredit); ?></td>
+										<td align="right"><?php echo amount_format($komponen_penerimaan_02->saldo_akhir); ?></td>
 									</tr>
 									<tr>
 										<td>&nbsp;</td>
@@ -707,6 +719,21 @@
 										<?php echo amount_format($komponen_penerimaan_02->brankas); ?>
 									</div>
 								</div>
+							</div>
+							
+							<?php 
+								if ($komponen_penerimaan_02->brankas > 50000000)
+								{
+							?>
+								<div class="row">
+									<div class="col-md-8">
+										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai di brankas tidak boleh melebihi Rp 50.000.000,00 (PER-3/PB/2014 Bab III Pasal 7 (1))</strong></span>
+									</div>
+								</div>
+							<?php
+								}
+							?>
+							<div class="row">
 								<div class="col-md-6">
 									2. Uang di Rekening Bank (terlampir Daftar Rincian Kas di Rekening)
 								</div>
