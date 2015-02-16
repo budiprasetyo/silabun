@@ -72,7 +72,8 @@
 						{
 							$komponen_pengeluaran = $validate_pengeluaran->row();
 							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
-							$validasi_saldo_akhir_bku = $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain;
+							$validasi_saldo_akhir_bku_1 = $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain;
+							$validasi_saldo_akhir_bku_2 = $komponen_pengeluaran->saldo_akhir_tunai + $komponen_pengeluaran->saldo_akhir_bank + $komponen_pengeluaran->saldo_akhir_um + $komponen_pengeluaran->saldo_akhir_bpp;
 					?>
 					
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN<br /></h5>
@@ -243,20 +244,25 @@
 											<?php } ?>
 										</td>
 									</tr>
+								</table>
+								<table class="table table-bordered table-condensed table-hovered table-striped">
 									<tr>
-										<td colspan="4">&nbsp;</td>
+										<td colspan="4" style="white-space:normal;"><strong>1. Validasi Saldo Akhir BKU</strong><br />
+											Saldo Akhir BKU = Saldo Akhir UP + Saldo Akhir LS Bendahara + Saldo Akhir Pajak + Saldo Akhir Pengeluaran Lain *)</td>
 										<th>*) Hasil Penjumlahan</th>
 										<th>Saldo Akhir BKU</th>
 										<td>&nbsp;</td>
 									</tr>
 									<tr>
-										<td colspan="4" style="white-space:normal;"><strong>Validasi Saldo Akhir BKU</strong><br />
-											Saldo Akhir BKU = Saldo Akhir UP + Saldo Akhir LS Bendahara + Saldo Akhir Pajak + Saldo Akhir Pengeluaran Lain *)</td>
-										<td align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku); ?></td>
-										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
-										<td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir UP</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir LS Bendahara</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir Pajak</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir Pengeluaran Lain</td>
+										<td rowspan="2" align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku_1); ?></td>
+										<td rowspan="2" align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
+										<td rowspan="2">
 											<?php 
-												if($validasi_saldo_akhir_bku == $komponen_pengeluaran->saldo_akhir_bku){
+												if($validasi_saldo_akhir_bku_1 == $komponen_pengeluaran->saldo_akhir_bku){
 											?>
 													<span class="label label-success">Hasil Benar</span>
 											<?php
@@ -264,6 +270,43 @@
 											?>
 													<span class="label label-danger">Hasil Salah</span>
 											<?php } ?></td>
+									</tr>
+									<tr>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_up); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_lsbend); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_pajak); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_lain); ?></td>
+									</tr>
+									<tr>
+										<td colspan="4" style="white-space:normal;"><strong>2. Validasi Saldo Akhir BKU</strong><br />
+										Saldo Akhir BKU = Saldo Akhir Tunai + Saldo Akhir Bank + Saldo Akhir Uang Muka + Saldo Akhir BPP *)</td>
+										<th>*) Hasil Penjumlahan</th>
+										<th>Saldo Akhir BKU</th>
+										<td>&nbsp;</td>
+									</tr>
+									<tr>
+										<th width="15%" style="white-space:normal;">Saldo Akhir Tunai</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir Bank</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir Uang Muka</td>
+										<th width="15%" style="white-space:normal;">Saldo Akhir BPP</td>
+										<td rowspan="2" align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku_2); ?></td>
+										<td rowspan="2" align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
+										<td rowspan="2">
+											<?php 
+												if($validasi_saldo_akhir_bku_2 == $komponen_pengeluaran->saldo_akhir_bku){
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?></td>
+									</tr>
+									<tr>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_tunai); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bank); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_um); ?></td>
+										<td align="right"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bpp); ?></td>
 									</tr>
 								</tbody>
 							</table>
