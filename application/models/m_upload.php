@@ -112,7 +112,6 @@ class M_upload extends MY_Model
 									->group_by('dsp_ba_lpjp.kd_satker')
 									->group_by('dsp_ba_lpjp.tahun')
 									->group_by('dsp_ba_lpjp.bulan')
-									->group_by('dsp_ba_lpjp.updated_at')
 									->order_by('dsp_ba_lpjp.updated_at', 'desc')
 									->get();
 		

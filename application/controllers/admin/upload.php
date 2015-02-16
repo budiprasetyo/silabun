@@ -175,7 +175,6 @@ class Upload extends Admin_Controller
 			// Upload section
 			$config = array (
 				'allowed_types'	=> '*',
-				//~ 'allowed_types'	=> '*',
 				'upload_path'	=> './public/data_lpj'
 			);
 			//~ $config['allowed_types']	= "ZIP|lpj";
@@ -305,7 +304,42 @@ class Upload extends Admin_Controller
 						$pass_zip = "d77f2eda617514497171d42a2c588295";
 						// execute unzip and move to tmp folder
 						$test = exec("unzip -P " . $pass_zip . " " . $compressedpath . $data['file_name'] . " -d /tmp");
-
+						
+						if(is_dir('/tmp/temp'))
+						{
+							$this->data['message_title'] = 'Informasi Load & Insert Data';
+							$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda tidak sesuai persyaratan karena terbentuk folder temp. Mohon satker membentuk ulang ADK Silabi dan ditujukan langsung flashdisk atau media lain.';
+							$this->load->view('admin/components/message', $this->data);
+							// redirect to index page
+							$this->output->set_header('refresh:3; url=index');
+						}
+						else if (is_dir('/tmp/APLIKASISAS2015'))
+						{
+							$this->data['message_title'] = 'Informasi Load & Insert Data';
+							$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda tidak sesuai persyaratan karena terbentuk folder APLIKASISAS2015/temp. Mohon satker membentuk ulang ADK Silabi dan ditujukan langsung flashdisk atau media lain.';
+							$this->load->view('admin/components/message', $this->data);
+							// redirect to index page
+							$this->output->set_header('refresh:3; url=index');
+						}
+						else if (file('/tmp/LPJ.LPJ') 
+								|| file('/tmp/REK_LPJ.LPJ'))
+						{
+							$this->data['message_title'] = 'Informasi Load & Insert Data';
+							$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda tidak sesuai persyaratan karena terbentuk dari aplikasi yang belum ter-update';
+							$this->load->view('admin/components/message', $this->data);
+							// redirect to index page
+							$this->output->set_header('refresh:3; url=index');
+						}
+						else if (file('/tmp/*.DBF'))
+						{
+							$this->data['message_title'] = 'Informasi Load & Insert Data';
+							$this->data['message'] = 'Format ADK LPJ Pengeluaran Anda tidak sesuai persyaratan karena terbentuk dari aplikasi yang belum ter-update dan masih berformat DBF';
+							$this->load->view('admin/components/message', $this->data);
+							// redirect to index page
+							$this->output->set_header('refresh:3; url=index');
+						}
+						
+						
 						foreach (glob($movingpath . '*.LPJ') as $filename) 
 						{
 							
@@ -313,6 +347,7 @@ class Upload extends Admin_Controller
 							$this->data['pengeluaran_newnames'][] = $movingpath . basename($filename);
 							$this->data['movingpaths'] = $movingpath;
 							
+							/*
 							if (substr($filename,0,9) === '/tmp/temp') 
 							{
 								if (substr($filename,0,9) === '/tmp/temp')
@@ -335,7 +370,8 @@ class Upload extends Admin_Controller
 								
 								// redirect to index page
 								$this->output->set_header('refresh:2; url=index');
-							}	
+							}
+							*/
 						}
 						
 					}

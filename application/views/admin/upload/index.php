@@ -296,7 +296,7 @@
 							<h5 class="text-center" style="font-weight:bold;">LAPORAN PERTANGGUNGJAWABAN BENDAHARA PENGELUARAN</h5><br />
 							Keadaan pembukuan bulan pelaporan dengan <span class="text-primary">saldo akhir pada BKU</span> sebesar Rp <?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?> dan Nomor Bukti terakhir Nomor <?php echo $komponen_pengeluaran->no_bukti; ?>
 							<?php 
-								if ($komponen_pengeluaran->saldo_akhir_bku !== $saldo_akhir_kas_bpp_um)
+								if ((float) $komponen_pengeluaran->saldo_akhir_bku !== $saldo_akhir_kas_bpp_um)
 								{
 							?>
 									<span class="text-danger" style="white-space: normal;"><strong>(Saldo akhir BKU harus sama dengan saldo akhir BP Kas, BPP, dan Uang Muka (Voucher))</strong></span>
@@ -414,6 +414,7 @@
 								</div>
 							</div>
 							<?php 
+							/*
 								if ($komponen_pengeluaran->brankas > 50000000)
 								{
 							?>
@@ -424,6 +425,7 @@
 								</div>
 							<?php
 								}
+							*/ 
 							?>
 							<div class="row">
 								<div class="col-md-6">
