@@ -457,18 +457,19 @@
 								</div>
 							</div>
 							<?php 
-							/*
-								if ($komponen_pengeluaran->brankas > 50000000)
+								$sisa_up_brankas = $komponen_pengeluaran->brankas - $komponen_pengeluaran->saldo_akhir_lsbend;
+								
+								if ($sisa_up_brankas > 50000000)
 								{
 							?>
 								<div class="row">
 									<div class="col-md-8">
-										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai di brankas tidak boleh melebihi Rp 50.000.000,00 (PER-3/PB/2014 Bab III Pasal 7 (1))</strong></span>
+										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai di brankas tidak boleh melebihi Rp 50.000.000,00 (PER-3/PB/2014 Bab III Pasal 7 (1)).  Uang UP dalam brankas Rp <?php echo amount_format($sisa_up_brankas); ?></strong></span>
 									</div>
 								</div>
 							<?php
 								}
-							*/ 
+							
 							?>
 							<div class="row">
 								<div class="col-md-6">
