@@ -628,7 +628,7 @@
 							$selisih_kas_penerimaan = $komponen_penerimaan_02->saldo_akhir - $jumlah_kas_penerimaan;
 							$jumlah_penerimaan_negara = $komponen_penerimaan_01->hak_saldo_awal + $komponen_penerimaan_01->hak_terima;
 							$saldo_akhir_penerimaan = $jumlah_penerimaan_negara - $komponen_penerimaan_01->hak_setor;
-							$selisih_uakpa = $komponen_penerimaan_01->hak_setor - $komponen_penerimaan_01->setor_uakpa;
+							$selisih_uakpa = $komponen_penerimaan_01->uakpa - $komponen_penerimaan_01->setor_uakpa;
 					?>
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENERIMAAN<br /></h5>
 							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($header_penerimaan->nm_satker); ?><br /></h4>
@@ -650,7 +650,8 @@
 									foreach ($komponen_penerimaans as $komponen_penerimaan) 
 									{
 										$hasil_perhitungan_akhir = $komponen_penerimaan->saldo_awal + $komponen_penerimaan->debet - $komponen_penerimaan->kredit; 
-										if ($komponen_penerimaan->kd_buku !== '02')
+										if ($komponen_penerimaan->kd_buku !== '02'
+											&& $komponen_penerimaan->kd_buku !== '01')
 										{
 											// calculation for LPJ penerimaan
 											$saldo_awal_bp	+= $komponen_penerimaan->saldo_awal;
@@ -738,7 +739,8 @@
 								$i = 0;
 								foreach ($komponen_penerimaans as $komponen_penerimaan) 
 								{
-									if($komponen_penerimaan->kd_buku !== '02'){
+									if($komponen_penerimaan->kd_buku !== '02'
+										&& $komponen_penerimaan->kd_buku !== '01'){
 							?>
 									<tr>
 										<td>&nbsp;</td>
@@ -922,7 +924,7 @@
 								<div class="col-md-1">Rp</div>
 								<div class="col-md-1 col-md-offset-1">
 									<div class="pull-right">
-										<?php echo amount_format($komponen_penerimaan_01->hak_setor); ?>
+										<?php echo amount_format($komponen_penerimaan_01->uakpa); ?>
 									</div>
 								</div>
 								<div class="col-md-6">
