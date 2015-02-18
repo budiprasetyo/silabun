@@ -628,7 +628,7 @@
 							$selisih_kas_penerimaan = $komponen_penerimaan_02->saldo_akhir - $jumlah_kas_penerimaan;
 							$jumlah_penerimaan_negara = $komponen_penerimaan_01->hak_saldo_awal + $komponen_penerimaan_01->hak_terima;
 							$saldo_akhir_penerimaan = $jumlah_penerimaan_negara - $komponen_penerimaan_01->hak_setor;
-							$selisih_uakpa = $komponen_penerimaan_01->uakpa - $komponen_penerimaan_01->setor_uakpa;
+							$selisih_uakpa = $komponen_penerimaan_02->uakpa - $komponen_penerimaan_02->setor_uakpa;
 					?>
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENERIMAAN<br /></h5>
 							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($header_penerimaan->nm_satker); ?><br /></h4>
@@ -924,7 +924,7 @@
 								<div class="col-md-1">Rp</div>
 								<div class="col-md-1 col-md-offset-1">
 									<div class="pull-right">
-										<?php echo amount_format($komponen_penerimaan_01->uakpa); ?>
+										<?php echo amount_format($komponen_penerimaan_02->uakpa); ?>
 									</div>
 								</div>
 								<div class="col-md-6">
@@ -933,7 +933,7 @@
 								<div class="col-md-1">Rp</div>
 								<div class="col-md-1 col-md-offset-1">
 									<div class="pull-right">
-										<?php echo amount_format($komponen_penerimaan_01->setor_uakpa); ?>
+										<?php echo amount_format($komponen_penerimaan_02->setor_uakpa); ?>
 									</div>
 								</div>
 							</div>
