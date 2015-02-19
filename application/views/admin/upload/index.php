@@ -770,6 +770,7 @@
 							</div>
 							
 							<?php 
+								/*
 								if ($komponen_penerimaan_02->brankas > 50000000)
 								{
 							?>
@@ -780,6 +781,7 @@
 								</div>
 							<?php
 								}
+								*/
 							?>
 							<div class="row">
 								<div class="col-md-6">
