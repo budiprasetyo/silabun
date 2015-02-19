@@ -441,9 +441,9 @@ class M_report extends MY_Model
 			}
 			
 			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
-									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
 								FROM 
-									dsp_report_rekening_lpjk
+									t_lpjkrek
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
 								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
@@ -458,9 +458,9 @@ class M_report extends MY_Model
 		else if ( $is_kppn == TRUE )
 		{
 			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
-									nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+									nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
 								FROM 
-									dsp_report_rekening_lpjk
+									t_lpjkrek
 								WHERE tahun = '".$year."'
 								AND bulan = '".$month."'
 								AND id_ref_kppn = '".$id_ref_satker."'
@@ -492,9 +492,9 @@ class M_report extends MY_Model
 			}
 			
 			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
-									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
 								FROM 
-									dsp_report_rekening_lpjt
+									t_lpjprek
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
 								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
@@ -509,9 +509,9 @@ class M_report extends MY_Model
 		else if ( $is_kppn == TRUE )
 		{
 			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
-									nm_bank, nm_rekening, no_rekening, no_surat, tgl_surat
+									nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
 								FROM 
-									dsp_report_rekening_lpjt
+									t_lpjprek
 								WHERE tahun = '".$year."'
 								AND bulan = '".$month."'
 								AND id_ref_kppn = '".$id_ref_satker."'

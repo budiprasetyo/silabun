@@ -139,8 +139,8 @@
 													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
@@ -204,8 +204,8 @@
 													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
@@ -259,8 +259,8 @@
 													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
@@ -313,8 +313,8 @@
 													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
