@@ -248,10 +248,51 @@ class M_upload extends MY_Model
 	public function import_csv_rekening_lpjp($path, $tables)
 	{
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
-		(kd_satker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke, no_rekening,
+		(@kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke, no_rekening,
 		nm_rekening, nm_bank, no_srt, @tglsrt,saldo)
 		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
-			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
+			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
+			kd_satker = @kdsatker,
+			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
+						WHERE kd_satker = @kdsatker),
+			nm_satker = (SELECT nm_satker FROM ref_satker 
+						WHERE kd_satker = @kdsatker),
+			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
+						WHERE kd_satker = @kdsatker),
+			kd_kppn = (SELECT a.kd_kppn 
+						FROM ref_kppn a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_kppn = (SELECT a.nm_kppn 
+						FROM ref_kppn a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			id_ref_kementerian = (SELECT a.id_ref_kementerian
+						FROM ref_unit a 
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			kd_kementerian = (SELECT a.kd_kementerian
+						FROM ref_kementerian a
+						LEFT JOIN ref_unit b 
+						ON a.id_ref_kementerian = b.id_ref_kementerian
+						LEFT JOIN ref_satker c
+						ON b.id_ref_unit = c.id_ref_unit
+						WHERE c.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_kementerian = (SELECT a.nm_kementerian
+						FROM ref_kementerian a
+						LEFT JOIN ref_unit b 
+						ON a.id_ref_kementerian = b.id_ref_kementerian
+						LEFT JOIN ref_satker c
+						ON b.id_ref_unit = c.id_ref_unit
+						WHERE c.kd_satker = @kdsatker
+						GROUP BY 1)", array($path));
 			
 		return $query;
 	}
@@ -283,10 +324,52 @@ class M_upload extends MY_Model
 	public function import_csv_rekening_lpjk($path, $tables)
 	{
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
-		(@dummy, kd_satker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
+		(@dummy, @kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
 		no_rekening, nm_rekening, nm_bank, no_srt, @tglsrt, saldo)
 		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
-			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
+			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
+			kd_satker = @kdsatker,
+			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
+						WHERE kd_satker = @kdsatker),
+			nm_satker = (SELECT nm_satker FROM ref_satker 
+						WHERE kd_satker = @kdsatker),
+			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
+						WHERE kd_satker = @kdsatker),
+			kd_kppn = (SELECT a.kd_kppn 
+						FROM ref_kppn a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_kppn = (SELECT a.nm_kppn 
+						FROM ref_kppn a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			id_ref_kementerian = (SELECT a.id_ref_kementerian
+						FROM ref_unit a 
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			kd_kementerian = (SELECT a.kd_kementerian
+						FROM ref_kementerian a
+						LEFT JOIN ref_unit b 
+						ON a.id_ref_kementerian = b.id_ref_kementerian
+						LEFT JOIN ref_satker c
+						ON b.id_ref_unit = c.id_ref_unit
+						WHERE c.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_kementerian = (SELECT a.nm_kementerian
+						FROM ref_kementerian a
+						LEFT JOIN ref_unit b 
+						ON a.id_ref_kementerian = b.id_ref_kementerian
+						LEFT JOIN ref_satker c
+						ON b.id_ref_unit = c.id_ref_unit
+						WHERE c.kd_satker = @kdsatker
+						GROUP BY 1)
+						", array($path));
 			
 		return $query;
 	}
