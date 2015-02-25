@@ -271,6 +271,22 @@ class M_upload extends MY_Model
 						ON a.id_ref_kppn = b.id_ref_kppn
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
+			id_ref_unit = (SELECT id_ref_unit
+						FROM ref_satker
+						WHERE kd_satker = @kdsatker
+						GROUP BY 1),
+			kd_unit = (SELECT a.kd_unit
+						FROM ref_unit a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_unit = (SELECT a.nm_unit
+						FROM ref_unit a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
 			id_ref_kementerian = (SELECT a.id_ref_kementerian
 						FROM ref_unit a 
 						LEFT JOIN ref_satker b
@@ -345,6 +361,22 @@ class M_upload extends MY_Model
 						FROM ref_kppn a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			id_ref_unit = (SELECT id_ref_unit
+						FROM ref_satker
+						WHERE kd_satker = @kdsatker
+						GROUP BY 1),
+			kd_unit = (SELECT a.kd_unit
+						FROM ref_unit a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
+						WHERE b.kd_satker = @kdsatker
+						GROUP BY 1),
+			nm_unit = (SELECT a.nm_unit
+						FROM ref_unit a
+						LEFT JOIN ref_satker b
+						ON a.id_ref_unit = b.id_ref_unit
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
 			id_ref_kementerian = (SELECT a.id_ref_kementerian
