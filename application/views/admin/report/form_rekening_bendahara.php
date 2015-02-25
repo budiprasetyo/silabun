@@ -231,13 +231,18 @@
 								<table class="table table-bordered table-condensed">
 									<thead style="font-size:11px;">
 										<tr class="bg-green dker">
-											<th>Kementerian</th>
-											<th>Satker</th>
-											<th>Nama Bank</th>
-											<th>Nama Rekening</th>
-											<th>No. Rekening</th>
-											<th>No. Surat</th>
-											<th>Tgl. Surat</th>
+											<th rowspan="2" class="text-center">B.A.</th>
+											<th rowspan="2" class="text-center">Es.I</th>
+											<th rowspan="2" class="text-center">Satker</th>
+											<th rowspan="2" class="text-center">No. Rekening</th>
+											<th rowspan="2" class="text-center">Nama Rekening</th>
+											<th rowspan="2" class="text-center">Kode Rekening</th>
+											<th rowspan="2" class="text-center">Nama Bank</th>
+											<th colspan="2" class="text-center">Surat Ijin</th>
+										</tr>
+										<tr class="bg-green dker">
+											<th class="text-center">No. Surat</th>
+											<th class="text-center">Tgl. Surat</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -245,27 +250,38 @@
 									foreach ( $parent_rekening_kppn_pengeluaran as $rekening_pengeluaran => $results ) 
 									{
 										
+									?>
+										<tr style="font-weight: bold; font-size:11px;">
+											<td class="bg-green" colspan="9"><?php echo $rekening_pengeluaran; ?></td>
+										</tr>
+										<?php
+										foreach ($results as $rows => $detils) 
+										{
 										?>
 											<tr style="font-weight: bold; font-size:11px;">
-												<td class="bg-green" colspan="7"><?php echo $rekening_pengeluaran; ?></td>
+												<td class="bg-orange dker" >Es.I</td>
+												<td class="bg-green lter" colspan="8"><?php echo $rows; ?></td>
 											</tr>
 										<?php
-											foreach ($results as $detil) 
+											foreach ($detils as $detil) 
 											{
 											?>
 												<tr style="font-size:10px;white-space:normal;height:50px;">
 													<td></td>
+													<td></td>
 													<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="10%"><?php echo strtoupper($detil['no_rekening']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="2%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+													<td width="20%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="13%"><?php echo strtoupper($detil['no_srt']); ?></td>
 													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
 										}
-									 ?>
+									}
+									?>
 									</tbody>
 								</table>
 							
@@ -285,13 +301,18 @@
 								<table class="table table-bordered table-condensed">
 									<thead style="font-size:11px;">
 										<tr class="bg-green dker">
-											<th>Kementerian</th>
-											<th>Satker</th>
-											<th>Nama Bank</th>
-											<th>Nama Rekening</th>
-											<th>No. Rekening</th>
-											<th>No. Surat</th>
-											<th>Tgl. Surat</th>
+											<th rowspan="2" class="text-center">B.A.</th>
+											<th rowspan="2" class="text-center">Es.I</th>
+											<th rowspan="2" class="text-center">Satker</th>
+											<th rowspan="2" class="text-center">No. Rekening</th>
+											<th rowspan="2" class="text-center">Nama Rekening</th>
+											<th rowspan="2" class="text-center">Kode Rekening</th>
+											<th rowspan="2" class="text-center">Nama Bank</th>
+											<th colspan="2" class="text-center">Surat Ijin</th>
+										</tr>
+										<tr class="bg-green dker">
+											<th class="text-center">Nomor</th>
+											<th class="text-center">Tanggal</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -299,27 +320,38 @@
 									foreach ( $parent_rekening_kppn_penerimaan as $rekening_penerimaan => $results ) 
 									{
 										
-										?>
+									?>
+										<tr style="font-weight: bold; font-size:11px;">
+											<td class="bg-green" colspan="9"><?php echo $rekening_penerimaan; ?></td>
+										</tr>
+									<?php
+										foreach ($results as $rows => $detils) 
+										{
+									?>
 											<tr style="font-weight: bold; font-size:11px;">
-												<td class="bg-green" colspan="7"><?php echo $rekening_penerimaan; ?></td>
+												<td class="bg-orange dker">Es.I</td>
+												<td class="bg-green lter" colspan="8"><?php echo $rows; ?></td>
 											</tr>
-										<?php
-											foreach ($results as $detil) 
+									<?php
+											foreach ($detils as $detil) 
 											{
-											?>
+									?>
 												<tr style="font-size:10px;white-space:normal;height:50px;">
-													<td></td>
+													<td class="bg-light"></td>
+													<td class="bg-light"></td>
 													<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-													<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="10%"><?php echo strtoupper($detil['no_rekening']); ?></td>
 													<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-													<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+													<td width="2%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+													<td width="20%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+													<td width="13%"><?php echo strtoupper($detil['no_srt']); ?></td>
 													<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 												</tr>
 											<?php
 											}
 										}
-									 ?>
+									}
+									?>
 									</tbody>
 								</table>
 						<?php

@@ -440,14 +440,15 @@ class M_report extends MY_Model
 				$group = " kd_kanwil, ";
 			}
 			
-			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
-									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
+			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
+									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt
 								FROM 
 									t_lpjkrek
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
-								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
-								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker");
+								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker, tahun, bulan, no_rekening
+								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker, tahun, bulan, no_rekening");
 								
 			if($query_kanwil_pkn->num_rows() > 0)
 			{
@@ -457,15 +458,16 @@ class M_report extends MY_Model
 		}
 		else if ( $is_kppn == TRUE )
 		{
-			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
-									nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
+			$query_kppn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
+									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt
 								FROM 
 									t_lpjkrek
 								WHERE tahun = '".$year."'
 								AND bulan = '".$month."'
 								AND id_ref_kppn = '".$id_ref_satker."'
-								GROUP BY kd_kementerian, kd_satker
-								ORDER BY kd_kementerian, kd_satker");
+								GROUP BY kd_kementerian, kd_satker, tahun, bulan, no_rekening
+								ORDER BY kd_kementerian, kd_satker, tahun, bulan, no_rekening");
 								
 			if ($query_kppn->num_rows() > 0)
 			{
@@ -491,14 +493,15 @@ class M_report extends MY_Model
 				$group = " kd_kanwil, ";
 			}
 			
-			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian, 
-									kd_satker, nm_satker, nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
+			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
+									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt
 								FROM 
 									t_lpjprek
 								WHERE " .$where. "tahun = '".$year."'
 								AND bulan = '".$month."'
-								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker
-								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker");
+								GROUP BY " . $group . " kd_kppn, kd_kementerian, kd_satker, tahun, bulan, no_rekening
+								ORDER BY " . $group . " kd_kppn, kd_kementerian, kd_satker, tahun, bulan, no_rekening");
 								
 			if($query_kanwil_pkn->num_rows() > 0)
 			{
@@ -506,17 +509,19 @@ class M_report extends MY_Model
 			}
 			
 		}
+		// kppn 
 		else if ( $is_kppn == TRUE )
 		{
-			$query_kppn = $this->db->query("SELECT kd_kementerian, nm_kementerian, kd_satker, nm_satker, 
-									nm_bank, nm_rekening, no_rekening, no_srt, tgl_srt
+			$query_kppn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
+									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt
 								FROM 
 									t_lpjprek
 								WHERE tahun = '".$year."'
 								AND bulan = '".$month."'
 								AND id_ref_kppn = '".$id_ref_satker."'
-								GROUP BY kd_kementerian, kd_satker
-								ORDER BY kd_kementerian, kd_satker");
+								GROUP BY kd_kementerian, kd_satker, tahun, bulan, no_rekening
+								ORDER BY kd_kementerian, kd_satker, tahun, bulan, no_rekening");
 								
 			if ($query_kppn->num_rows() > 0)
 			{

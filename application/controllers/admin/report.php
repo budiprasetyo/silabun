@@ -663,12 +663,12 @@ class Report extends Admin_Controller
 				
 				foreach ( $rekening_kppn_pengeluarans->result_array() as $rekening_kppn_pengeluaran ) 
 				{
-					if ( !isset($parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']]) )
+					if ( !isset($parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']][$rekening_kppn_pengeluaran['kd_unit'] . ' ' . $rekening_kppn_pengeluaran['nm_unit']]) )
 					{
-						$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']] = array();
+						$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']][$rekening_kppn_pengeluaran['kd_unit'] . ' ' . $rekening_kppn_pengeluaran['nm_unit']] = array();
 					}
 					
-					$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']][] = $rekening_kppn_pengeluaran;
+					$parent_rekening_kppn_pengeluaran[$rekening_kppn_pengeluaran['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_pengeluaran['nm_kementerian']][$rekening_kppn_pengeluaran['kd_unit'] . ' ' . $rekening_kppn_pengeluaran['nm_unit']][] = $rekening_kppn_pengeluaran;
 					
 				}
 				
@@ -699,12 +699,12 @@ class Report extends Admin_Controller
 				
 				foreach ( $rekening_kppn_penerimaans->result_array() as $rekening_kppn_penerimaan ) 
 				{
-					if ( !isset($parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']]) )
+					if ( !isset($parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']][$rekening_kppn_penerimaan['kd_unit'] . ' ' . $rekening_kppn_penerimaan['nm_unit']]) )
 					{
-						$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']] = array();
+						$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']][$rekening_kppn_penerimaan['kd_unit'] . ' ' . $rekening_kppn_penerimaan['nm_unit']] = array();
 					}
 					
-					$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']][] = $rekening_kppn_penerimaan;
+					$parent_rekening_kppn_penerimaan[$rekening_kppn_penerimaan['kd_kementerian'] . ' KEMENTERIAN ' . $rekening_kppn_penerimaan['nm_kementerian']][$rekening_kppn_penerimaan['kd_unit'] . ' ' . $rekening_kppn_penerimaan['nm_unit']][] = $rekening_kppn_penerimaan;
 					
 				}
 				
