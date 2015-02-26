@@ -152,12 +152,12 @@ class Report extends Admin_Controller
 
 				foreach ($rekap_lpjs->result_array() as $rekap_lpj) 
 				{
-					if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']]) )
+					if ( !isset($rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']]) )
 					{
-						$rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']] = array();
+						$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']] = array();
 					}
 					
-					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' KEMENTERIAN ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
+					$rekap_satker[$rekap_lpj['kd_kementerian'] . ' ' . $rekap_lpj['nm_kementerian']][] = $rekap_lpj;
 					
 				}
 				
@@ -183,12 +183,12 @@ class Report extends Admin_Controller
 				foreach ($rekap_penerimaan_lpjs->result_array() as $rekap_penerimaan_lpj) 
 				{
 
-					if ( !isset($rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']]) ) 
+					if ( !isset($rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']]) ) 
 					{
-						$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']] = array();
+						$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']] = array();
 					}
 					
-					$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' KEMENTERIAN' . $rekap_penerimaan_lpj['nm_kementerian']][] = $rekap_penerimaan_lpj;
+					$rekap_satker_penerimaan[$rekap_penerimaan_lpj['kd_kementerian'] . ' ' . $rekap_penerimaan_lpj['nm_kementerian']][] = $rekap_penerimaan_lpj;
 					
 				}
 				
