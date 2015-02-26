@@ -270,8 +270,8 @@
 					<th rowspan="2">Nama Satker</th>
 					<th rowspan="2">No. Rekening</th>
 					<th rowspan="2">Nama Rekening</th>
-					<th rowspan="2">Kode Rekening</th>
 					<th rowspan="2">Nama Bank</th>
+					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
 				</tr>
 				<tr>
@@ -286,14 +286,14 @@
 				
 			?>
 				<tr>
-					<td colspan="9"><?php echo $rekening_pengeluaran; ?></td>
+					<td colspan="10"><?php echo $rekening_pengeluaran; ?></td>
 				</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
 				{
 			?>
 					<tr>
-						<td colspan="8"><?php echo $rows; ?></td>
+						<td colspan="9"><?php echo $rows; ?></td>
 					</tr>
 			<?php
 					
@@ -307,8 +307,8 @@
 							<td><?php echo strtoupper($detil['nm_satker']); ?></td>
 							<td><?php echo strtoupper($detil['no_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
-							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['nm_bank']); ?></td>
+							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['no_srt']); ?></td>
 							<td><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 						</tr>
@@ -342,8 +342,8 @@
 					<th rowspan="2">Nama Satker</th>
 					<th rowspan="2">No. Rekening</th>
 					<th rowspan="2">Nama Rekening</th>
-					<th rowspan="2">Kode Rekening</th>
 					<th rowspan="2">Nama Bank</th>
+					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
 				</tr>
 				<tr>
@@ -358,7 +358,7 @@
 				
 			?>
 				<tr>
-					<td colspan="9"><?php echo $rekening_penerimaan; ?></td>
+					<td colspan="10"><?php echo $rekening_penerimaan; ?></td>
 				</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
@@ -366,7 +366,7 @@
 			?>
 				<tr>
 					<td></td>
-					<td colspan="8"><?php echo $rows; ?></td>
+					<td colspan="9"><?php echo $rows; ?></td>
 				</tr>
 			<?php
 					foreach ($detils as $detil) 
@@ -379,8 +379,8 @@
 							<td><?php echo strtoupper($detil['nm_satker']); ?></td>
 							<td><?php echo strtoupper($detil['no_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
-							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['nm_bank']); ?></td>
+							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['no_srt']); ?></td>
 							<td><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 						</tr>
@@ -414,8 +414,8 @@
 					<th rowspan="2">Nama Satker</th>
 					<th rowspan="2">No. Rekening</th>
 					<th rowspan="2">Nama Rekening</th>
-					<th rowspan="2">Kode Rekening</th>
 					<th rowspan="2">Nama Bank</th>
+					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
 				</tr>
 				<tr>
@@ -428,26 +428,38 @@
 			foreach ( $parent_rekening_kppn_pengeluaran as $rekening_pengeluaran => $results ) 
 			{
 				
-				?>
+			?>
+				<tr>
+					<td colspan="10"><strong><?php echo $rekening_pengeluaran; ?></strong></td>
+				</tr>
+			<?php
+				foreach ($results as $rows => $detils) 
+				{
+			?>
 					<tr>
-						<td colspan="7"><strong><?php echo $rekening_pengeluaran; ?></strong></td>
+						<td></td>
+						<td colspan="9"><strong><?php echo $rows; ?></strong></td>
 					</tr>
-				<?php
-					foreach ($results as $detil) 
+			<?php
+					foreach ($detils as $detil) 
 					{
 					?>
 						<tr>
 							<td></td>
-							<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
-							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td></td>
+							<td width="7%"><?php echo $detil['kd_satker']; ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_satker']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-							<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+							<td width="20%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 						</tr>
 					<?php
 					}
 				}
+			}
 			 ?>
 			</tbody>
 		</table>
@@ -468,11 +480,17 @@
 		<table border="1" class="content-report">
 			<thead>
 				<tr class="bgcolor">
-					<th>Kementerian</th>
-					<th>Satker</th>
-					<th>Nama Bank</th>
-					<th>Nama Rekening</th>
-					<th>No. Rekening</th>
+					<th rowspan="2">B.A.</th>
+					<th rowspan="2">Es.I</th>
+					<th rowspan="2">Kode Satker</th>
+					<th rowspan="2">Nama Satker</th>
+					<th rowspan="2">No. Rekening</th>
+					<th rowspan="2">Nama Rekening</th>
+					<th rowspan="2">Nama Bank</th>
+					<th rowspan="2">Kode Rekening</th>
+					<th colspan="2">Surat Ijin</th>
+				</tr>
+				<tr class="bgcolor">
 					<th>No. Surat</th>
 					<th>Tgl. Surat</th>
 				</tr>
@@ -482,26 +500,37 @@
 			foreach ( $parent_rekening_kppn_penerimaan as $rekening_penerimaan => $results ) 
 			{
 				
-				?>
-					<tr>
-						<td colspan="7"><strong><?php echo $rekening_penerimaan; ?></strong></td>
-					</tr>
-				<?php
-					foreach ($results as $detil) 
+			?>
+			<tr>
+				<td colspan="10"><strong><?php echo $rekening_penerimaan; ?></strong></td>
+			</tr>
+			<?php
+				foreach ($results as $rows => $detils) 
+				{
+			?>
+				<tr>
+					<td></td>
+					<td colspan="9"><strong><?php echo $rows; ?></strong></td>
+				</tr>
+			<?php
+					foreach ($detils as $detil) 
 					{
 					?>
 						<tr>
-							<td></td>
-							<td width="22%"><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
-							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td colspan="2"></td>
+							<td width="7%"><?php echo $detil['kd_satker']; ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_satker']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-							<td width="15%"><?php echo strtoupper($detil['no_surat']); ?></td>
-							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
+							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
+							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
 						</tr>
 					<?php
 					}
 				}
+			}
 			 ?>
 			</tbody>
 		</table>
