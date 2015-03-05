@@ -169,7 +169,7 @@ class M_upload extends MY_Model
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
 			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir,
 			a.no_bukti, a.brankas, a.kas_bank, a.hak_saldo_awal, a.hak_terima, a.hak_setor,
-			a.setor_uakpa, a.uakpa, a.ket_selisih_kas, a.ket_selisih_uakpa
+			a.setor, a.setor_uakpa, a.uakpa, a.ket_selisih_kas, a.ket_selisih_uakpa
 				FROM
 			dsp_ba_lpjp a
 				LEFT JOIN
@@ -257,6 +257,12 @@ class M_upload extends MY_Model
 						WHERE kd_satker = @kdsatker),
 			nm_satker = (SELECT nm_satker FROM ref_satker 
 						WHERE kd_satker = @kdsatker),
+			id_ref_kanwil = (SELECT b.id_ref_kanwil 
+						FROM ref_satker a
+						LEFT JOIN ref_kppn b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE a.kd_satker = @kdsatker
+						GROUP BY 1),
 			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
 						WHERE kd_satker = @kdsatker),
 			kd_kppn = (SELECT a.kd_kppn 
@@ -349,6 +355,12 @@ class M_upload extends MY_Model
 						WHERE kd_satker = @kdsatker),
 			nm_satker = (SELECT nm_satker FROM ref_satker 
 						WHERE kd_satker = @kdsatker),
+			id_ref_kanwil = (SELECT b.id_ref_kanwil 
+						FROM ref_satker a
+						LEFT JOIN ref_kppn b
+						ON a.id_ref_kppn = b.id_ref_kppn
+						WHERE a.kd_satker = @kdsatker
+						GROUP BY 1),
 			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
 						WHERE kd_satker = @kdsatker),
 			kd_kppn = (SELECT a.kd_kppn 
