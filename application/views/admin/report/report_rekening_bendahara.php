@@ -14,12 +14,21 @@
 		<table border="1">
 			<thead>
 				<tr>
-					<th>KPPN<br />
-							Kementerian</th>
-					<th>Satker</th>
-					<th>Nama Bank</th>
-					<th>Nama Rekening</th>
-					<th>No. Rekening</th>
+					<th rowspan="2">KPPN</th>
+					<th rowspan="2">B.A.</th>
+					<th rowspan="2">Es.I</th>
+					<th rowspan="2">Kode Satker</th>
+					<th rowspan="2">Nama Satker</th>
+					<th rowspan="2">No. Rekening</th>
+					<th rowspan="2">Nama Rekening</th>
+					<th rowspan="2">Bank/Kantor Pos</th>
+					<th rowspan="2">Kode Rekening</th>
+					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Tanggal Transaksi Terakhir</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
+				</tr>
+				<tr>
 					<th>No. Surat</th>
 					<th>Tgl. Surat</th>
 				</tr>
@@ -30,29 +39,47 @@
 				{
 			?>
 					<tr>
-						<td colspan="7"><strong>KPPN <?php echo $rekening_pengeluaran; ?></strong></td>
+						<td colspan="14"><strong>KPPN <?php echo $rekening_pengeluaran; ?></strong></td>
 					</tr>
 			<?php
 					foreach ( $groups as $kementerian => $results ) 
 					{
 					?>
 						<tr>
-							<td colspan="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $kementerian; ?></td>
+							<td></td>
+							<td colspan="13"><?php echo $kementerian; ?></td>
 						</tr>
 					<?php
-						foreach ($results as $detil) 
+						foreach ($results as $rows => $detils) 
 						{
-						?>
-							<tr>
-								<td></td>
-								<td><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-								<td><?php echo strtoupper($detil['nm_bank']); ?></td>
-								<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
-								<td><?php echo strtoupper($detil['no_rekening']); ?></td>
-								<td><?php echo strtoupper($detil['no_surat']); ?></td>
-								<td><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
-							</tr>
-						<?php
+					?>
+						<tr>
+							<td></td>
+							<td></td>
+							<td colspan="12"><?php echo $rows; ?></td>
+						</tr>
+					<?php
+							foreach ($detils as $detil) 
+							{
+							?>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $detil['kd_satker']; ?></td>
+									<td><?php echo $detil['nm_satker']; ?></td>
+									<td><?php echo $detil['no_rekening']; ?></td>
+									<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
+									<td><?php echo strtoupper($detil['nm_bank']); ?></td>
+									<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
+									<td><?php echo strtoupper($detil['no_srt']); ?></td>
+									<td><?php echo date_convert($detil['tgl_srt']); ?></td>
+									<td></td>
+									<td><?php echo amount_format($detil['saldo']); ?></td>
+									<td></td>
+								</tr>
+							<?php
+							}
 						}
 					}
 				}
@@ -76,12 +103,21 @@
 		<table border="1">
 			<thead>
 				<tr>
-					<th>KPPN<br />
-							Kementerian</th>
-					<th>Satker</th>
-					<th>Nama Bank</th>
-					<th>Nama Rekening</th>
-					<th>No. Rekening</th>
+					<th rowspan="2">KPPN</th>
+					<th rowspan="2">B.A.</th>
+					<th rowspan="2">Es.I</th>
+					<th rowspan="2">Kode Satker</th>
+					<th rowspan="2">Nama Satker</th>
+					<th rowspan="2">No. Rekening</th>
+					<th rowspan="2">Nama Rekening</th>
+					<th rowspan="2">Bank/Kantor Pos</th>
+					<th rowspan="2">Kode Rekening</th>
+					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Tanggal Transaksi Terakhir</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
+				</tr>
+				<tr>
 					<th>No. Surat</th>
 					<th>Tgl. Surat</th>
 				</tr>
@@ -92,29 +128,47 @@
 			{
 			?>
 					<tr>
-						<td colspan="7"><strong>KPPN <?php echo $rekening_penerimaan; ?></strong></td>
+						<td colspan="14"><strong>KPPN <?php echo $rekening_penerimaan; ?></strong></td>
 					</tr>
 			<?php
 					foreach ( $groups as $kementerian => $results ) 
 					{
 					?>
 						<tr>
-							<td colspan="7">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $kementerian; ?></td>
+							<td></td>
+							<td colspan="13"><?php echo $kementerian; ?></td>
 						</tr>
 					<?php
-						foreach ($results as $detil) 
+						foreach ($results as $rows => $detils) 
 						{
-						?>
-							<tr>
-								<td></td>
-								<td><?php echo $detil['kd_satker']; ?> <br /> <?php echo $detil['nm_satker']; ?></td>
-								<td><?php echo strtoupper($detil['nm_bank']); ?></td>
-								<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
-								<td><?php echo strtoupper($detil['no_rekening']); ?></td>
-								<td><?php echo strtoupper($detil['no_surat']); ?></td>
-								<td><?php echo strtoupper(date_convert($detil['tgl_surat'])); ?></td>
-							</tr>
-						<?php
+					?>
+						<tr>
+							<td></td>
+							<td></td>
+							<td colspan="12"><?php echo $rows; ?></td>
+						</tr>
+					<?php
+							foreach ($detils as $detil) 
+							{
+							?>
+								<tr>
+									<td></td>
+									<td></td>
+									<td></td>
+									<td><?php echo $detil['kd_satker']; ?></td>
+									<td><?php echo $detil['nm_satker']; ?></td>
+									<td><?php echo $detil['no_rekening']; ?></td>
+									<td><?php echo strtoupper($detil['nm_rekening']); ?></td>
+									<td><?php echo strtoupper($detil['nm_bank']); ?></td>
+									<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
+									<td><?php echo strtoupper($detil['no_srt']); ?></td>
+									<td><?php echo date_convert($detil['tgl_srt']); ?></td>
+									<td></td>
+									<td><?php echo amount_format($detil['saldo']); ?></td>
+									<td></td>
+								</tr>
+							<?php
+							}
 						}
 					}
 				}
@@ -273,6 +327,8 @@
 					<th rowspan="2">Nama Bank</th>
 					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
 				</tr>
 				<tr>
 					<th>No. Surat</th>
@@ -286,14 +342,14 @@
 				
 			?>
 				<tr>
-					<td colspan="10"><?php echo $rekening_pengeluaran; ?></td>
+					<td colspan="12"><?php echo $rekening_pengeluaran; ?></td>
 				</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
 				{
 			?>
 					<tr>
-						<td colspan="9"><?php echo $rows; ?></td>
+						<td colspan="11"><?php echo $rows; ?></td>
 					</tr>
 			<?php
 					
@@ -311,6 +367,8 @@
 							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['no_srt']); ?></td>
 							<td><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td><?php echo $detil['saldo']; ?></td>
+							<td></td>
 						</tr>
 					<?php
 					}
@@ -345,6 +403,8 @@
 					<th rowspan="2">Nama Bank</th>
 					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
 				</tr>
 				<tr>
 					<th>No. Surat</th>
@@ -358,7 +418,7 @@
 				
 			?>
 				<tr>
-					<td colspan="10"><?php echo $rekening_penerimaan; ?></td>
+					<td colspan="12"><?php echo $rekening_penerimaan; ?></td>
 				</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
@@ -366,7 +426,7 @@
 			?>
 				<tr>
 					<td></td>
-					<td colspan="9"><?php echo $rows; ?></td>
+					<td colspan="11"><?php echo $rows; ?></td>
 				</tr>
 			<?php
 					foreach ($detils as $detil) 
@@ -383,6 +443,8 @@
 							<td><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td><?php echo strtoupper($detil['no_srt']); ?></td>
 							<td><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td><?php echo $detil['saldo']; ?></td>
+							<td></td>
 						</tr>
 					<?php
 					}
@@ -417,8 +479,10 @@
 					<th rowspan="2">Nama Bank</th>
 					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
 				</tr>
-				<tr>
+				<tr class="bgcolor">
 					<th>No. Surat</th>
 					<th>Tgl. Surat</th>
 				</tr>
@@ -430,7 +494,7 @@
 				
 			?>
 				<tr>
-					<td colspan="10"><strong><?php echo $rekening_pengeluaran; ?></strong></td>
+					<td colspan="12"><strong><?php echo $rekening_pengeluaran; ?></strong></td>
 				</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
@@ -438,23 +502,24 @@
 			?>
 					<tr>
 						<td></td>
-						<td colspan="9"><strong><?php echo $rows; ?></strong></td>
+						<td colspan="11"><strong><?php echo $rows; ?></strong></td>
 					</tr>
 			<?php
 					foreach ($detils as $detil) 
 					{
 					?>
 						<tr>
-							<td></td>
-							<td></td>
-							<td width="7%"><?php echo $detil['kd_satker']; ?></td>
+							<td colspan="2"></td>
+							<td width="5%"><?php echo $detil['kd_satker']; ?></td>
 							<td width="15%"><?php echo strtoupper($detil['nm_satker']); ?></td>
-							<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td width="12%"><?php echo strtoupper($detil['no_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
-							<td width="20%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+							<td width="5%" align="center"><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
-							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td width="8%" align="center"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td width="10%" align="right"><?php echo amount_format($detil['saldo']); ?></td>
+							<td></td>
 						</tr>
 					<?php
 					}
@@ -489,6 +554,8 @@
 					<th rowspan="2">Nama Bank</th>
 					<th rowspan="2">Kode Rekening</th>
 					<th colspan="2">Surat Ijin</th>
+					<th rowspan="2">Saldo</th>
+					<th rowspan="2">Keterangan</th>
 				</tr>
 				<tr class="bgcolor">
 					<th>No. Surat</th>
@@ -502,7 +569,7 @@
 				
 			?>
 			<tr>
-				<td colspan="10"><strong><?php echo $rekening_penerimaan; ?></strong></td>
+				<td colspan="12"><strong><?php echo $rekening_penerimaan; ?></strong></td>
 			</tr>
 			<?php
 				foreach ($results as $rows => $detils) 
@@ -510,7 +577,7 @@
 			?>
 				<tr>
 					<td></td>
-					<td colspan="9"><strong><?php echo $rows; ?></strong></td>
+					<td colspan="11"><strong><?php echo $rows; ?></strong></td>
 				</tr>
 			<?php
 					foreach ($detils as $detil) 
@@ -518,14 +585,16 @@
 					?>
 						<tr>
 							<td colspan="2"></td>
-							<td width="7%"><?php echo $detil['kd_satker']; ?></td>
+							<td width="5%"><?php echo $detil['kd_satker']; ?></td>
 							<td width="15%"><?php echo strtoupper($detil['nm_satker']); ?></td>
-							<td width="15%"><?php echo strtoupper($detil['no_rekening']); ?></td>
-							<td width="20%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
+							<td width="12%"><?php echo strtoupper($detil['no_rekening']); ?></td>
+							<td width="15%"><?php echo strtoupper($detil['nm_rekening']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['nm_bank']); ?></td>
-							<td width="15%"><?php echo strtoupper($detil['kd_rekening']); ?></td>
+							<td width="5%" align="center"><?php echo strtoupper($detil['kd_rekening']); ?></td>
 							<td width="15%"><?php echo strtoupper($detil['no_srt']); ?></td>
-							<td width="8%"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td width="8%" align="center"><?php echo strtoupper(date_convert($detil['tgl_srt'])); ?></td>
+							<td width="10%" align="right"><?php echo amount_format($detil['saldo']); ?></td>
+							<td></td>
 						</tr>
 					<?php
 					}

@@ -521,6 +521,7 @@ class Report extends Admin_Controller
 
 		// load helper
 		$this->load->helper('datetime');
+		$this->load->helper('amountformat');
 		
 		// load m_referensi model
 		$this->load->model('m_referensi');
@@ -578,7 +579,7 @@ class Report extends Admin_Controller
 							$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']] = array();
 						}
 						
-						$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]['('.$rekening_pengeluaran['kd_kementerian'] . ') KEMENTERIAN ' . $rekening_pengeluaran['nm_kementerian']][] = $rekening_pengeluaran;
+						$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]['('.$rekening_pengeluaran['kd_kementerian'] . ') ' . $rekening_pengeluaran['nm_kementerian']][$rekening_pengeluaran['kd_unit'] . ' ' . $rekening_pengeluaran['nm_unit']][] = $rekening_pengeluaran;
 						
 					}
 					
@@ -614,7 +615,7 @@ class Report extends Admin_Controller
 							$parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']] = array();
 						}
 						
-						$parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']]['('.$rekening_penerimaan['kd_kementerian'] . ') KEMENTERIAN ' . $rekening_penerimaan['nm_kementerian']][] = $rekening_penerimaan;
+						$parent_rekening_penerimaan[$rekening_penerimaan['kd_kppn'] . ' KPPN ' . $rekening_penerimaan['nm_kppn']]['('.$rekening_penerimaan['kd_kementerian'] . ')  ' . $rekening_penerimaan['nm_kementerian']][$rekening_penerimaan['kd_unit'] . ' ' . $rekening_penerimaan['nm_unit']][] = $rekening_penerimaan;
 						
 					}
 					
