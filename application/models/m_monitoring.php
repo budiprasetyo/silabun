@@ -57,35 +57,17 @@ class M_monitoring extends MY_Model
 		if ($id_ref_kppn !== NULL) 
 		{
 			
-			$query_pengeluaran_kppn = $this->db->query("SELECT a.tahun, a.bulan, a.pos_kirim, count(*) as jml_lpj
-						FROM ref_satker
-						LEFT JOIN ( SELECT tahun, bulan, pos_kirim, id_ref_satker
-									FROM
-									dsp_status_kirim_pengeluaran 
-									WHERE tahun = '".$year."'
-									AND bulan = '".$month."'
-									AND pos_kirim = 'K'
-						) a
-						ON ref_satker.id_ref_satker = a.id_ref_satker 
-						WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn." 
-						AND ref_satker.lpj_status_pengeluaran = 1
-						GROUP BY a.tahun, a.bulan, a.pos_kirim
-						ORDER BY a.tahun, a.bulan, a.pos_kirim");
-						
-			$query_penerimaan_kppn = $this->db->query("SELECT a.tahun, a.bulan, a.pos_kirim, count(*) as jml_lpj
-						FROM ref_satker
-						LEFT JOIN ( SELECT tahun, bulan, pos_kirim, id_ref_satker
-									FROM
-									dsp_status_kirim_penerimaan
-									WHERE tahun = '".$year."'
-									AND bulan = '".$month."'
-									AND pos_kirim = 'P'
-						) a
-						ON ref_satker.id_ref_satker = a.id_ref_satker 
-						WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn." 
-						AND ref_satker.lpj_status_penerimaan = 1
-						GROUP BY a.tahun, a.bulan, a.pos_kirim
-						ORDER BY a.tahun, a.bulan, a.pos_kirim");
+			$query_pengeluaran_kppn = $this->db->query("SELECT tahun, bulan, count(*) as jml_lpj
+										FROM dsp_report_rekap_lpjk
+										WHERE tahun = '{$year}'
+										AND bulan = '{$month}'
+										AND id_ref_kppn = {$id_ref_kppn}");
+			
+			$query_penerimaan_kppn = $this->db->query("SELECT tahun, bulan, count(*) as jml_lpj
+										FROM dsp_report_rekap_lpjt
+										WHERE tahun = '{$year}'
+										AND bulan = '{$month}'
+										AND id_ref_kppn = {$id_ref_kppn}");
 						
 			
 				return array(
@@ -227,36 +209,40 @@ class M_monitoring extends MY_Model
 	{
 		if($status == FALSE)
 		{
-			$status_kirim = ' NOT ';
-		} else {
 			$status_kirim = '';
+		} else {
+			$status_kirim = ' NOT ';
 		}
 		
-		$query_pengeluaran = $this->db->query("SELECT ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
-					FROM ref_satker
-					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn."
-					AND ref_satker.lpj_status_pengeluaran = 1
-					AND ref_satker.id_ref_satker ".$status_kirim." IN ( SELECT
-														dsp_status_kirim_pengeluaran.id_ref_satker
-														FROM dsp_status_kirim_pengeluaran
-														WHERE tahun = '".$year."'
-																	AND bulan = '".$month."'
-																	AND pos_kirim = 'K'
-														)
-					GROUP BY ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker");
-					
-		$query_penerimaan = $this->db->query("SELECT ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
-					FROM ref_satker
-					WHERE ref_satker.id_ref_kppn = ".$id_ref_kppn."
-					AND ref_satker.lpj_status_penerimaan = 1
-					AND ref_satker.id_ref_satker ".$status_kirim." IN ( SELECT
-														dsp_status_kirim_penerimaan.id_ref_satker
-														FROM dsp_status_kirim_penerimaan
-														WHERE tahun = '".$year."'
-																	AND bulan = '".$month."'
-																	AND pos_kirim = 'P'
-														)
-					GROUP BY ref_satker.id_ref_satker, ref_satker.kd_satker, ref_satker.nm_satker");
+		$query_pengeluaran = $this->db->query("SELECT ref_history_satker.id_ref_satker,
+								ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
+								FROM ref_history_satker
+								LEFT JOIN ref_satker
+								ON ref_history_satker.id_ref_satker = ref_satker.id_ref_satker
+								LEFT JOIN dsp_report_rekap_lpjk
+								ON ref_history_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker
+								AND ref_history_satker.tahun = dsp_report_rekap_lpjk.tahun
+								AND ref_history_satker.bulan = dsp_report_rekap_lpjk.bulan
+								WHERE dsp_report_rekap_lpjk.id_ref_satker is {$status_kirim} null
+								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
+								AND ref_history_satker.tahun = '{$year}'
+								AND ref_history_satker.bulan = '{$month}'
+								GROUP BY 1,2,3");
+		
+		$query_penerimaan = $this->db->query("SELECT ref_history_satker.id_ref_satker,
+								ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
+								FROM ref_history_satker
+								LEFT JOIN ref_satker
+								ON ref_history_satker.id_ref_satker = ref_satker.id_ref_satker
+								LEFT JOIN dsp_report_rekap_lpjt
+								ON ref_history_satker.id_ref_satker = dsp_report_rekap_lpjt.id_ref_satker
+								AND ref_history_satker.tahun = dsp_report_rekap_lpjt.tahun
+								AND ref_history_satker.bulan = dsp_report_rekap_lpjt.bulan
+								WHERE dsp_report_rekap_lpjt.id_ref_satker is {$status_kirim} null
+								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
+								AND ref_history_satker.tahun = '{$year}'
+								AND ref_history_satker.bulan = '{$month}'
+								GROUP BY 1,2,3");
 		
 			return array(
 				'query_pengeluaran'	=> $query_pengeluaran->result(),

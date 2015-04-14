@@ -65,6 +65,8 @@ class Monitoring extends Admin_Controller
 				// get id_ref_kanwil
 				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
 				
+				var_dump($kppn->id_ref_kppn);
+				
 				// send to view fetch sent and unsent satker count
 				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
 				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
