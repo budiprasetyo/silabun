@@ -64,6 +64,13 @@ class MY_Model extends CI_Model
 	
 
 	public $_rules 				= array();
+	
+	/**
+	 * Timestamp variable when records created or updated
+	 * @var string
+	 */
+	protected $_created_at		= '';
+	protected $_updated_at		= '';
 	protected $_timestamps 		= FALSE;
 	
 	/**
@@ -175,8 +182,8 @@ class MY_Model extends CI_Model
 		if ($this->_timestamps == TRUE) 
 		{
 			$now = date('Y-m-d H:i:s');
-			$id || $data['created'] = $now;
-			$data['modified'] = $now;
+			$id || $data[$this->_created_at] = $now;
+			$data[$this->_updated_at] = $now;
 		}
 		// insert
 		if ( $id === NULL ) {
