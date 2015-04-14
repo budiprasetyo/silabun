@@ -25,7 +25,7 @@
 				</header>
 				
 				<div id="div-1" class="body">
-					<?php echo btn_back('admin/satker/', $back_link); ?>
+					<?php echo btn_back('admin/satker/index/' . $year . '/' . $month, $back_link); ?>
 					<?php if (validation_errors()) { ?>
 						<div id="login-alert" class="alert alert-danger col-sm-12">
 						<?php echo validation_errors(); ?>

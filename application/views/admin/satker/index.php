@@ -19,8 +19,39 @@
                     </div><!--/toolbar-->
                   </header>
                   <div id="sortableTable" class="body collapse in dataTables_wrapper form-inline">
+					  
+					<form class="form-horizontal" method="post" action="">
+					  
+					  <div class="form-group">
+						<label for="text1" class="control-label col-lg-2">Tahun</label>
+						<div class="col-lg-3">
+						  <input type="text" id="text1" placeholder="Tahun" class="form-control" name="year" maxlength="4" value="<?php echo $year; ?>"/>
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<label for="text1" class="control-label col-lg-2">Bulan</label>
+						<div class="col-lg-3">
+						  <input type="text" id="text1" placeholder="Bulan" class="form-control" name="month" maxlength="2" autofocus="autofocus" />
+						</div>
+					  </div><!-- /.form-group -->
+					  
+					  <div class="form-group">
+						<div class="col-lg-2 controls">
+							<?php 
+								$attributes = 'class = "btn btn-primary btn-grad"';
+								echo form_submit('submit', 'Tampilkan', $attributes);
+							?>
+						</div>
+					  </div><!--/.form-group -->
+					  
+					</form>
+					<hr />
+					
+					<h5 class="text-center" style="font-weight:bold;">REFERENSI SATUAN KERJA<br /></h5>
+					<h5 class="text-center">Bulan <?php echo get_month_name($month) . ' ' . $year; ?></h5>
 					<!-- add satker -->
-					<?php echo anchor('admin/satker/edit', '<span class="glyphicon glyphicon-plus-sign"></span> Tambah Referensi Satker'); ?><br />
+					<?php echo anchor('admin/satker/edit/' . $year . '/' . $month , '<span class="glyphicon glyphicon-plus-sign"></span> Tambah Referensi Satker'); ?><br />
                     <span class="label label-danger">Apabila Satker non aktif maka otomatis status LPJ menjadi tidak wajib</span><br /><br />
                     <table id="dataTable" class="table table-bordered table-condensed table-hover table-striped sortableTable responsive-table">
 						<thead>
@@ -45,34 +76,34 @@
 						?>
 							<tr style="font-size:11px;">
 							  <td><?php echo $i++; ?></td>
-							  <td style="font-size:13px;text-align: center;"><?php echo btn_edit('admin/satker/edit/' . $satker->id_ref_satker); ?></td>
+							  <td style="font-size:13px;text-align: center;"><?php echo btn_edit('admin/satker/edit/' . $year. '/' . $month . '/' . $satker->id_ref_satker); ?></td>
 							  <td>
 								  <div class="btn-group">
 									<?php 
 										switch ($satker->lpj_status_pengeluaran) {
 											case '0':
-												$lpj_pengeluaran = btn_mod_warning('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'NON LPJ PENGELUARAN');
+												$lpj_pengeluaran = btn_mod_warning('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/FALSE/TRUE', 'NON LPJ PENGELUARAN');
 											break;
 											case '1':
-												$lpj_pengeluaran = btn_mod_metis2('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/TRUE', 'LPJ PENGELUARAN');
+												$lpj_pengeluaran = btn_mod_metis2('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/FALSE/TRUE', 'LPJ PENGELUARAN');
 											break;
 										}
 
 										switch ($satker->lpj_status_penerimaan) {
 											case '0':
-												$lpj_penerimaan = btn_mod_warning('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'NON LPJ PENERIMAAN');
+												$lpj_penerimaan = btn_mod_warning('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'NON LPJ PENERIMAAN');
 											break;
 											case '1':
-												$lpj_penerimaan = btn_mod_primary('admin/satker/status_satker/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'LPJ PENERIMAAN');
+												$lpj_penerimaan = btn_mod_primary('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/FALSE/FALSE/TRUE', 'LPJ PENERIMAAN');
 											break;
 										}
 										
 										switch ($satker->aktif) {
 											case '0':
-												$aktif = btn_mod_danger('admin/satker/status_satker/' . $satker->id_ref_satker . '/TRUE', 'NON AKTIF');
+												$aktif = btn_mod_danger('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/TRUE', 'NON AKTIF');
 											break;
 											case '1':
-												$aktif = btn_mod_metis4('admin/satker/status_satker/' . $satker->id_ref_satker . '/TRUE', 'AKTIF');
+												$aktif = btn_mod_metis4('admin/satker/status_satker/' . $year . '/' . $month . '/' . $satker->id_ref_satker . '/TRUE', 'AKTIF');
 											break;
 										}
 										
