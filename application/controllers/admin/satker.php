@@ -69,7 +69,8 @@ class Satker extends Admin_Controller
 			$this->data['month'] = $this->uri->segment(5);
 		}
 		else {
-			$this->data['month'] = date('m');
+			// calculation month if january
+			$this->data['month'] = ( date('m', strtotime('-1 month')) ?: 12 );
 		}
 		
 		// fetch all pejabats
