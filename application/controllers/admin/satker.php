@@ -73,7 +73,7 @@ class Satker extends Admin_Controller
 			$this->data['month'] = ( date('m', strtotime('-1 month')) ?: 12 );
 		}
 		
-		// fetch all pejabats
+		// fetch all satkers
 		$this->data['satkers'] = $this->m_satker->get_join(FALSE, $this->data['year'], $this->data['month']);
 		// path to page folder view
 		$this->data['subview'] = 'admin/satker/index';
@@ -94,7 +94,7 @@ class Satker extends Admin_Controller
 		if ($id) {
 			$this->data['id']			= $id;
 			$this->data['back_link'] 	= $back_link;
-			$this->data['satker'] 		= $this->m_satker->get($id);
+			$this->data['satker'] 		= $this->m_satker->get_join(TRUE, $this->data['year'], $this->data['month'], $id);
 			count($this->data['satker']) || $this->data['errors'][] = 'satker tidak ditemukan';
 			$this->data['kementerian'] 	= $this->m_satker->get_kementerian_satker($id);
 			$this->data['lokasi'] 		= $this->m_satker->get_provinsi_satker($id);
@@ -117,6 +117,7 @@ class Satker extends Admin_Controller
 		$rules = $this->m_satker->rules;
 		$this->form_validation->set_rules($rules);
 		
+		
 		if ( $this->form_validation->run() === TRUE ) {
 			// get id_ref_kppn
 			$ref_kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
@@ -136,8 +137,10 @@ class Satker extends Admin_Controller
 			// populate fields
 			$data = $this->m_satker->array_from_post(array('id_ref_unit','id_ref_kabkota','kd_satker','no_karwas','nm_satker'));
 			$data['id_ref_kppn'] 				= $ref_kppn->id_ref_kppn;
+			
 			// save data to ref_satker
 			$id_satker = $this->m_satker->save($data, $id);
+			
 			
 			$this->m_satker->_table_name = 'ref_history_satker';
 			$this->m_satker->_primary_key = 'id_ref_history_satker';
@@ -150,13 +153,15 @@ class Satker extends Admin_Controller
 			$ref_history_satker['bulan']						= $this->data['month'];
 			
 			// save data to ref_history_satker
-			$this->m_satker->save($ref_history_satker, $id);
+			$this->m_satker->save($ref_history_satker, $ref_history_satker['id_ref_satker']);
+			//~ $this->m_satker->save($ref_history_satker, $id);
 			
 			// redirect to satker
 			redirect('admin/satker');
 			
 			
 		}
+		
 		
 		// path to satker folder view
 		$this->data['subview'] = 'admin/satker/edit';

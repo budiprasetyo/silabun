@@ -82,9 +82,21 @@ class M_satker extends MY_Model
 					)
 	);
 	
-
-	public function get_join($single = FALSE, $tahun, $bulan)
+	
+	/**
+	 * 
+	 * name: get_join
+	 * @param $single boolean
+	 * @param $tahun string
+	 * @param $bulan string
+	 * @param $id_satker int
+	 * @return $method 
+	 * 
+	 **/
+	 
+	public function get_join($single = FALSE, $tahun, $bulan, $id_satker = NULL)
 	{
+		
 		$query = $this->db->select('ref_kementerian.id_ref_kementerian')
 							->select('ref_kementerian.kd_kementerian')
 							->select('ref_unit.id_ref_unit')
@@ -120,8 +132,17 @@ class M_satker extends MY_Model
 							->order_by('ref_unit.kd_unit')
 							->order_by('ref_lokasi.kd_lokasi')
 							->order_by('ref_kabkota.kd_kabkota')
-							->order_by('ref_satker.kd_satker')
-							->get();
+							->order_by('ref_satker.kd_satker');
+		
+		// if id_satker not null it will use in editing specific satker
+		if( $id_satker !== NULL  ) 
+		{ 
+			$query = $this->db->where('ref_history_satker.id_ref_satker', $id_satker);
+		}
+		
+		$query = $this->db->get();
+		
+		
 		// Return results
         $single == FALSE || $this->db->limit(1);
         $method = $single ? 'row' : 'result';
