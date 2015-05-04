@@ -10,7 +10,7 @@ INSERT INTO `ref_history_satker`(
     SELECT DISTINCT
 		id_ref_satker,
 		'2015',
-		'01',
+		'03',
 		aktif,
 		lpj_status_pengeluaran,
 		lpj_status_penerimaan,
