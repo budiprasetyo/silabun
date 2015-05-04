@@ -27,7 +27,27 @@
 						</div>
 					  </div><!-- /.form-group -->
 					  
-					   <?php if ($this->data['id_entities'] === '2') { ?>
+					  <?php if ($this->data['id_entities'] === '3') { ?>
+					   <div class="form-group">
+						<label for="text4" class="control-label col-lg-2">Kanwil</label>
+						<div class="col-lg-4">
+							<select data-placeholder="Pilih Kanwil" id="mark" name="id_ref_kanwil" class="form-control chzn-select">
+								<option value="" selected="selected">Pilih Kanwil</option>
+								<?php 
+									foreach ($get_kanwils as $get_kanwil) 
+									{
+								?>
+										<option value="<?php echo $get_kanwil->id_ref_kanwil . ',' . $get_kanwil->kd_kanwil . ',' . $get_kanwil->nm_kanwil; ?>"><?php echo $get_kanwil->kd_kanwil . ' - ' . $get_kanwil->nm_kanwil; ?></option>
+								<?php
+									}
+								?>
+							</select>
+						</div>
+					  </div><!-- /.form-group -->
+					  <?php } ?>
+					  
+					   <?php if ($this->data['id_entities'] === '2'
+								OR $this->data['id_entities'] === '3') { ?>
 					   <div class="form-group">
 						<label for="text4" class="control-label col-lg-2">Jenis Monitoring</label>
 						<div class="col-lg-4">
@@ -291,18 +311,44 @@
 								} 
 								else if ($this->data['id_entities'] === '3')
 								{
+									if ( $jenis_monitoring === 'monitoring_per_kementerian' ) 
+									{
 							?>
-									<th>No.
-									<i class="fa sort"></i></th>
-									<th>Kanwil
-									<i class="fa sort"></i></th>
-									<th>KPPN
-									<i class="fa sort"></i></th>
-									<th>Kode Kementerian
-									<i class="fa sort"></i></th>
-									<th>Data Diterima 
-									<i class="fa sort"></i></th>
-							<?php } ?>
+										<th>No.
+										<i class="fa sort"></i></th>
+										<th>Kanwil
+										<i class="fa sort"></i></th>
+										<th>KPPN
+										<i class="fa sort"></i></th>
+										<th>Kode dan Nama Kementerian
+										<i class="fa sort"></i></th>
+										<th>Data Diterima 
+										<i class="fa sort"></i></th>
+							<?php
+									}
+									else if ( $jenis_monitoring === 'monitoring_per_satker' ) 
+									{
+							?>
+										<th>No.
+										<i class="fa sort"></i></th>
+										<th>Kanwil
+										<i class="fa sort"></i></th>
+										<th>Kode dan Nama KPPN
+										<i class="fa sort"></i></th>
+										<th>Kode dan Nama Kementerian
+										<i class="fa sort"></i></th>
+										<th>Kode dan Nama Satker 
+										<i class="fa sort"></i></th>
+							<?php
+									}
+									else
+									{
+							?>
+										<th>Data tidak ditampilkan karena paremeter data belum dipilih<i class="fa sort"></i></th>
+							<?php
+									}
+								} 
+							?>
 							</tr>
 						</thead>
 						<tbody style="font-size:11px;">
@@ -440,7 +486,8 @@
 										}
 									} 
 									else if ($this->data['id_entities'] === '3'
-											&& $transaksi === 'pengeluaran')
+											&& $transaksi === 'pengeluaran'
+											&& $jenis_monitoring === 'monitoring_per_kementerian')
 									{
 										if (count($monitor_kanwils_sents)) 
 										{
@@ -451,28 +498,50 @@
 											<tr>
 												<td><?php echo ++$i; ?></td>
 												<td>
-													<?php echo $monitor_kanwil_sent->kd_kanwil . ' - ' . $monitor_kanwil_sent->nm_kanwil; ?>
+													<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
 												</td>
 												<td>
 													<?php echo $monitor_kanwil_sent->kd_kppn . ' - ' . $monitor_kanwil_sent->nm_kppn; ?>
 												</td>
-												<td><?php echo $monitor_kanwil_sent->kd_kementerian; ?></td>
-												<td><?php echo $monitor_kanwil_sent->jml_lpj; ?></td>
+												<td><?php echo $monitor_kanwil_sent->kd_kementerian . ' - ' . $monitor_kanwil_sent->nm_kementerian; ?></td>
+												<td><?php echo $monitor_kanwil_sent->jml_lpj_kementerian; ?></td>
 											</tr>
 						<?php
 											}
 										}
-										else
-										{
-						?>
-										<tr>
-											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
-										</tr>
-						<?php
-										}
 									}
+									
 									else if ($this->data['id_entities'] === '3'
-											&& $transaksi === 'penerimaan')
+											&& $transaksi === 'pengeluaran'
+											&& $jenis_monitoring === 'monitoring_per_satker') 
+									{
+										if (count($monitor_satkers_pengeluaran_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_satkers_pengeluaran_sents as $monitor_satker_sent) 
+											{
+						?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td>
+													<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
+											  </td>
+											  <td>
+												  <?php echo $monitor_satker_sent->kd_kppn . ' - ' . $monitor_satker_sent->nm_kppn; ?>
+											  </td>
+											  <td style="white-space:normal;"><?php echo $monitor_satker_sent->kd_kementerian . ' - ' . $monitor_satker_sent->nm_kementerian; ?></td>
+											  <td style="white-space:normal;"><?php echo $monitor_satker_sent->kd_satker . ' - ' . $monitor_satker_sent->nm_satker; ?></td>
+											</tr>
+						<?php
+											}
+										}
+										
+										
+									}
+									
+									else if ($this->data['id_entities'] === '3'
+											&& $transaksi === 'penerimaan'
+											&& $jenis_monitoring === 'monitoring_per_kementerian')
 									{
 										if (count($monitor_kanwils_penerimaan_sents)) 
 										{
@@ -483,27 +552,43 @@
 											<tr>
 												<td><?php echo ++$i; ?></td>
 												<td>
-													<?php echo $monitor_kanwil_penerimaan_sent->kd_kanwil . ' - ' . $monitor_kanwil_penerimaan_sent->nm_kanwil; ?>
+													<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
 												</td>
 												<td>
 													<?php echo $monitor_kanwil_penerimaan_sent->kd_kppn . ' - ' . $monitor_kanwil_penerimaan_sent->nm_kppn; ?>
 												</td>
-												<td><?php echo $monitor_kanwil_penerimaan_sent->kd_kementerian; ?></td>
-												<td><?php echo $monitor_kanwil_penerimaan_sent->jml_lpj; ?></td>
+												<td><?php echo $monitor_kanwil_penerimaan_sent->kd_kementerian . ' - ' . $monitor_kanwil_penerimaan_sent->nm_kementerian; ?></td>
+												<td><?php echo $monitor_kanwil_penerimaan_sent->jml_lpj_kementerian; ?></td>
 											</tr>
 						<?php
 											}
 										}
-										else
-										{
-						?>
-										<tr>
-											<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
-										</tr>
-						<?php
-										}
 									}
 									
+									else if ($this->data['id_entities'] === '3'
+											&& $transaksi === 'penerimaan'
+											&& $jenis_monitoring === 'monitoring_per_satker') 
+									{
+										if (count($monitor_satkers_penerimaan_sents)) 
+										{
+											$i = 0;
+											foreach ($monitor_satkers_penerimaan_sents as $monitor_satker_sent) 
+											{
+						?>
+											<tr>
+											  <td><?php echo ++$i; ?></td>
+											  <td>
+													<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
+											  </td>
+											  <td><?php echo $monitor_satker_sent->kd_kppn . ' - ' . $monitor_satker_sent->nm_kppn; ?></td>
+											  <td style="white-space:normal;"><?php echo $monitor_satker_sent->kd_kementerian . ' - ' . $monitor_satker_sent->nm_kementerian; ?></td>
+											  <td style="white-space:normal;"><?php echo $monitor_satker_sent->kd_satker . ' - ' . $monitor_satker_sent->nm_satker; ?></td>
+											</tr>
+						<?php
+											
+											}
+										}
+									}
 						?>
 						</tbody>
 					  </table>
@@ -561,18 +646,46 @@
 									} 
 									else if ($this->data['id_entities'] === '3')
 									{
+									
+										if ( $jenis_monitoring === 'monitoring_per_kementerian' ) 
+										{
 								?>
-									<th>No.
-									<i class="fa sort"></i></th>
-									<th>Kanwil
-									<i class="fa sort"></i></th>
-									<th>KPPN
-									<i class="fa sort"></i></th>
-									<th>Kode Kementerian
-									<i class="fa sort"></i></th>
-									<th>Data Belum Diterima 
-									<i class="fa sort"></i></th>
-								<?php } ?>
+											<th>No.
+											<i class="fa sort"></i></th>
+											<th>Kanwil
+											<i class="fa sort"></i></th>
+											<th>KPPN
+											<i class="fa sort"></i></th>
+											<th>Kode dan Nama Kementerian
+											<i class="fa sort"></i></th>
+											<th>Data Diterima 
+											<i class="fa sort"></i></th>
+								<?php
+										}
+										else if ( $jenis_monitoring === 'monitoring_per_satker' ) 
+										{
+								?>
+											<th>No.
+											<i class="fa sort"></i></th>
+											<th>Kanwil
+											<i class="fa sort"></i></th>
+											<th>Kode dan Nama KPPN
+											<i class="fa sort"></i></th>
+											<th>Kode dan Nama Kementerian
+											<i class="fa sort"></i></th>
+											<th>Kode dan Nama Satker 
+											<i class="fa sort"></i></th>
+								<?php
+										}
+										else
+										{
+								?>
+											<th>Data tidak ditampilkan karena paremeter data belum dipilih<i class="fa sort"></i></th>
+								
+								<?php
+										}
+									} 
+								?>
 							</tr>
 						</thead>
                       <tbody style="font-size:11px;">
@@ -739,7 +852,8 @@
 								
 							}
 							else if ( $this->data['id_entities'] === '3' 
-									&& $transaksi === 'pengeluaran')
+									&& $transaksi === 'pengeluaran'
+									&& $jenis_monitoring === 'monitoring_per_kementerian')
 							{
 								if (count($monitor_kanwils_unsents))
 								{
@@ -750,28 +864,49 @@
 							<tr>
 								<td><?php echo ++$i; ?></td>
 								<td>
-									<?php echo $monitor_kanwil_unsent->kd_kanwil . ' - ' . $monitor_kanwil_unsent->nm_kanwil; ?>
+									<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
 								</td>
 								<td>
 									<?php echo $monitor_kanwil_unsent->kd_kppn . ' - ' . $monitor_kanwil_unsent->nm_kppn; ?>
 								</td>
-								<td><?php echo $monitor_kanwil_unsent->kd_kementerian; ?></td>
-								<td><?php echo $monitor_kanwil_unsent->jml_lpj; ?></td>
+								<td><?php echo $monitor_kanwil_unsent->kd_kementerian . ' - ' . $monitor_kanwil_unsent->nm_kementerian; ?></td>
+								<td><?php echo $monitor_kanwil_unsent->jml_lpj_kementerian; ?></td>
 							</tr>
 						<?php
 									}
 								}
-								else
+							}
+							
+							else if ( $this->data['id_entities'] === '3' 
+									&& $transaksi === 'pengeluaran'
+									&& $jenis_monitoring === 'monitoring_per_satker') 
+							{
+								
+								if (count($monitor_satkers_pengeluaran_unsents)) 
 								{
-						?>
-									<tr>
-										<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
-									</tr>
-								<?php
+									$i = 0;
+									foreach ($monitor_satkers_pengeluaran_unsents as $monitor_satker_unsent) 
+									{
+					?>
+										<tr>
+										  <td><?php echo ++$i; ?></td>
+										  <td>
+											<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
+										  </td>
+										  <td>
+											  <?php echo $monitor_satker_unsent->kd_kppn . ' - ' . $monitor_satker_unsent->nm_kppn; ?>
+										  </td>
+										  <td style="white-space:normal;"><?php echo $monitor_satker_unsent->kd_kementerian . ' - ' . $monitor_satker_unsent->nm_kementerian; ?></td>
+										  <td style="white-space:normal;"><?php echo $monitor_satker_unsent->kd_satker . ' - ' . $monitor_satker_unsent->nm_satker; ?></td>
+										</tr>
+					<?php 
+									}
 								}
 							}
+							
 							else if ( $this->data['id_entities'] === '3' 
-									&& $transaksi === 'penerimaan')
+									&& $transaksi === 'penerimaan'
+									&& $jenis_monitoring === 'monitoring_per_kementerian')
 							{
 								if (count($monitor_kanwils_penerimaan_unsents))
 								{
@@ -782,24 +917,41 @@
 							<tr>
 								<td><?php echo ++$i; ?></td>
 								<td>
-									<?php echo $monitor_kanwil_penerimaan_unsent->kd_kanwil . ' - ' . $monitor_kanwil_penerimaan_unsent->nm_kanwil; ?>
+									<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
 								</td>
 								<td>
 									<?php echo $monitor_kanwil_penerimaan_unsent->kd_kppn . ' - ' . $monitor_kanwil_penerimaan_unsent->nm_kppn; ?>
 								</td>
-								<td><?php echo $monitor_kanwil_penerimaan_unsent->kd_kementerian; ?></td>
-								<td><?php echo $monitor_kanwil_penerimaan_unsent->jml_lpj; ?></td>
+								<td><?php echo $monitor_kanwil_penerimaan_unsent->kd_kementerian . ' - ' . $monitor_kanwil_penerimaan_unsent->nm_kementerian; ?></td>
+								<td><?php echo $monitor_kanwil_penerimaan_unsent->jml_lpj_kementerian; ?></td>
 							</tr>
 						<?php
 									}
 								}
-								else
+							}
+							
+							else if ( $this->data['id_entities'] === '3' 
+									&& $transaksi === 'penerimaan'
+									&& $jenis_monitoring === 'monitoring_per_satker') 
+							{
+								if (count($monitor_satkers_penerimaan_unsents)) 
 								{
-						?>
-									<tr>
-										<td colspan="16">Data pada tahun <span class="label label-danger"><?php echo $year; ?></span> bulan <span class="label label-danger"><?php echo $month; ?></span> tidak ada</td>
-									</tr>
-								<?php
+									$i = 0;
+									foreach ($monitor_satkers_penerimaan_unsents as $monitor_satker_unsent) 
+									{
+										
+					?>
+										<tr>
+										  <td><?php echo ++$i; ?></td>
+										  <td>
+											<?php echo $kd_kanwil . ' - ' . $nm_kanwil; ?>
+										  </td>
+										  <td><?php echo $monitor_satker_unsent->kd_kppn . ' - ' . $monitor_satker_unsent->nm_kppn; ?></td>
+										  <td style="white-space:normal;"><?php echo $monitor_satker_unsent->kd_kementerian . ' - ' . $monitor_satker_unsent->nm_kementerian; ?></td>
+										  <td style="white-space:normal;"><?php echo $monitor_satker_unsent->kd_satker . ' - ' . $monitor_satker_unsent->nm_satker; ?></td>
+										</tr>
+					<?php 
+									}
 								}
 							}
 						?>
