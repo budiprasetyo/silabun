@@ -69,7 +69,6 @@ class Upload extends Admin_Controller
 				$this->data['validate_pengeluaran']	= $data_adk['validate_pengeluaran'];
 				$this->data['validate_pengeluaran_1m']	= $data_adk['validate_pengeluaran_1m'];
 				
-				//~ var_dump($this->data['validate_pengeluaran_1m']->row());
 				
 			}
 			else if ($this->uri->segment(5) !== FALSE

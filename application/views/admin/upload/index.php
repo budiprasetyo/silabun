@@ -74,6 +74,8 @@
 							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
 							$validasi_saldo_akhir_bku_1 = $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain;
 							$validasi_saldo_akhir_bku_2 = $komponen_pengeluaran->saldo_akhir_tunai + $komponen_pengeluaran->saldo_akhir_bank + $komponen_pengeluaran->saldo_akhir_um + $komponen_pengeluaran->saldo_akhir_bpp;
+							// 1 month ago
+							$komponen_pengeluaran_1m = $validate_pengeluaran_1m->row();
 					?>
 					
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN<br /></h5>
@@ -245,6 +247,165 @@
 										</td>
 									</tr>
 								</table>
+								
+								<!-- validation with saldo akhir 1 month ago -->
+								<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr>
+										<th>Jenis Buku<br />(1)</th>
+										<th>Saldo Akhir<br />Bulan <?php echo get_month_name($komponen_pengeluaran_1m->bulan) . ' ' . $komponen_pengeluaran_1m->tahun; ?><br />(2)</th>
+										<th>Saldo Awal<br />Bulan <?php echo get_month_name($komponen_pengeluaran->bulan) . ' ' . $komponen_pengeluaran->tahun; ?><br />(3)</th>
+										<th>Keterangan<br />(4) = (2) ? (3)</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>Tunai</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_tunai); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_tunai); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_tunai === $komponen_pengeluaran->saldo_awal_tunai ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Bank</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_bank); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_bank); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_bank === $komponen_pengeluaran->saldo_awal_bank ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Buku Kas Umum</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_bku); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_bku); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_bku === $komponen_pengeluaran->saldo_awal_bku ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Uang Muka</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_um); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_um); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_um === $komponen_pengeluaran->saldo_awal_um ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Bendahara Pengeluaran Pembantu</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_bpp); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_bpp); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_bpp === $komponen_pengeluaran->saldo_awal_bpp ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Uang Persediaan</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_up); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_up); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_up === $komponen_pengeluaran->saldo_awal_up ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>LS Bendahara</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_lsbend); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_lsbend); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_lsbend === $komponen_pengeluaran->saldo_awal_lsbend ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Pajak</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_pajak); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_pajak); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_pajak === $komponen_pengeluaran->saldo_awal_pajak ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+									<tr>
+										<th>Pengeluaran Lain</th>
+										<td align="right" class="bg-blue dker"><?php echo amount_format($komponen_pengeluaran_1m->saldo_akhir_lain); ?></td>
+										<td align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_awal_lain); ?></td>
+										<td>
+											<?php 
+												if ( $komponen_pengeluaran_1m->saldo_akhir_lain === $komponen_pengeluaran->saldo_awal_lain ) {
+											?>
+													<span class="label label-success">Hasil Benar</span>
+											<?php
+												} else {
+											?>
+													<span class="label label-danger">Hasil Salah</span>
+											<?php } ?>
+										</td>
+									</tr>
+								</tbody>
+								</table>
+								
 								<table class="table table-bordered table-condensed table-hovered table-striped">
 									<tr>
 										<td colspan="4" style="white-space:normal;"><strong>1. Validasi Saldo Akhir BKU</strong><br />

@@ -196,7 +196,7 @@ class M_upload extends MY_Model
 		dsp_ba_lpjk
 			WHERE
 		kd_kppn = {$kd_kppn} AND
-		kd_satker = {$kd_kppn} AND
+		kd_satker = {$kd_satker} AND
 		tahun = {$year} AND
 		bulan = {$month_before}
 				GROUP BY
