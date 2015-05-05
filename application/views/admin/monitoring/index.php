@@ -60,14 +60,20 @@
 					  </div><!-- /.form-group -->
 					  <?php } ?>
 					  
-					  <div class="form-group">
-						<div class="col-lg-2 controls">
-							<?php 
-								$attributes = 'class = "btn btn-primary btn-grad"';
-								echo form_submit('submit', 'Tampilkan', $attributes);
-							?>
-						</div>
-					  </div><!--/.form-group -->
+					  <div class="text-center">
+						<div class="btn-group">
+							<div class="col-lg-12 controls">
+								<?php 
+									$attributes = 'class = "btn btn-primary btn-grad"';
+									echo form_submit('submit', 'Tampilkan', $attributes);
+								?>
+								<?php 
+									$attributes = 'class = "btn btn-success btn-grad"';
+									echo form_submit('submit', 'XLS', $attributes);
+								?>
+							</div><!--/.col-lg-12 -->
+						</div><!--/.btn-group -->
+					  </div><!--/.text-center -->
 					  
 					  </form>
 					  <hr />

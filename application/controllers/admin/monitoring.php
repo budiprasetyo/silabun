@@ -41,6 +41,7 @@ class Monitoring extends Admin_Controller
 
 	public function monitor_data_terkirim()
 	{	
+		
 		$transaksi = $this->uri->segment(4);
 		// load helper
 		$this->load->helper('datetime');
@@ -64,20 +65,37 @@ class Monitoring extends Admin_Controller
 				$this->load->model('m_referensi');
 				// get id_ref_kanwil
 				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+				// file name
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_monitoring_' . $transaksi . '_kppn';
 				
-				var_dump($kppn->id_ref_kppn);
+				// get data
+				if (  $this->input->post('submit') === 'Tampilkan'  )
+				{
 				
-				// send to view fetch sent and unsent satker count
-				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
-				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
-				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
-				
-				// send to view fetch unsent satker 
-				$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
-				$this->data['monitor_satker_pengeluaran_unsents'] = $monitor_satker_unsents['query_pengeluaran'];
-				// send to view fetch sent satker 
-				$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
-				$this->data['monitor_satker_pengeluaran_sents'] = $monitor_satker_sents['query_pengeluaran'];
+					// send to view fetch sent and unsent satker count
+					$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
+					$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
+					$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
+					
+					// send to view fetch unsent satker 
+					$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
+					$this->data['monitor_satker_pengeluaran_unsents'] = $monitor_satker_unsents['query_pengeluaran'];
+					// send to view fetch sent satker 
+					$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
+					$this->data['monitor_satker_pengeluaran_sents'] = $monitor_satker_sents['query_pengeluaran'];
+				}
+				// report section
+				// XLS
+				else if ( $this->input->post('submit') === 'XLS' )
+				{
+					// send to view fetch unsent satker 
+					$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE, TRUE);
+					$this->data['monitor_satker_pengeluaran_unsents'] = $monitor_satker_unsents['query_pengeluaran'];
+					// send to view fetch sent satker 
+					$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE, TRUE);
+					$this->data['monitor_satker_pengeluaran_sents'] = $monitor_satker_sents['query_pengeluaran'];
+					
+				}
 				
 			}
 			else if ( $transaksi === 'penerimaan' ) 
@@ -89,23 +107,58 @@ class Monitoring extends Admin_Controller
 				$this->load->model('m_referensi');
 				// get id_ref_kanwil
 				$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
+				// file name
+				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kppn->id_ref_kppn . '_monitoring_' . $transaksi . '_kppn';
 				
-				// send to view fetch sent and unsent satker count
-				$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
-				$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
-				$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
+				// get data
+				if (  $this->input->post('submit') === 'Tampilkan'  )
+				{
 				
-				// send to view fetch unsent satker 
-				$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
-				$this->data['monitor_satker_penerimaan_unsents'] = $monitor_satker_unsents['query_penerimaan'];
-				// send to view fetch sent satker 
-				$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
-				$this->data['monitor_satker_penerimaan_sents'] = $monitor_satker_sents['query_penerimaan'];
+					// send to view fetch sent and unsent satker count
+					$count_satkers = $this->m_monitoring->get_count_data_satker($kppn->id_ref_kppn, NULL, $this->data['year'],$this->data['month']);
+					$this->data['count_satkers_k'] = $count_satkers['query_pengeluaran'];
+					$this->data['count_satkers_p'] = $count_satkers['query_penerimaan'];
+					
+					// send to view fetch unsent satker 
+					$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE);
+					$this->data['monitor_satker_penerimaan_unsents'] = $monitor_satker_unsents['query_penerimaan'];
+					// send to view fetch sent satker 
+					$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE);
+					$this->data['monitor_satker_penerimaan_sents'] = $monitor_satker_sents['query_penerimaan'];
+					
+				}
+				// report section
+				// XLS
+				else if ( $this->input->post('submit') === 'XLS' )
+				{
+					// send to view fetch unsent satker 
+					$monitor_satker_unsents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], FALSE, TRUE);
+					$this->data['monitor_satker_penerimaan_unsents'] = $monitor_satker_unsents['query_penerimaan'];
+					// send to view fetch sent satker 
+					$monitor_satker_sents = $this->m_monitoring->get_list_satker_status($kppn->id_ref_kppn,$this->data['year'],$this->data['month'], TRUE, TRUE);
+					$this->data['monitor_satker_penerimaan_sents'] = $monitor_satker_sents['query_penerimaan'];
+					
+				}
 			}
 			
 			// path to page folder view
-			$this->data['subview'] = 'admin/monitoring/index';
-			$this->load->view('admin/template/_layout_admin', $this->data);
+			// default button
+			if ( $this->input->post('submit') === 'Tampilkan' 
+				OR $this->input->post() == FALSE )
+			{
+				
+				$this->data['subview'] = 'admin/monitoring/index';
+				$this->load->view('admin/template/_layout_admin', $this->data);
+				
+			}
+			else if ( $this->input->post('submit') === 'XLS' )
+			{
+				
+				$this->data['output'] = $this->input->post('submit');
+				$this->load->view('admin/monitoring/report_kppn_monitoring', $this->data);
+				
+			}
+			
 		}
 		else if($this->data['id_entities'] === '2')
 		{

@@ -217,24 +217,50 @@ class M_monitoring extends MY_Model
 					dsp_status_kirim_pengeluaran.pos_kirim");
 	}
 	
-	public function get_list_satker_status($id_ref_kppn, $year, $month, $status = FALSE)
+	public function get_list_satker_status($id_ref_kppn, $year, $month, $status = FALSE, $report = FALSE)
 	{
+		// sent or unsent
 		if($status == FALSE)
 		{
 			$status_kirim = '';
-		} else {
+		} 
+		else 
+		{
 			$status_kirim = ' NOT ';
 		}
 		
+		// report or not report
+		if ( $report == FALSE )
+		{
+			// pengeluaran
+			$fields_pengeluaran = '';
+			$join_pengeluaran = '';
+			// penerimaan
+			$fields_penerimaan = '';
+			$join_penerimaan = '';
+			
+		}
+		else if ( $report == TRUE )
+		{
+			// pengeluaran
+			$fields_pengeluaran = ' dsp_ba_lpjk.created_at, dsp_ba_lpjk.updated_at,  ';
+			$join_pengeluaran = ' LEFT JOIN dsp_ba_lpjk ON dsp_ba_lpjk.id_ba_lpjk = dsp_report_rekap_lpjk.id_ba_lpj ';
+			// penerimaan
+			$fields_penerimaan = ' dsp_ba_lpjp.created_at, dsp_ba_lpjp.updated_at,  ';
+			$join_penerimaan = ' LEFT JOIN dsp_ba_lpjp ON dsp_ba_lpjp.id_ba_lpjp = dsp_report_rekap_lpjt.id_ba_lpj ';
+		}
+		
+		
 		$query_pengeluaran = $this->db->query("SELECT ref_history_satker.id_ref_satker,
-								ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
+								ref_satker.kd_satker, ref_satker.nm_satker, {$fields_pengeluaran}
+								count(*) as jml_lpj
 								FROM ref_history_satker
 								LEFT JOIN ref_satker
 								ON ref_history_satker.id_ref_satker = ref_satker.id_ref_satker
 								LEFT JOIN dsp_report_rekap_lpjk
 								ON ref_history_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker
 								AND ref_history_satker.tahun = dsp_report_rekap_lpjk.tahun
-								AND ref_history_satker.bulan = dsp_report_rekap_lpjk.bulan
+								AND ref_history_satker.bulan = dsp_report_rekap_lpjk.bulan {$join_pengeluaran}
 								WHERE dsp_report_rekap_lpjk.id_ref_satker is {$status_kirim} null
 								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
 								AND ref_history_satker.tahun = '{$year}'
@@ -242,14 +268,15 @@ class M_monitoring extends MY_Model
 								GROUP BY 2");
 		
 		$query_penerimaan = $this->db->query("SELECT ref_history_satker.id_ref_satker,
-								ref_satker.kd_satker, ref_satker.nm_satker, count(*) as jml_lpj
+								ref_satker.kd_satker, ref_satker.nm_satker, {$fields_penerimaan}
+								count(*) as jml_lpj
 								FROM ref_history_satker
 								LEFT JOIN ref_satker
 								ON ref_history_satker.id_ref_satker = ref_satker.id_ref_satker
 								LEFT JOIN dsp_report_rekap_lpjt
 								ON ref_history_satker.id_ref_satker = dsp_report_rekap_lpjt.id_ref_satker
 								AND ref_history_satker.tahun = dsp_report_rekap_lpjt.tahun
-								AND ref_history_satker.bulan = dsp_report_rekap_lpjt.bulan
+								AND ref_history_satker.bulan = dsp_report_rekap_lpjt.bulan {$join_penerimaan}
 								WHERE dsp_report_rekap_lpjt.id_ref_satker is {$status_kirim} null
 								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
 								AND ref_history_satker.tahun = '{$year}'
@@ -400,6 +427,7 @@ class M_monitoring extends MY_Model
 		}
 	}
 	
+	/*
 	public function get_list_satker_status_pkn($id_ref_kanwil, $year, $month, $status = FALSE)
 	{
 		if($status == FALSE)
@@ -426,29 +454,6 @@ class M_monitoring extends MY_Model
 								AND ref_history_satker.bulan = '{$month}'
 								GROUP BY 1,3
 								ORDER BY 1,3");
-			/*
-			$query = $this->db->query("SELECT ref_kanwil.kd_kanwil, ref_kanwil.nm_kanwil, ref_kppn.kd_kppn, ref_kppn.nm_kppn, ref_kementerian.kd_kementerian, count(*) as jml_lpj
-				FROM ref_satker
-					LEFT JOIN ref_unit
-					ON ref_satker.id_ref_unit = ref_unit.id_ref_unit
-						LEFT JOIN ref_kementerian
-						ON ref_unit.id_ref_kementerian = ref_kementerian.id_ref_kementerian
-							LEFT JOIN ref_kppn
-							ON ref_satker.id_ref_kppn = ref_kppn.id_ref_kppn
-								LEFT JOIN ref_kanwil
-								ON ref_kppn.id_ref_kanwil = ref_kanwil.id_ref_kanwil
-				WHERE ref_satker.id_ref_satker ".$status_kirim." IN ( 
-													SELECT
-													dsp_status_kirim_pengeluaran.id_ref_satker
-													FROM dsp_status_kirim_pengeluaran
-													WHERE tahun = '".$year."'
-																AND bulan = '".$month."'
-																AND pos_kirim = '".$pos_kirim."'
-												)
-				GROUP BY ref_kanwil.kd_kanwil, ref_kppn.kd_kppn, ref_kementerian.kd_kementerian
-				ORDER BY ref_kanwil.kd_kanwil, ref_kppn.kd_kppn, ref_kementerian.kd_kementerian");
-				*/
-	
 		
 			
 			$query = $this->db->query("SELECT ref_kanwil.kd_kanwil, ref_kanwil.nm_kanwil, ref_kppn.kd_kppn, ref_kppn.nm_kppn, ref_kementerian.kd_kementerian, count(*) as jml_lpj
@@ -480,4 +485,5 @@ class M_monitoring extends MY_Model
 			);
 		
 	}
+	*/
 }
