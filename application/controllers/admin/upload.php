@@ -90,6 +90,9 @@ class Upload extends Admin_Controller
 				$data_adk_01 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, '01');
 				$this->data['validate_penerimaan_01']	= $data_adk_01['validate_penerimaan'];
 				
+				// penerimaan 1 month ago
+				$this->data['validate_penerimaan_1m'] = $data_adk['validate_penerimaan_1m'];
+				
 			}
 
 			// fetch all upload

@@ -202,10 +202,30 @@ class M_upload extends MY_Model
 				GROUP BY
 		kd_kppn, kd_satker, tahun, bulan");
 		
+		// get data lpj penerimaan 1 month before
+		$validate_penerimaan_1m = $this->db->query("SELECT
+			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
+			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir,
+			a.no_bukti, a.brankas, a.kas_bank, a.hak_saldo_awal, a.hak_terima, a.hak_setor,
+			a.setor, a.setor_uakpa, a.uakpa, a.ket_selisih_kas, a.ket_selisih_uakpa
+				FROM
+			dsp_ba_lpjp a
+				LEFT JOIN
+			ref_satker b
+				ON a.kd_satker = b.kd_satker
+				WHERE
+			a.kd_kppn 	= {$kd_kppn} AND
+			a.kd_satker	= {$kd_satker} AND
+			a.tahun		= {$year} AND
+			a.bulan		= {$month_before} {$kd_buku_penerimaan}
+				GROUP BY
+			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
+		
 		return array (
 			'validate_pengeluaran'		=> $validate_pengeluaran,
 			'validate_penerimaan'		=> $validate_penerimaan,
-			'validate_pengeluaran_1m'	=> $validate_pengeluaran_1m
+			'validate_pengeluaran_1m'	=> $validate_pengeluaran_1m,
+			'validate_penerimaan_1m'	=> $validate_penerimaan_1m,
 		);
 	}
 	

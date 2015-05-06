@@ -619,7 +619,7 @@
 							</div>
 							<?php 
 								$sisa_up_brankas = $komponen_pengeluaran->brankas - $komponen_pengeluaran->saldo_akhir_lsbend;
-								
+								/*
 								if ($sisa_up_brankas > 50000000)
 								{
 							?>
@@ -630,7 +630,7 @@
 								</div>
 							<?php
 								}
-							
+								*/
 							?>
 							<div class="row">
 								<div class="col-md-6">
@@ -784,6 +784,9 @@
 							$komponen_penerimaan_02 = $validate_penerimaan_02->row();
 							$komponen_penerimaan_01 = $validate_penerimaan_01->row();
 							$komponen_penerimaans = $validate_penerimaan->result();
+							$komponen_penerimaan_arrays = $validate_penerimaan->result_array();
+							$komponen_penerimaan_array_1ms = $validate_penerimaan_1m->result_array();
+							
 							// calculation LPJ Penerimaan
 							$jumlah_kas_penerimaan = $komponen_penerimaan_02->brankas + $komponen_penerimaan_02->kas_bank;
 							$selisih_kas_penerimaan = $komponen_penerimaan_02->saldo_akhir - $jumlah_kas_penerimaan;
@@ -843,6 +846,59 @@
 										</tr>
 					<?php
 									}
+					?>
+								</tbody>
+							</table>
+							
+							<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr>
+										<th>Kode & Jenis Buku<br />(1)</th>
+										<th>Saldo Akhir<br />Bulan Sebelumnya<br />(2)</th>
+										<th>Saldo Awal<br />Bulan Ini<br />(3)</th>
+										<th>Keterangan<br />(4) = (2) ? (3)</th>
+									</tr>
+								</thead>
+								<tbody>
+					<?php
+						
+									// use array outside
+									$penerimaan_array_1m = array();
+									
+									foreach ( $komponen_penerimaan_array_1ms as $komponen_penerimaan_array_1m ) 
+									{
+										$penerimaan_array_1m[] = $komponen_penerimaan_array_1m;
+									}
+									
+									$j = 0;
+									foreach ( $komponen_penerimaan_arrays as $komponen_penerimaan_array => $key_penerimaan_array) 
+									{
+										
+										if ( $penerimaan_array_1m[$j]['kd_buku'] == $key_penerimaan_array['kd_buku'] )
+										{
+					?>
+											<tr>
+												<td>(<?php echo $key_penerimaan_array['kd_buku'] ?>) <?php echo ucfirst($key_penerimaan_array['nm_buku']); ?></td>
+												<td align="right" class="bg-blue dker"><?php echo amount_format($penerimaan_array_1m[$j]['saldo_akhir']); ?></td>
+												<td align="right" class="bg-orange lter"><?php echo amount_format($key_penerimaan_array['saldo_awal']); ?></td>
+												<td>
+												<?php 
+													if( $penerimaan_array_1m[$j]['saldo_akhir'] === $key_penerimaan_array['saldo_awal'] ){
+												?>
+														<span class="label label-success">Hasil Benar</span>
+												<?php
+													} else {
+												?>
+														<span class="label label-danger">Hasil Salah</span>
+												<?php } ?>
+												</td>
+											</tr>
+					<?php
+										}
+										
+										$j++;
+									}
+									
 					?>
 								</tbody>
 							</table>
