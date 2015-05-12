@@ -39,5 +39,14 @@ if( ! function_exists('replace_dot_in_numeric'))
 	  return str_replace(".", "", $number);
   }
 }
+
+if ( ! function_exists('decimal_format') )
+{
+	function decimal_format($number, $decimal)
+	{
+		return number_format($number, $decimal, ',', '.');
+	}
+}
+
 ?>
 
