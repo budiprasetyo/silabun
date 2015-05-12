@@ -219,7 +219,7 @@ class M_monitoring extends MY_Model
 	
 	public function get_list_satker_status($id_ref_kppn, $year, $month, $status = FALSE, $report = FALSE)
 	{
-		// sent or unsent
+		// sent if status == true ($status_kirim = 'not')
 		if($status == FALSE)
 		{
 			$status_kirim = '';
@@ -265,6 +265,7 @@ class M_monitoring extends MY_Model
 								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 2");
 		
 		$query_penerimaan = $this->db->query("SELECT ref_history_satker.id_ref_satker,
@@ -281,6 +282,7 @@ class M_monitoring extends MY_Model
 								AND ref_satker.id_ref_kppn = {$id_ref_kppn}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 2");
 		
 			return array(
