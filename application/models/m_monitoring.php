@@ -291,8 +291,9 @@ class M_monitoring extends MY_Model
 	}
 	
 	// edit here
-	public function get_list_satker_status_kanwil($id_ref_kanwil, $year, $month,  $status = FALSE, $monitor_satker = FALSE)
+	public function get_list_satker_status_kanwil($id_ref_kanwil, $year, $month,  $status = FALSE, $monitor_satker = FALSE, $export_xls = FALSE)
 	{
+		// status == FALSE means unsent
 		if($status == FALSE)
 		{
 			$status_kirim 	= '';
@@ -337,6 +338,7 @@ class M_monitoring extends MY_Model
 								dsp_report_rekap_lpjt.kd_satker, dsp_report_rekap_lpjt.nm_satker' ;
 		}
 		
+		// if monitoring until satker level
 		if ($monitor_satker == FALSE) 
 		{
 			$query_pengeluaran_kementerian = $this->db->query("SELECT  

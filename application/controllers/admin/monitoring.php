@@ -160,40 +160,57 @@ class Monitoring extends Admin_Controller
 			}
 			
 		}
+		// if id_entity kanwil
 		else if($this->data['id_entities'] === '2')
 		{
 			$this->data['jenis_monitoring'] = $this->input->post('jenis_monitoring');
+			$this->data['submit'] = $this->input->post('submit');
+			// load m_referensi model
+			$this->load->model('m_referensi');
+			// get id_ref_kanwil
+			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+			// file name
+			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_monitoring_' . $transaksi . '_kanwil_' . $kanwil->kd_kanwil;
 			
 			if ($transaksi === 'pengeluaran') 
 			{
 				
 				// table title
 				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara Pengeluaran oleh Satker Per KPPN';
-				// load m_referensi model
-				$this->load->model('m_referensi');
-				// get id_ref_kanwil
-				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
 				$count_satker = $this->m_monitoring->get_count_data_satker(NULL, $kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
 				// count satker lpj sent or not sent
 				$this->data['monitor_satkers_k'] = $count_satker['query_pengeluaran'];
 				
 				// jenis monitoring option
-				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+				// monitoring per kementerian
+				// in preview or XLS
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian'
+					 && ($this->input->post('submit') === 'Tampilkan' 
+					 OR $this->input->post('submit') === 'XLS')
+					) {
+					
 					// send to view fetch unsent satker 
 					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
 					$this->data['monitor_kppns_pengeluaran_unsents'] = $monitor_kppns_unsents['query_pengeluaran'];
 					// send to view fetch sent satker
 					$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
 					$this->data['monitor_kppns_pengeluaran_sents'] = $monitor_kppns_sents['query_pengeluaran'];
+					
 				}
-				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) 
+				// monitoring per satker
+				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker'
+						  && ($this->input->post('submit') === 'Tampilkan'
+						  OR $this->input->post('submit') === 'XLS')
+					) 
 				{
+					
 					// send to view fetch unsent satker 
 					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
 					$this->data['monitor_satkers_pengeluaran_unsents'] = $monitor_satkers_unsents['query_pengeluaran_satker'];
 					// send to view fetch sent satker
 					$monitor_satkers_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE, TRUE);
 					$this->data['monitor_satkers_pengeluaran_sents'] = $monitor_satkers_sents['query_pengeluaran_satker'];
+					// send to export in xls format
 					
 				}
 				
@@ -203,16 +220,15 @@ class Monitoring extends Admin_Controller
 				
 				// table title
 				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara Pengeluaran oleh Satker Per KPPN';
-				// load m_referensi model
-				$this->load->model('m_referensi');
-				// get id_ref_kanwil
-				$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
 				$count_satker = $this->m_monitoring->get_count_data_satker(NULL, $kanwil->id_ref_kanwil, $this->data['year'], $this->data['month']);
 				// count satker lpj sent or not sent
 				$this->data['monitor_satkers_p'] = $count_satker['query_penerimaan'];
 				
 				// jenis monitoring option
-				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' 
+					 && ($this->input->post('submit') === 'Tampilkan' 
+					 OR $this->input->post('submit') === 'XLS')
+					) {
 					// send to view fetch unsent satker 
 					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
 					$this->data['monitor_kppns_penerimaan_unsents'] = $monitor_kppns_unsents['query_penerimaan'];
@@ -220,7 +236,10 @@ class Monitoring extends Admin_Controller
 					$monitor_kppns_sents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], TRUE);
 					$this->data['monitor_kppns_penerimaan_sents'] = $monitor_kppns_sents['query_penerimaan'];
 				}
-				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) 
+				else if ( $this->data['jenis_monitoring'] === 'monitoring_per_satker'
+						  && ($this->input->post('submit') === 'Tampilkan' 
+						  OR $this->input->post('submit') === 'XLS')
+						) 
 				{
 					// send to view fetch unsent satker 
 					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($kanwil->id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
@@ -231,14 +250,27 @@ class Monitoring extends Admin_Controller
 				}
 			}
 			
-			// path to page folder view
-			$this->data['subview'] = 'admin/monitoring/index';
-			$this->load->view('admin/template/_layout_admin', $this->data);
+			
+			// load view
+			if ( $this->input->post('submit') === 'Tampilkan' 
+				 OR $this->input->post() == FALSE )
+			{
+				// path to page folder view
+				$this->data['subview'] = 'admin/monitoring/index';
+				$this->load->view('admin/template/_layout_admin', $this->data);
+			}
+			else if ( $this->input->post('submit') === 'XLS' )
+			{
+				$this->data['output'] = $this->input->post('submit');
+				$this->load->view('admin/monitoring/report_kppn_monitoring', $this->data);
+			}
+			
 		}
 		// if entity is pkn
 		else if($this->data['id_entities'] === '3')
 		{
 			$this->data['jenis_monitoring'] = $this->input->post('jenis_monitoring');
+			$this->data['submit'] = $this->input->post('submit');
 			
 			// get id_ref_kanwil from form monitoring
 			// in select option, I make it in array 
@@ -254,6 +286,8 @@ class Monitoring extends Admin_Controller
 			$this->data['get_kanwils'] = $this->m_referensi->get_kanwil(FALSE, FALSE, 'ref_kanwil.kd_kanwil');
 			// get id_ref_kanwil
 			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+			// file name
+			$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_monitoring_' . $transaksi . '_kanwil_' . $this->data['kd_kanwil'];
 			
 			if ($transaksi === 'pengeluaran') {
 				
@@ -261,7 +295,10 @@ class Monitoring extends Admin_Controller
 				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
 				
 				// if monitoring per kementerian
-				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian'
+					 && ($this->input->post('submit') === 'Tampilkan' 
+					 OR $this->input->post('submit') === 'XLS')
+					) {
 					
 					// send to view fetch kanwil and kementerian
 					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
@@ -272,7 +309,11 @@ class Monitoring extends Admin_Controller
 				
 				}
 				// monitoring per satker 
-				elseif ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) {
+				elseif ( $this->data['jenis_monitoring'] === 'monitoring_per_satker'
+						 && ($this->input->post('submit') === 'Tampilkan' 
+						 OR $this->input->post('submit') === 'XLS')
+						 ) 
+				{
 					
 					// send to view fetch unsent satker 
 					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
@@ -283,10 +324,6 @@ class Monitoring extends Admin_Controller
 					
 				}
 				
-				// path to page folder view
-				$this->data['subview'] = 'admin/monitoring/index';
-				$this->load->view('admin/template/_layout_admin', $this->data);
-				
 				
 			}
 			elseif ($transaksi === 'penerimaan') {
@@ -295,7 +332,11 @@ class Monitoring extends Admin_Controller
 				$this->data['table_title'] = 'Monitoring Pengiriman Data LPJ Bendahara oleh Satker Per Kanwil';
 				
 				// if monitoring per kementerian
-				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian' ) {
+				if ( $this->data['jenis_monitoring'] === 'monitoring_per_kementerian'
+					 && ($this->input->post('submit') === 'Tampilkan' 
+					 OR $this->input->post('submit') === 'XLS')
+					 ) 
+				{
 					
 					// send to view fetch kanwil and kementerian
 					$monitor_kppns_unsents = $this->m_monitoring->get_list_satker_status_kanwil($id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE);
@@ -306,7 +347,11 @@ class Monitoring extends Admin_Controller
 				
 				}
 				// monitoring per satker 
-				elseif ( $this->data['jenis_monitoring'] === 'monitoring_per_satker' ) {
+				elseif ( $this->data['jenis_monitoring'] === 'monitoring_per_satker'
+						 && ($this->input->post('submit') === 'Tampilkan' 
+						 OR $this->input->post('submit') === 'XLS')
+						 ) 
+				{
 					
 					// send to view fetch unsent satker 
 					$monitor_satkers_unsents = $this->m_monitoring->get_list_satker_status_kanwil($id_ref_kanwil, $this->data['year'], $this->data['month'], FALSE, TRUE);
@@ -317,13 +362,24 @@ class Monitoring extends Admin_Controller
 					
 				}
 				
-				// path to page folder view
-				$this->data['subview'] = 'admin/monitoring/index';
-				$this->load->view('admin/template/_layout_admin', $this->data);
 				
 			}
 			
+			if ( $this->input->post('submit') === 'Tampilkan'
+				 OR $this->input->post() == FALSE ) {
+				
+				// path to page folder view
+				$this->data['subview'] = 'admin/monitoring/index';
+				$this->load->view('admin/template/_layout_admin', $this->data);
+			}
+			else if ( $this->input->post('submit') === 'XLS' )
+			{
+				$this->data['output'] = $this->input->post('submit');
+				$this->load->view('admin/monitoring/report_kppn_monitoring', $this->data);
+			}
 			
+		
+		
 		}
 	}
 }

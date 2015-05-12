@@ -760,6 +760,7 @@
 						<?php 
 										}
 									}
+									/*
 									else
 									{
 						?>
@@ -768,6 +769,7 @@
 										</tr>
 						<?php
 									}
+									*/
 								}
 								else if ($transaksi === 'pengeluaran'
 									&& $jenis_monitoring === 'monitoring_per_satker') 
@@ -788,6 +790,7 @@
 						<?php 
 										}
 									}
+									/*
 									else
 									{
 						?>
@@ -796,6 +799,7 @@
 										</tr>
 						<?php
 									}
+									*/
 								}
 								
 								// penerimaan unsents
