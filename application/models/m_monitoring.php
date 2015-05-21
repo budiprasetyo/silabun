@@ -292,7 +292,20 @@ class M_monitoring extends MY_Model
 		
 	}
 	
-	// edit here
+	/*
+	 * 
+	 * name: get_list_satker_status_kanwil
+	 * shown in Kanwil and PKN level
+	 * 
+	 * @param	id_ref_kanwil
+	 * @param	year
+	 * @param	month
+	 * @param	status == false (unsent)
+	 * @param	monitor_satker == false (kementerian)
+	 * @param	export_xls == false (not export into xls)
+	 * @return
+	 * 
+	 */
 	public function get_list_satker_status_kanwil($id_ref_kanwil, $year, $month,  $status = FALSE, $monitor_satker = FALSE, $export_xls = FALSE)
 	{
 		// status == FALSE means unsent
@@ -358,6 +371,7 @@ class M_monitoring extends MY_Model
 								AND {$ref_kanwil} = {$id_ref_kanwil}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 1,3
 								ORDER BY 1,3");
 	
@@ -377,6 +391,7 @@ class M_monitoring extends MY_Model
 								AND {$ref_kanwil_penerimaan} = {$id_ref_kanwil}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 1,3
 								ORDER BY 1,3");
 			
@@ -402,6 +417,7 @@ class M_monitoring extends MY_Model
 								AND {$ref_kanwil} = {$id_ref_kanwil}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 1,3,5
 								ORDER BY 1,3,5");
 		
@@ -420,6 +436,7 @@ class M_monitoring extends MY_Model
 								AND {$ref_kanwil_penerimaan} = {$id_ref_kanwil}
 								AND ref_history_satker.tahun = '{$year}'
 								AND ref_history_satker.bulan = '{$month}'
+								AND ref_history_satker.aktif != 0
 								GROUP BY 1,3,5
 								ORDER BY 1,3,5");
 				
