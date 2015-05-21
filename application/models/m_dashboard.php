@@ -149,8 +149,9 @@ class M_dashboard extends MY_Model
 			);
 	}
 
-	public function get_kppn_rekap($id_ref_kppn)
+	public function get_kppn_rekap($id_ref_kppn, $tahun = null)
 	{
+		
 		$rekap_pengeluaran = $this->db->select('dsp_report_rekap_lpjk.tahun')
 							->select('dsp_report_rekap_lpjk.bulan')
 							->select('count(*) AS jml_lpj')
@@ -161,12 +162,17 @@ class M_dashboard extends MY_Model
 							->select_sum('dsp_report_rekap_lpjk.saldo')
 							->select_sum('dsp_report_rekap_lpjk.kuitansi')
 							->from('dsp_report_rekap_lpjk')
-							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker', 'left')
-							->where('ref_satker.lpj_status_pengeluaran', 1)
+							->join('ref_history_satker', 'dsp_report_rekap_lpjk.id_ref_satker = ref_history_satker.id_ref_satker AND dsp_report_rekap_lpjk.tahun = ref_history_satker.tahun AND dsp_report_rekap_lpjk.bulan = ref_history_satker.bulan', 'left')
+							->where('ref_history_satker.lpj_status_pengeluaran', 1)
 							->where('dsp_report_rekap_lpjk.id_ref_kppn', $id_ref_kppn)
 							->group_by('dsp_report_rekap_lpjk.tahun')
-							->group_by('dsp_report_rekap_lpjk.bulan')
-							->get();
+							->group_by('dsp_report_rekap_lpjk.bulan');
+		
+		if ( $tahun !== null ) {
+			$rekap_pengeluaran = $this->db->where('dsp_report_rekap_lpjk.tahun', $tahun);
+		}
+		
+		$rekap_pengeluaran = $this->db->get();
 							
 		$rekap_penerimaan = $this->db->select('dsp_report_rekap_lpjt.tahun')
 							->select('dsp_report_rekap_lpjt.bulan')
@@ -177,12 +183,17 @@ class M_dashboard extends MY_Model
 							->select_sum('dsp_report_rekap_lpjt.penerimaan')
 							->select_sum('dsp_report_rekap_lpjt.penyetoran')
 							->from('dsp_report_rekap_lpjt')
-							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjt.id_ref_satker', 'left')
-							->where('ref_satker.lpj_status_penerimaan', 1)
+							->join('ref_history_satker', 'dsp_report_rekap_lpjt.id_ref_satker = ref_history_satker.id_ref_satker AND dsp_report_rekap_lpjt.tahun = ref_history_satker.tahun AND dsp_report_rekap_lpjt.bulan = ref_history_satker.bulan', 'left')
+							->where('ref_history_satker.lpj_status_penerimaan', 1)
 							->where('dsp_report_rekap_lpjt.id_ref_kppn', $id_ref_kppn)
 							->group_by('dsp_report_rekap_lpjt.tahun')
-							->group_by('dsp_report_rekap_lpjt.bulan')
-							->get();
+							->group_by('dsp_report_rekap_lpjt.bulan');
+		
+		if ( $tahun !== null ) {
+			$rekap_penerimaan = $this->db->where('dsp_report_rekap_lpjt.tahun', $tahun);
+		}
+		
+		$rekap_penerimaan = $this->db->get();
 		
 							
 		

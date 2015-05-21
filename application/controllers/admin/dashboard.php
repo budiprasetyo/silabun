@@ -50,6 +50,10 @@ class Dashboard extends Admin_Controller
 		$this->load->model('m_dashboard');
 		$this->load->helper('datetime');
 		$this->load->helper('amountformat');
+		// get year
+		$this->data['year'] = $this->input->post('year') == TRUE ? $this->input->post('year') : date('Y');
+		// get month
+		$this->data['month'] = $this->input->post('month') == TRUE ? $this->input->post('month') : date('m');
 		
 		// if kppn
 		if ($this->data['id_entities'] === '1') 
@@ -59,7 +63,7 @@ class Dashboard extends Admin_Controller
 			// get id_ref_kanwil
 			$kppn = $this->m_referensi->get_kppn($this->data['id_ref_satker']);
 			// get kppn rekap
-			$satkers = $this->m_dashboard->get_kppn_rekap($kppn->id_ref_kppn);
+			$satkers = $this->m_dashboard->get_kppn_rekap($kppn->id_ref_kppn, $this->data['year']);
 			$rekap_kppn_pengeluarans = $satkers['rekap_pengeluaran'];
 			$rekap_kppn_penerimaans = $satkers['rekap_penerimaan'];
 			
