@@ -442,7 +442,7 @@ class M_report extends MY_Model
 			
 			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
 									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
-									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, saldo
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, tgl_transaksi_akhir, saldo
 								FROM 
 									t_lpjkrek
 								WHERE " .$where. "tahun = '".$year."'
@@ -495,7 +495,8 @@ class M_report extends MY_Model
 			
 			$query_kanwil_pkn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
 									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
-									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, saldo
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, saldo,
+									alasan_pembukaan_rekening, keterangan, tgl_transaksi_akhir
 								FROM 
 									t_lpjprek
 								WHERE " .$where. "tahun = '".$year."'
@@ -514,7 +515,8 @@ class M_report extends MY_Model
 		{
 			$query_kppn = $this->db->query("SELECT kd_kppn, nm_kppn, kd_kementerian, nm_kementerian,
 									kd_unit, nm_unit, kd_satker, nm_satker, tahun, bulan, nm_bank, 
-									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, saldo
+									nm_rekening, no_rekening, kd_rekening, no_srt, tgl_srt, saldo,
+									alasan_pembukaan_rekening, keterangan, tgl_transaksi_akhir
 								FROM 
 									t_lpjprek
 								WHERE tahun = '".$year."'

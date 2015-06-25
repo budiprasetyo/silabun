@@ -538,6 +538,7 @@ class Report extends Admin_Controller
 		if ( ($this->data['id_entities'] === '2' OR $this->data['id_entities'] === '3')
 				&& $this->form_validation->run() == TRUE )
 		{
+			
 			// get id_ref_kanwil
 			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
 			//~ // year
@@ -574,20 +575,22 @@ class Report extends Admin_Controller
 					
 					foreach ($rekening_pengeluarans->result_array() as $rekening_pengeluaran) 
 					{
+						
 						if ( !isset($parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]) )
 						{
 							$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']] = array();
 						}
 						
-						$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]['('.$rekening_pengeluaran['kd_kementerian'] . ') ' . $rekening_pengeluaran['nm_kementerian']][$rekening_pengeluaran['kd_unit'] . ' ' . $rekening_pengeluaran['nm_unit']][] = $rekening_pengeluaran;
+						$parent_rekening_pengeluaran[$rekening_pengeluaran['kd_kppn'] . ' KPPN ' . $rekening_pengeluaran['nm_kppn']]['('.$rekening_pengeluaran['kd_kementerian'] . ') ' . $rekening_pengeluaran['nm_kementerian']]['('.$rekening_pengeluaran['kd_unit'] . ') ' . $rekening_pengeluaran['nm_unit']][] = $rekening_pengeluaran;
+						
 						
 					}
 					
 					$this->data['parent_rekening_pengeluaran'] = $parent_rekening_pengeluaran;
-				
-				
+					
+					
 			}
-			elseif ( $this->input->post('post') === 'penerimaan' ) {
+			else if ( $this->input->post('post') === 'penerimaan' ) {
 				
 				// filename
 				$this->data['filename'] = $this->data['year'] . $this->data['month'] . '_' . $kanwil->id_ref_kanwil . '_' . '_rekening_' . $this->data['post'];
@@ -730,8 +733,10 @@ class Report extends Admin_Controller
 			$this->load->view('admin/report/report_rekening_bendahara', $this->data);
 		}
 		// PDF
+		
 		else if ($this->input->post('submit') === 'PDF')
 		{
+			
 			$this->data['output'] = $this->input->post('submit');
 			// load m_referensi
 			$this->data['pejabat'] = $this->m_referensi->get_pejabat($this->data['id_ref_satker']);
@@ -752,6 +757,7 @@ class Report extends Admin_Controller
 				''); 					// margin footer
 			$css	= file_get_contents('assets/css/report.css');
 			$html 	= $this->load->view('admin/components/report_header_laporan', $this->data, TRUE);
+			$this->mpdf->useSubstitutions = false;
 			$this->mpdf->WriteHTML($css, 1);
 			$this->mpdf->WriteHTML($html, 2);
 			$this->mpdf->Output($this->data['filename'] . '.pdf','D');
