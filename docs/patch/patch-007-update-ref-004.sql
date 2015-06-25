@@ -10,12 +10,13 @@ INSERT INTO `ref_history_satker`(
     SELECT DISTINCT
 		id_ref_satker,
 		'2015',
-		'03',
+		'04',
 		aktif,
 		lpj_status_pengeluaran,
 		lpj_status_penerimaan,
         now()
-    FROM `ref_satker`;
+    FROM `ref_satker`
+    WHERE kd_satker = '400434';
 
 -- STEP 2 
 UPDATE ref_history_satker a
@@ -33,4 +34,5 @@ UPDATE ref_history_satker a
         ELSE 1
 		END,
 	a.lpj_status_pengeluaran =  IF(b.id_ref_satker, 1, 0),
-	a.lpj_status_penerimaan = IF(c.id_ref_satker, 1, 0);
+	a.lpj_status_penerimaan = IF(c.id_ref_satker, 1, 0)
+	WHERE a.bulan = '04';
