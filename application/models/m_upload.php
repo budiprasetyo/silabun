@@ -253,12 +253,30 @@ class M_upload extends MY_Model
 		
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
 		(no_ba, @tglba, tipe_ba, bulan, tahun, kd_kementerian, kd_unit, kd_kabkota, kd_lokasi, 
-		kd_satker, no_karwas, update_ke, status, kd_kppn, no_rekening, saldo_rekening, kd_buku, nm_buku,
-		kas_tunai, kas_bank, setor, belum_setor, saldo_akhir_bku, no_bukti, saldo_awal, debet, kredit, 
-		saldo_akhir, brankas, rekening_bank, hak_saldo_awal, hak_terima, hak_setor, setor_uakpa, uakpa, 
-		selisih_kas, ket_selisih_kas, ket_selisih_uakpa, @tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend,
-		@create)
-		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
+		kd_satker, no_karwas, update_ke, status, kd_kppn, no_rekening, @saldorekening, kd_buku, nm_buku,
+		@kastunai, @kasbank, @setor, @belumsetor, @saldoakhirbku, no_bukti, @saldoawal, @debet, @kredit, 
+		@saldoakhir, @brankas, @rekeningbank, @haksaldoawal, @hakterima, @haksetor, @setoruakpa, @uakpa, 
+		@selisihkas, ket_selisih_kas, ket_selisih_uakpa, @tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend,
+		currency, @create)
+		SET saldo_rekening = REPLACE(@saldorekening, ',', '.'),
+			kas_tunai = REPLACE(@kastunai, ',', '.'),
+			kas_bank = REPLACE(@kasbank, ',', '.'),
+			setor = REPLACE(@setor, ',', '.'),
+			belum_setor = REPLACE(@belumsetor, ',', '.'),
+			saldo_akhir_bku = REPLACE(@saldoakhirbku, ',', '.'),
+			saldo_awal = REPLACE(@saldoawal, ',', '.'),
+			debet = REPLACE(@debet, ',', '.'),
+			kredit = REPLACE(@kredit, ',', '.'),
+			saldo_akhir = REPLACE(@saldoakhir, ',', '.'),
+			brankas = REPLACE(@brankas, ',', '.'),
+			rekening_bank = REPLACE(@rekeningbank, ',', '.'),
+			hak_saldo_awal = REPLACE(@haksaldoawal, ',', '.'),
+			hak_terima = REPLACE(@hakterima, ',', '.'),
+			hak_setor = REPLACE(@haksetor, ',', '.'),
+			setor_uakpa = REPLACE(@setoruakpa, ',', '.'),
+			uakpa = REPLACE(@uakpa, ',', '.'),
+			selisih_kas = REPLACE(@selisihkas, ',', '.'),
+			tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
 			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
 			created_at = now()", array($path));
 		
@@ -269,9 +287,10 @@ class M_upload extends MY_Model
 	{
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
 		(@kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke, no_rekening,
-		nm_rekening, nm_bank, no_srt, @tglsrt,saldo)
+		nm_rekening, nm_bank, no_srt, @tglsrt, saldo, alasan_pembukaan_rekening, keterangan, @tgltransaksiakhir)
 		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
 			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
+			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			kd_satker = @kdsatker,
 			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
 						WHERE kd_satker = @kdsatker),
@@ -353,11 +372,12 @@ class M_upload extends MY_Model
 		saldo_awal_lain, debet_lain, kredit_lain, saldo_akhir_lain, saldo_up, kuitansi_up, brankas,
 		rekening_bank, saldo_up_uakpa, selisih_up, selisih_kas, ket_selisih_kas, ket_selisih_up, bulan,
 		@tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend, nip_bend2, nm_bend2, encode, valc, @tglcreate,
-		user_nip, @create)
+		user_nip, @tgltransaksiakhir, @create)
 		SET tgl_ba = STR_TO_DATE(@tgba, '%d-%m-%Y'),
 			tgl_dok = STR_TO_DATE(@tgdok, '%d-%m-%Y'), 
 			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
 			tgl_create = STR_TO_DATE(@tglcreate, '%d-%m-%Y'),
+			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			created_at = now()", array($path));
 		
 		return $query;
@@ -365,11 +385,13 @@ class M_upload extends MY_Model
 	
 	public function import_csv_rekening_lpjk($path, $tables)
 	{
+		
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
-		(@dummy, @kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
-		no_rekening, nm_rekening, nm_bank, no_srt, @tglsrt, saldo)
+		(@kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
+		no_rekening, nm_rekening, nm_bank, no_srt, @tglsrt, saldo, @tgltransaksiakhir)
 		SET tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
 			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
+			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			kd_satker = @kdsatker,
 			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
 						WHERE kd_satker = @kdsatker),

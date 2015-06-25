@@ -559,6 +559,17 @@ class Upload extends Admin_Controller
 					}
 					
 				}
+				else if (substr($file,-3,3) === 'LPJ'
+						&& substr($file,0,2) === 'C3')
+				{
+					// do nothing
+				}
+				else if (substr($file,-3,3) === 'LPJ'
+						&& substr($file,0,2) === 'C4')
+				{
+					// do nothing
+				}
+				
 				
 				// Delete all footprints
 				if(file($movingpath . $file))
