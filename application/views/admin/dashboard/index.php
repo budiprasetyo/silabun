@@ -22,7 +22,14 @@
 	  <header>
 		<h5>Pengiriman LPJ Pengeluaran</h5>
 	  </header>
-	  <div class="body" id="trigo" style="height: 250px;"></div>
+	  <div class="body">
+		<div id="bar" style="height: 250px; padding: 0px; position: relative;">
+			<div id="placeholder" style="width:600px;height:300px;"></div>
+		</div>
+		<br />
+		<br />
+		
+	  </div><!--/body-->
 	</div><!--/box -->
 	
 	<div class="text-center">
@@ -2901,9 +2908,100 @@
 	  <header>
 		<h5>Pengiriman LPJ Pengeluaran</h5>
 	  </header>
-	  <div class="body" id="trigo" style="height: 250px;"></div>
+	  <div class="body" id="trigo" style="height: 470px;">
+			
+		<div id="bar" style="padding: 0px; position: relative;">
+			<div id="placeholder" style="width:900px;height:400px;"></div>
+		</div>
+			
+	  </div>
 	</div><!--/box -->
 	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-up" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-ls-bendahara" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+	</div><!--/row -->
+	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-pajak" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-lain" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+	</div><!--/row -->
+	
+	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-saldo" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-pengeluaran-kuitansi" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+	
+	</div><!--/row -->
+		
 	<div class="text-center">
 	  <ul class="stats_box">
 		<!-- uang persediaan -->
@@ -3687,6 +3785,93 @@
 		  </div>
 	  </header>
 	</div><!--/box -->
+
+	<div class="box">
+	  <header>
+		<h5>Pengiriman LPJ Penerimaan</h5>
+	  </header>
+	  <div class="body" id="trigo" style="height: 470px;">
+			
+		<div id="bar" style="padding: 0px; position: relative;">
+			<div id="placeholder-penerimaan" style="width:900px;height:400px;"></div>
+		</div>
+			
+	  </div>
+	</div><!--/box -->
+	
+	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-penerimaan-kas-tunai" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-penerimaan-kas-bank" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+	</div><!--/row -->
+	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-penerimaan-saldo-awal" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-penerimaan-penerimaan" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+	</div><!--/row -->
+	
+	
+	<div class="row">
+		
+		<div class="col-lg-6">
+			<div class="box">
+				
+				<div class="body" id="trigo">
+					<div id="bar" style="padding: 0px; position: relative;">
+						<div id="placeholder-penerimaan-penyetoran" style="width:450px;height:200px;"></div>
+					</div>
+				</div>
+				
+			</div><!--/box -->
+		</div><!--/col-lg-6 -->
+		
+	</div>
 	
 	<div class="text-center">
 	  <ul class="stats_box">
