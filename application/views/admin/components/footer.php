@@ -41,6 +41,48 @@
         $('.inlinebar').sparkline('html', {type: 'bar', barColor: 'red'} );
     });
 </script>
+<script src="<?php echo base_url(); ?>assets/lib/daterangepicker/daterangepicker.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/datepicker/js/bootstrap-datepicker.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/switch/js/bootstrap-switch.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/autosize/jquery.autosize.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
+<!-- DataTables -->
+<script src="<?php echo base_url(); ?>assets/lib/datatables/jquery.dataTables.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery.tablesorter/jquery.tablesorter.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
+	<script>
+		$(function(){
+			$('table.display').dataTable();
+			$('table.sortfield').dataTable({
+                "bJQueryUI": true,
+				"aaSorting": [[0,'desc']]
+			});
+		});
+	</script>
+<!-- chained-master -->
+<script src="<?php echo base_url(); ?>assets/lib/chained-master/jquery.chained.min.js"></script>
+<script type="text/javascript">
+	$(function(){
+		$("#series").chained("#mark");
+		$("#child").chained("#parent");
+	});
+</script>
+<!-- Metis core scripts -->
+<script src="<?php echo base_url(); ?>assets/js/core.min.js"></script>
+<!-- Metis demo scripts -->
+<script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
+    <script>
+      $(function() {
+        Metis.formGeneral();
+      });
+    </script>
+<!-- cleditor -->
+<script src="<?php echo base_url(); ?>assets/lib/bootstrap3-wysihtml5-bower/bootstrap3-wysihtml5.all.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/ckeditor/ckeditor.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/pagedown-bootstrap/js/jquery.pagedown-bootstrap.combined.min.js"></script>
+<script src="<?php echo base_url(); ?>assets/lib/epiceditor/js/epiceditor.min.js"></script>
 <!-- Flot -->
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.pie.js"></script>
@@ -48,7 +90,8 @@
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.resize.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.time.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/flot/jquery.flot.valuelabels.js"></script>
-<script>
+<!--/ Flot -->
+<script type="text/javascript">
 $(function () {
 	
 	<?php 
@@ -569,7 +612,7 @@ $(function () {
 	}
 	
 	var previousPoint = null, previousLabel = null;
-	
+	/*
 	$.fn.UseTooltip = function(){
 		$(this).bind("plothover", function(event, pos, item){
 			if(item){
@@ -622,60 +665,14 @@ $(function () {
 			opacity: 0.9
 		}).appendTo("body").fadeIn(200);
 	}
-	
+	*/
 });
 </script>
-<script src="<?php echo base_url(); ?>assets/lib/daterangepicker/daterangepicker.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/datepicker/js/bootstrap-datepicker.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/timepicker/js/bootstrap-timepicker.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/switch/js/bootstrap-switch.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/autosize/jquery.autosize.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/jasny-bootstrap/js/jasny-bootstrap.min.js"></script>
-<!-- DataTables -->
-<script src="<?php echo base_url(); ?>assets/lib/datatables/jquery.dataTables.js"></script>
-	<script>
-		$(function(){
-			$('table.display').dataTable();
-			$('table.sortfield').dataTable({
-                "bJQueryUI": true,
-				"aaSorting": [[0,'desc']]
-			});
-		});
-	</script>
-<script src="<?php echo base_url(); ?>assets/lib/datatables/3/dataTables.bootstrap.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/jquery.tablesorter/jquery.tablesorter.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js"></script>
-<!-- Metis core scripts -->
-<script src="<?php echo base_url(); ?>assets/js/core.min.js"></script>
-<!-- Metis demo scripts -->
-<script src="<?php echo base_url(); ?>assets/js/app.min.js"></script>
-    <script>
-		$(function() {
-			Metis.formGeneral();
-		});
-      
-		$(function(){
-			Metis.MetisChart();
-		});
-	</script>
-<!-- cleditor -->
-<script src="<?php echo base_url(); ?>assets/lib/bootstrap3-wysihtml5-bower/bootstrap3-wysihtml5.all.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/ckeditor/ckeditor.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/pagedown-bootstrap/js/jquery.pagedown-bootstrap.combined.min.js"></script>
-<script src="<?php echo base_url(); ?>assets/lib/epiceditor/js/epiceditor.min.js"></script>
 <!-- upload -->
 <script src="<?php echo base_url(); ?>assets/lib/plupload/plupload.full.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/plupload/jquery.plupload.queue/jquery.plupload.queue.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.gritter/js/jquery.gritter.min.js"></script>
 <script src="<?php echo base_url(); ?>assets/lib/jquery.uniform/jquery.uniform.min.js"></script>
-<!-- chained-master -->
-<script src="<?php echo base_url(); ?>assets/lib/chained-master/jquery.chained.min.js"></script>
-<script type="text/javascript">
-	$(function(){
-		$("#series").chained("#mark");
-		$("#child").chained("#parent");
-	});
-</script>
 <script>
       $('.list-inline li > a').click(function() {
         var activeForm = $(this).attr('href') + ' > form';
