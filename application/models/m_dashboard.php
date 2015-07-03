@@ -116,6 +116,7 @@ class M_dashboard extends MY_Model
 							->join('ref_satker', 'ref_satker.id_ref_satker = dsp_report_rekap_lpjk.id_ref_satker', 'left')
 							->where('ref_satker.lpj_status_pengeluaran', 1)
 							->where('dsp_report_rekap_lpjk.id_ref_kanwil', $id_ref_kanwil)
+							->where('dsp_report_rekap_lpjk.bulan <=', '12')
 							->group_by('dsp_report_rekap_lpjk.tahun')
 							->group_by('dsp_report_rekap_lpjk.bulan')
 							->group_by('dsp_report_rekap_lpjk.id_ref_kanwil')
@@ -213,8 +214,9 @@ class M_dashboard extends MY_Model
 			);
 	}
 	
-	public function bar_chart($tahun = null)
+	public function bar_chart($tahun = null, $id_ref_kanwil = null)
 	{
+		// PKN & Kanwil
 		// jumlah wajib LPJ dan kiriman LPJ pengeluaran
 		// PENGELUARAN
 		$jumlah_wajib_lpj_pengeluaran = $this->db->select('ref_history_satker.tahun')
@@ -225,6 +227,13 @@ class M_dashboard extends MY_Model
 										->where('ref_history_satker.lpj_status_pengeluaran', 1)
 										->group_by('ref_history_satker.tahun')
 										->group_by('ref_history_satker.bulan');
+		if ( $id_ref_kanwil !== null )
+		{
+			$jumlah_wajib_lpj_pengeluaran = $this->db->join('ref_satker', 'ref_satker.id_ref_satker = ref_history_satker.id_ref_satker', 'left')
+											->join('ref_kppn', 'ref_satker.id_ref_kppn = ref_kppn.id_ref_kppn', 'left')
+											->where('ref_kppn.id_ref_kanwil', $id_ref_kanwil);
+		}
+		
 			
 		if ( $tahun !== null ) {
 			$jumlah_wajib_lpj_pengeluaran = $this->db->where('ref_history_satker.tahun', $tahun);
@@ -232,7 +241,7 @@ class M_dashboard extends MY_Model
 		
 		$jumlah_wajib_lpj_pengeluaran = $this->db->get();
 		
-		
+		// jumlah lpj pengeluaran
 		$jumlah_lpj_pengeluaran = $this->db->distinct()
 								->select('dsp_report_rekap_lpjk.tahun')
 								->select('dsp_report_rekap_lpjk.bulan')
@@ -243,7 +252,12 @@ class M_dashboard extends MY_Model
 								->where('dsp_report_rekap_lpjk.bulan <=', '12')
 								->group_by('dsp_report_rekap_lpjk.tahun')
 								->group_by('dsp_report_rekap_lpjk.bulan');
-			
+								
+		if ( $id_ref_kanwil !== null )
+		{
+			$jumlah_lpj_pengeluaran = $this->db->where('dsp_report_rekap_lpjk.id_ref_kanwil', $id_ref_kanwil);
+		}
+		
 		if ( $tahun !== null ) {
 			$jumlah_lpj_pengeluaran = $this->db->where('dsp_report_rekap_lpjk.tahun', $tahun);
 		}
@@ -259,6 +273,13 @@ class M_dashboard extends MY_Model
 										->where('ref_history_satker.lpj_status_penerimaan', 1)
 										->group_by('ref_history_satker.tahun')
 										->group_by('ref_history_satker.bulan');
+		
+		if ( $id_ref_kanwil !== null )
+		{
+			$jumlah_wajib_lpj_penerimaan = $this->db->join('ref_satker', 'ref_satker.id_ref_satker = ref_history_satker.id_ref_satker', 'left')
+											->join('ref_kppn', 'ref_satker.id_ref_kppn = ref_kppn.id_ref_kppn', 'left')
+											->where('ref_kppn.id_ref_kanwil', $id_ref_kanwil);
+		}
 		
 		if ( $tahun !== null ) {
 			$jumlah_wajib_lpj_penerimaan = $this->db->where('ref_history_satker.tahun', $tahun);
@@ -276,6 +297,11 @@ class M_dashboard extends MY_Model
 								->where('dsp_report_rekap_lpjt.bulan <=', '12')
 								->group_by('dsp_report_rekap_lpjt.tahun')
 								->group_by('dsp_report_rekap_lpjt.bulan');
+								
+		if ( $id_ref_kanwil !== null )
+		{
+			$jumlah_lpj_penerimaan = $this->db->where('dsp_report_rekap_lpjt.id_ref_kanwil', $id_ref_kanwil);
+		}
 		
 		if ( $tahun !== null ) {
 			$jumlah_lpj_penerimaan = $this->db->where('dsp_report_rekap_lpjt.tahun', $tahun);
@@ -285,11 +311,15 @@ class M_dashboard extends MY_Model
 								
 		// PENGELUARAN
 		// jumlah LPJ UP
-		$jumlah_pengeluaran_up = $this->db->distinct()
+		$jumlah_bp_pengeluaran = $this->db->distinct()
 								->select('dsp_report_rekap_lpjk.tahun')
 								->select('dsp_report_rekap_lpjk.bulan')
 								->select_sum('dsp_report_rekap_lpjk.uang_persediaan')
 								->select_sum('dsp_report_rekap_lpjk.ls_bendahara')
+								->select_sum('dsp_report_rekap_lpjk.pajak')
+								->select_sum('dsp_report_rekap_lpjk.pengeluaran_lain')
+								->select_sum('dsp_report_rekap_lpjk.saldo')
+								->select_sum('dsp_report_rekap_lpjk.kuitansi')
 								->from('dsp_report_rekap_lpjk')
 								->join('ref_history_satker', 'dsp_report_rekap_lpjk.id_ref_satker = ref_history_satker.id_ref_satker AND dsp_report_rekap_lpjk.tahun = ref_history_satker.tahun AND dsp_report_rekap_lpjk.bulan = ref_history_satker.bulan', 'left')
 								->where('ref_history_satker.lpj_status_pengeluaran', 1)
@@ -298,7 +328,7 @@ class M_dashboard extends MY_Model
 								->group_by('dsp_report_rekap_lpjk.tahun')
 								->group_by('dsp_report_rekap_lpjk.bulan')
 								->get();
-								
+		/*
 		// jumlah LPJ LS Bendahara
 		$jumlah_pengeluaran_ls_bendahara = $this->db->distinct()
 								->select('dsp_report_rekap_lpjk.tahun')
@@ -368,7 +398,7 @@ class M_dashboard extends MY_Model
 								->group_by('dsp_report_rekap_lpjk.tahun')
 								->group_by('dsp_report_rekap_lpjk.bulan')
 								->get();
-		
+		*/
 		// PENERIMAAN
 		// jumlah LPJ penerimaan
 		$jumlah_bp_penerimaan = $this->db->distinct()
@@ -396,8 +426,11 @@ class M_dashboard extends MY_Model
 			'jumlah_wajib_lpj_penerimaan' 	=> $jumlah_wajib_lpj_penerimaan,
 			// PENGELUARAN
 			// jumlah LPJ UP
-			'jumlah_pengeluaran_up'			=> $jumlah_pengeluaran_up,
+			'jumlah_bp_pengeluaran'			=> $jumlah_bp_pengeluaran,
+			
+			// existing
 			// jumlah LS Bendahara
+			/*
 			'jumlah_pengeluaran_ls_bendahara'	=> $jumlah_pengeluaran_ls_bendahara,
 			// jumlah pajak
 			'jumlah_pengeluaran_pajak'		=> $jumlah_pengeluaran_pajak,
@@ -407,8 +440,8 @@ class M_dashboard extends MY_Model
 			'jumlah_pengeluaran_saldo'		=> $jumlah_pengeluaran_saldo,
 			// jumlah kuitansi
 			'jumlah_pengeluaran_kuitansi'	=> $jumlah_pengeluaran_kuitansi,
+			*/
 			// PENERIMAAN
-			// jumlah kas tunai
 			'jumlah_bp_penerimaan'	=> $jumlah_bp_penerimaan,
 		);
 	}

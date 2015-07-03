@@ -1456,7 +1456,13 @@
 	  <header>
 		<h5>Pengiriman LPJ Pengeluaran</h5>
 	  </header>
-	  <div class="body" id="trigo" style="height: 250px;"></div>
+	  <div class="body" id="trigo" style="height: 470px;">
+			
+		<div id="bar" style="padding: 0px; position: relative;">
+			<div id="placeholder" style="width:900px;height:400px;"></div>
+		</div>
+			
+	  </div>
 	</div><!--/box -->
 	
 	<div class="text-center">
@@ -2244,6 +2250,19 @@
 				<label for="text3" class="control-label col-lg-12 bg-green dker"><h4>Dashboard LPJ Penerimaan</h4></label>
 		  </div>
 	  </header>
+	</div><!--/box -->
+	
+	<div class="box">
+	  <header>
+		<h5>Pengiriman LPJ Penerimaan</h5>
+	  </header>
+	  <div class="body" id="trigo" style="height: 470px;">
+			
+		<div id="bar" style="padding: 0px; position: relative;">
+			<div id="placeholder-penerimaan" style="width:900px;height:400px;"></div>
+		</div>
+			
+	  </div>
 	</div><!--/box -->
 	
 	<div class="text-center">

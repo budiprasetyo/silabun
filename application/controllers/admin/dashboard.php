@@ -138,6 +138,53 @@ class Dashboard extends Admin_Controller
 			$this->load->model('m_referensi');
 			// get id_ref_kanwil
 			$kanwil = $this->m_referensi->get_kanwil($this->data['id_ref_satker']);
+			
+			// bar chart pengeluaran dan penerimaan
+			$jumlah_lpj 				= $this->m_dashboard->bar_chart($this->data['year'], $kanwil->id_ref_kanwil);
+			$jml_lpj_pengeluarans 		= $jumlah_lpj['jumlah_lpj_pengeluaran'];
+			$jml_wajib_lpj_pengeluarans = $jumlah_lpj['jumlah_wajib_lpj_pengeluaran'];
+			$jml_lpj_penerimaans		= $jumlah_lpj['jumlah_lpj_penerimaan'];
+			$jml_wajib_lpj_penerimaans 	= $jumlah_lpj['jumlah_wajib_lpj_penerimaan'];
+			
+			// PENGELUARAN
+			// pengiriman lpj pengeluaran
+			foreach ( $jml_lpj_pengeluarans->result() as $jml_lpj_pengeluaran ) 
+			{
+				// json format modified here
+				$dataset_pengeluaran[] = array( 'gd(' . $jml_lpj_pengeluaran->tahun, $jml_lpj_pengeluaran->bulan . ')', $jml_lpj_pengeluaran->jml_lpj_pengeluaran );
+			}
+			// send this data to view
+			$this->data['dataset_pengeluaran'] = $dataset_pengeluaran;
+			
+			// wajib lpj pengeluaran
+			foreach ( $jml_wajib_lpj_pengeluarans->result() as $jml_wajib_lpj_pengeluaran ) 
+			{
+				// json format modified here
+				$dataset_wajib_pengeluaran[] = array( 'gd(' . $jml_wajib_lpj_pengeluaran->tahun, $jml_wajib_lpj_pengeluaran->bulan . ')', $jml_wajib_lpj_pengeluaran->wajib_lpj_pengeluaran );
+			}
+			// send this data to view
+			$this->data['dataset_wajib_pengeluaran'] = $dataset_wajib_pengeluaran;
+			
+			// PENERIMAAN
+			// pengiriman lpj penerimaan
+			foreach ( $jml_lpj_penerimaans->result() as $jml_lpj_penerimaan ) 
+			{
+				// json format modified here
+				$dataset_penerimaan[] = array( 'gd(' . $jml_lpj_penerimaan->tahun, $jml_lpj_penerimaan->bulan . ')', $jml_lpj_penerimaan->jml_lpj_penerimaan );
+			}
+			// send this data to view
+			$this->data['dataset_penerimaan'] = $dataset_penerimaan;
+			
+			// wajib lpj penerimaan
+			foreach ( $jml_wajib_lpj_penerimaans->result() as $jml_wajib_lpj_penerimaan ) 
+			{
+				// json format modified here
+				$dataset_wajib_penerimaan[] = array( 'gd(' . $jml_wajib_lpj_penerimaan->tahun, $jml_wajib_lpj_penerimaan->bulan . ')', $jml_wajib_lpj_penerimaan->wajib_lpj_penerimaan );
+			}
+			// send this data to view
+			$this->data['dataset_wajib_penerimaan'] = $dataset_wajib_penerimaan;
+			
+			
 			// get kanwil rekap
 			$kppns = $this->m_dashboard->get_kanwil_rekap($kanwil->id_ref_kanwil);
 			$rekap_kanwil_pengeluarans = $kppns['rekap_pengeluaran'];
@@ -218,12 +265,15 @@ class Dashboard extends Admin_Controller
 			$jml_lpj_penerimaans		= $jumlah_lpj['jumlah_lpj_penerimaan'];
 			$jml_wajib_lpj_penerimaans 	= $jumlah_lpj['jumlah_wajib_lpj_penerimaan'];
 			// PENGELUARAN
-			$jml_pengeluaran_ups			= $jumlah_lpj['jumlah_pengeluaran_up'];
+			$jml_bp_pengeluarans			= $jumlah_lpj['jumlah_bp_pengeluaran'];
+			// existing
+			/*
 			$jml_pengeluaran_ls_bendaharas	= $jumlah_lpj['jumlah_pengeluaran_ls_bendahara'];
 			$jml_pengeluaran_pajaks		= $jumlah_lpj['jumlah_pengeluaran_pajak'];
 			$jml_pengeluaran_lains		= $jumlah_lpj['jumlah_pengeluaran_lain'];
 			$jml_pengeluaran_saldos		= $jumlah_lpj['jumlah_pengeluaran_saldo'];
 			$jml_pengeluaran_kuitansis	= $jumlah_lpj['jumlah_pengeluaran_kuitansi'];
+			*/
 			// PENERIMAAN
 			$jml_bp_penerimaans			= $jumlah_lpj['jumlah_bp_penerimaan'];
 			
@@ -265,14 +315,35 @@ class Dashboard extends Admin_Controller
 			$this->data['dataset_wajib_penerimaan'] = $dataset_wajib_penerimaan;
 			
 			// jumlah pengeluaran UP
-			foreach ( $jml_pengeluaran_ups->result() as $jml_pengeluaran_up ) 
+			foreach ( $jml_bp_pengeluarans->result() as $jml_bp_pengeluaran ) 
 			{
 				// json format modified here
-				$dataset_pengeluaran_up[] = array( 'gd(' . $jml_pengeluaran_up->tahun, $jml_pengeluaran_up->bulan . ')', $jml_pengeluaran_up->uang_persediaan );
+				$dataset_pengeluaran_up[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->uang_persediaan );
+				// json format modified here
+				$dataset_pengeluaran_ls_bendahara[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->ls_bendahara );
+				// json format modified here
+				$dataset_pengeluaran_pajak[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->pajak );
+				// json format modified here
+				$dataset_pengeluaran_lain[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->pengeluaran_lain );
+				// json format modified here
+				$dataset_pengeluaran_saldo[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->saldo );
+				// json format modified here
+				$dataset_pengeluaran_kuitansi[] = array( 'gd(' . $jml_bp_pengeluaran->tahun, $jml_bp_pengeluaran->bulan . ')', $jml_bp_pengeluaran->kuitansi );
 			}
 			// send this pengeluaran UP to view
-			$this->data['dataset_pengeluaran_up'] = $dataset_pengeluaran_up;
+			$this->data['dataset_pengeluaran_up'] 				= $dataset_pengeluaran_up;
+			// send this pengeluaran UP to view
+			$this->data['dataset_pengeluaran_ls_bendahara'] 	= $dataset_pengeluaran_ls_bendahara;
+			// send this pengeluaran UP to view
+			$this->data['dataset_pengeluaran_pajak'] 			= $dataset_pengeluaran_pajak;
+			// send this pengeluaran lain to view
+			$this->data['dataset_pengeluaran_lain'] 			= $dataset_pengeluaran_lain;
+			// send this pengeluaran saldo to view
+			$this->data['dataset_pengeluaran_saldo'] 			= $dataset_pengeluaran_saldo;
+			// send this pengeluaran kuitansi to view
+			$this->data['dataset_pengeluaran_kuitansi'] 		= $dataset_pengeluaran_kuitansi;
 			
+			/*
 			// jumlah pengeluaran LS Bendahara
 			foreach ( $jml_pengeluaran_ls_bendaharas->result() as $jml_pengeluaran_ls_bendahara ) 
 			{
@@ -297,7 +368,7 @@ class Dashboard extends Admin_Controller
 				// json format modified here
 				$dataset_pengeluaran_lain[] = array( 'gd(' . $jml_pengeluaran_lain->tahun, $jml_pengeluaran_lain->bulan . ')', $jml_pengeluaran_lain->pengeluaran_lain );
 			}
-			// send this pengeluaran UP to view
+			// send this pengeluaran lain to view
 			$this->data['dataset_pengeluaran_lain'] = $dataset_pengeluaran_lain;
 			
 			// jumlah pengeluaran Saldo
@@ -317,6 +388,7 @@ class Dashboard extends Admin_Controller
 			}
 			// send this pengeluaran kuitansi to view
 			$this->data['dataset_pengeluaran_kuitansi'] = $dataset_pengeluaran_kuitansi;
+			*/
 			
 			// jumlah penerimaan
 			foreach ( $jml_bp_penerimaans->result() as $jml_bp_penerimaan ) 
