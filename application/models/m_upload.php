@@ -128,6 +128,8 @@ class M_upload extends MY_Model
 	
 	public function validate_adk($kd_kppn, $kd_satker, $year, $month, $kd_buku = null)
 	{
+		// another database, kepegawian's rekening DB
+		$rekening_db = $this->load->database('rekening', TRUE);
 		
 		if ($kd_buku != null)
 		{
@@ -137,8 +139,6 @@ class M_upload extends MY_Model
 		{
 			$kd_buku_penerimaan = "";
 		}
-		
-		
 		
 		$validate_pengeluaran = $this->db->query("SELECT 
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.no_bukti,
@@ -220,7 +220,7 @@ class M_upload extends MY_Model
 			a.bulan		= {$month_before} {$kd_buku_penerimaan}
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
-		
+			
 		return array (
 			'validate_pengeluaran'		=> $validate_pengeluaran,
 			'validate_penerimaan'		=> $validate_penerimaan,
