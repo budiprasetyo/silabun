@@ -44,7 +44,27 @@
 | The $active_record variables lets you determine whether or not to load
 | the active record class
 */
+// setditjen rekening
+$active_group = 'rekening';
+$active_record = TRUE;
 
+$db['rekening']['hostname'] = '172.16.2.125';
+$db['rekening']['port']     = '3306';
+$db['rekening']['username'] = 'pkn_sp';
+$db['rekening']['password'] = '724sp_37@st';
+$db['rekening']['database'] = 'pbn_pkn';
+$db['rekening']['dbdriver'] = 'mysqli';
+$db['rekening']['dbprefix'] = '';
+$db['rekening']['pconnect'] = FALSE;
+$db['rekening']['db_debug'] = TRUE;
+$db['rekening']['cache_on'] = FALSE;
+$db['rekening']['cachedir'] = '';
+$db['rekening']['char_set'] = 'utf8';
+$db['rekening']['dbcollat'] = 'utf8_general_ci';
+$db['rekening']['swap_pre'] = '';
+$db['rekening']['autoinit'] = TRUE;
+$db['rekening']['stricton'] = FALSE;
+// default
 $active_group = 'default';
 $active_record = TRUE;
 
@@ -55,7 +75,7 @@ $db['default']['password'] = 'djpbn@))*2008';
 $db['default']['database'] = 'dsp_lpj';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
-$db['default']['pconnect'] = TRUE;
+$db['default']['pconnect'] = FALSE;
 $db['default']['db_debug'] = TRUE;
 $db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
