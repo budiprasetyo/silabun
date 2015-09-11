@@ -43,6 +43,11 @@
 |
 | The $active_record variables lets you determine whether or not to load
 | the active record class
+| 
+| Note from Budi Prasetyo:
+| When using multiple databases, remember it's better if you 
+| set $db['rekening']['pconnect'] to FALSE.  If not it will return NULL value.
+|
 */
 // setditjen rekening
 $active_group = 'rekening';
