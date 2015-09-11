@@ -128,7 +128,7 @@ class M_upload extends MY_Model
 	
 	public function validate_adk($kd_kppn, $kd_satker, $year, $month, $kd_buku = null)
 	{
-		// another database, kepegawian's rekening DB
+		// another database, kepegawaian's rekening DB
 		$rekening_db = $this->load->database('rekening', TRUE);
 		
 		if ($kd_buku != null)
@@ -221,11 +221,33 @@ class M_upload extends MY_Model
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
 			
+		// validate rekening
+		// DB Silabun Pengeluaran
+		$validate_rekening_pengeluaran_silabun = $this->db->query("SELECT kd_rekening, no_srt, tgl_srt, nm_bank, no_rekening, nm_rekening
+			FROM 
+				t_lpjkrek
+			WHERE 
+				kd_kppn 	= {$kd_kppn} AND
+				kd_satker 	= {$kd_satker} AND
+				tahun		= {$year} AND
+				bulan		= {$month}");
+		// DB Sekretarian Rekening Pengeluaran
+		$validate_rekening_pengeluaran_sekretariat = $rekening_db->query("SELECT type, izinnum, izindate, bankcab, reknum, reknama
+			FROM
+				dt_rekening
+			WHERE 
+				kdsatker = {$kd_satker} AND
+				type = '20'");
+	
+			
 		return array (
 			'validate_pengeluaran'		=> $validate_pengeluaran,
 			'validate_penerimaan'		=> $validate_penerimaan,
 			'validate_pengeluaran_1m'	=> $validate_pengeluaran_1m,
 			'validate_penerimaan_1m'	=> $validate_penerimaan_1m,
+			// rekening validation
+			'validate_rekening_pengeluaran_silabun'		=> $validate_rekening_pengeluaran_silabun,
+			'validate_rekening_pengeluaran_sekretariat'	=> $validate_rekening_pengeluaran_sekretariat,
 		);
 	}
 	
