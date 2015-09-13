@@ -66,9 +66,10 @@ class Upload extends Admin_Controller
 				
 				// fetch validate adk
 				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
-				$this->data['validate_pengeluaran']	= $data_adk['validate_pengeluaran'];
-				$this->data['validate_pengeluaran_1m']	= $data_adk['validate_pengeluaran_1m'];
-				
+				$this->data['validate_pengeluaran']						= $data_adk['validate_pengeluaran'];
+				$this->data['validate_pengeluaran_1m']					= $data_adk['validate_pengeluaran_1m'];
+				$this->data['validate_rekening_pengeluaran_silabun']	= $data_adk['validate_rekening_pengeluaran_silabun'];
+				$this->data['validate_rekening_pengeluaran_sekretariat']= $data_adk['validate_rekening_pengeluaran_sekretariat'];
 				
 			}
 			else if ($this->uri->segment(5) !== FALSE
@@ -233,6 +234,7 @@ class Upload extends Admin_Controller
 						// Delete file 
 						exec("rm /tmp/LPJP*");
 						exec("rm /tmp/T_BALPJP_REK.TXT");
+						exec("rm /tmp/php*");
 						// Delete file in data_lpj
 						$adk_lpjs = glob($compressedpath . '*');
 						foreach ($adk_lpjs as $adk_lpj) 
@@ -293,6 +295,7 @@ class Upload extends Admin_Controller
 						exec("rm /tmp/C1.*");
 						exec("rm /tmp/C2.*");
 						exec("rm /tmp/T_BALPJP_REK.TXT");
+						exec("rm /tmp/php*");
 						// Delete file in data_lpj
 						$adk_lpjs = glob($compressedpath . '*');
 						foreach ($adk_lpjs as $adk_lpj) 

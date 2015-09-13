@@ -70,6 +70,10 @@
 						// show all validation result
 						if (count($validate_pengeluaran))
 						{
+							// validate rekening
+							$rekening_pengeluaran_silabun 		= $validate_rekening_pengeluaran_silabun->row();
+							$rekening_pengeluaran_sekretariat 	= $validate_rekening_pengeluaran_sekretariat->row();
+							// validate lpj
 							$komponen_pengeluaran = $validate_pengeluaran->row();
 							$hasil_perhitungan_tunai = $komponen_pengeluaran->saldo_awal_tunai + $komponen_pengeluaran->debet_tunai - $komponen_pengeluaran->kredit_tunai;$hasil_perhitungan_bank = $komponen_pengeluaran->saldo_awal_bank + $komponen_pengeluaran->debet_bank - $komponen_pengeluaran->kredit_bank;$hasil_perhitungan_um = $komponen_pengeluaran->saldo_awal_um + $komponen_pengeluaran->debet_um - $komponen_pengeluaran->kredit_um;$hasil_perhitungan_bpp = $komponen_pengeluaran->saldo_awal_bpp + $komponen_pengeluaran->debet_bpp - $komponen_pengeluaran->kredit_bpp;$hasil_perhitungan_up = $komponen_pengeluaran->saldo_awal_up + $komponen_pengeluaran->debet_up - $komponen_pengeluaran->kredit_up;$hasil_perhitungan_lsbend = $komponen_pengeluaran->saldo_awal_lsbend + $komponen_pengeluaran->debet_lsbend - $komponen_pengeluaran->kredit_lsbend;$hasil_perhitungan_pajak = $komponen_pengeluaran->saldo_awal_pajak + $komponen_pengeluaran->debet_pajak - $komponen_pengeluaran->kredit_pajak;$hasil_perhitungan_lain = $komponen_pengeluaran->saldo_awal_lain + $komponen_pengeluaran->debet_lain - $komponen_pengeluaran->kredit_lain;
 							$validasi_saldo_akhir_bku_1 = $komponen_pengeluaran->saldo_akhir_up + $komponen_pengeluaran->saldo_akhir_lsbend + $komponen_pengeluaran->saldo_akhir_pajak + $komponen_pengeluaran->saldo_akhir_lain;
@@ -78,9 +82,61 @@
 							$komponen_pengeluaran_1m = $validate_pengeluaran_1m->row();
 					?>
 					
-							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN<br /></h5>
-							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($komponen_pengeluaran->nm_satker); ?><br /></h4>
+							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENGELUARAN</h5>
+							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($komponen_pengeluaran->nm_satker); ?> ( <?php echo $komponen_pengeluaran->kd_satker; ?> )</h4>
 							<h5 class="text-center"><?php echo get_month_name($komponen_pengeluaran->bulan) . ' ' . $komponen_pengeluaran->tahun; ?></h5><br />
+							
+							<h5 class="text-center" style="font-weight:bold;">REKONSILIASI REKENING</h5><br />
+							<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr>
+										<th></th>
+										<th>SILABUN</th>
+										<th>PBN OPEN</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>No.Surat</th>
+										<?php if( strtoupper($rekening_pengeluaran_silabun->no_srt) != strtoupper($rekening_pengeluaran_sekretariat->izinnum) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_pengeluaran_silabun->no_srt); ?></td>
+										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_pengeluaran_sekretariat->izinnum); ?></td>
+									</tr>
+									<tr>
+										<th>Tgl.Surat</th>
+										<?php if( $rekening_pengeluaran_silabun->tgl_srt != $rekening_pengeluaran_sekretariat->izindate ) $cls_diff_tgsrt = 'class="bg-red dker"'; ?>
+										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_pengeluaran_silabun->tgl_srt); ?></td>
+										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_pengeluaran_sekretariat->izindate); ?></td>
+									</tr>
+									<tr>
+										<th>Nama Bank</th>
+										<?php if( strtoupper($rekening_pengeluaran_silabun->nm_bank) != strtoupper($rekening_pengeluaran_sekretariat->bankcab) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_pengeluaran_silabun->nm_bank); ?></td>
+										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_pengeluaran_sekretariat->bankcab); ?></td>
+									</tr>
+									<tr>
+										<th>No.Rekening</th>
+										<?php 
+											$no_rekening = preg_replace("/[^0-9]/", "", $rekening_pengeluaran_silabun->no_rekening);
+											$rek_num	 = preg_replace("/[^0-9]/", "", $rekening_pengeluaran_sekretariat->reknum);
+											if( $no_rekening !== $rek_num ) $cls_diff_norek = 'class="bg-red dker"'; 
+										?>
+										<td <?php echo $cls_diff_norek; ?>><?php echo $rekening_pengeluaran_silabun->no_rekening; ?><br /><small>Tanpa spesial karakter: <em><?php echo $no_rekening; ?></em></small></td>
+										<td <?php echo $cls_diff_norek; ?>><?php echo $rekening_pengeluaran_sekretariat->reknum; ?><br /><small>Tanpa spesial karakter: <em><?php echo $rek_num; ?></em></small></td>
+									</tr>
+									<tr>
+										<th>Nama.Rekening</th>
+										<?php if( strtoupper($rekening_pengeluaran_silabun->nm_rekening) != strtoupper($rekening_pengeluaran_sekretariat->reknama) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_pengeluaran_silabun->nm_rekening); ?></td>
+										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_pengeluaran_sekretariat->reknama); ?></td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<hr />
+							<br />
+							
+							<h5 class="text-center" style="font-weight:bold;">VALIDASI LAPORAN PERTANGGUNGJAWABAN</h5><br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
 									<tr>
