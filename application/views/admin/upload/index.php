@@ -86,7 +86,8 @@
 							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($komponen_pengeluaran->nm_satker); ?> ( <?php echo $komponen_pengeluaran->kd_satker; ?> )</h4>
 							<h5 class="text-center"><?php echo get_month_name($komponen_pengeluaran->bulan) . ' ' . $komponen_pengeluaran->tahun; ?></h5><br />
 							
-							<h5 class="text-center" style="font-weight:bold;">REKONSILIASI REKENING</h5><br />
+							<h5 class="text-center" style="font-weight:bold;">REKONSILIASI REKENING</h5>
+							*) Apabila ada perbedaan antara data di SILABUN dan PBN Open maka baris akan berwarna merah<br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
 									<tr>
