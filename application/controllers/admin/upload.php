@@ -68,6 +68,7 @@ class Upload extends Admin_Controller
 				$data_adk = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month);
 				$this->data['validate_pengeluaran']						= $data_adk['validate_pengeluaran'];
 				$this->data['validate_pengeluaran_1m']					= $data_adk['validate_pengeluaran_1m'];
+				// fetch validate rekening
 				$this->data['validate_rekening_pengeluaran_silabun']	= $data_adk['validate_rekening_pengeluaran_silabun'];
 				$this->data['validate_rekening_pengeluaran_sekretariat']= $data_adk['validate_rekening_pengeluaran_sekretariat'];
 				
@@ -82,6 +83,9 @@ class Upload extends Admin_Controller
 				// fetch validate adk
 				$data_adk 		 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, null);
 				$this->data['validate_penerimaan']	= $data_adk['validate_penerimaan'];
+				// fetch validate rekening
+				$this->data['validate_rekening_penerimaan_silabun']	= $data_adk['validate_rekening_penerimaan_silabun'];
+				$this->data['validate_rekening_penerimaan_sekretariat']= $data_adk['validate_rekening_penerimaan_sekretariat'];
 				
 				// where kd_buku = 02 (BP Kas)
 				$data_adk_02 = $this->m_upload->validate_adk($kppn->kd_kppn, $kd_satker, $year, $month, '02');
