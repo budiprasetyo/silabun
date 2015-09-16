@@ -837,6 +837,10 @@
 						// validate penerimaan
 						else if (count($validate_penerimaan))
 						{
+							// validate rekening
+							$rekening_penerimaan_silabun 		= $validate_rekening_penerimaan_silabun->row();
+							$rekening_penerimaan_sekretariat 	= $validate_rekening_penerimaan_sekretariat->row();
+							// validate lpj
 							$header_penerimaan = $validate_penerimaan->row();
 							$komponen_penerimaan_02 = $validate_penerimaan_02->row();
 							$komponen_penerimaan_01 = $validate_penerimaan_01->row();
@@ -852,8 +856,62 @@
 							$selisih_uakpa = $komponen_penerimaan_02->setor - $komponen_penerimaan_02->uakpa;
 					?>
 							<h5 class="text-center" style="font-weight:bold;">HASIL VALIDASI ADK PENERIMAAN<br /></h5>
-							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($header_penerimaan->nm_satker); ?><br /></h4>
+							<h4 class="text-center" style="font-weight:bold;"><?php echo ucwords($header_penerimaan->nm_satker) . ' (' . $header_penerimaan->kd_satker . ')'; ?><br /></h4>
 							<h5 class="text-center"><?php echo get_month_name($header_penerimaan->bulan) . ' ' . $header_penerimaan->tahun; ?></h5><br />
+							
+							
+							<h5 class="text-center" style="font-weight:bold;">REKONSILIASI REKENING</h5>
+							*) Apabila ada perbedaan antara data di SILABUN dan PBN Open maka baris akan berwarna merah<br />
+							<table class="table table-bordered table-condensed table-hovered table-striped">
+								<thead>
+									<tr>
+										<th></th>
+										<th>SILABUN</th>
+										<th>PBN OPEN</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<th>No.Surat</th>
+										<?php if( strtoupper($rekening_penerimaan_silabun->no_srt) != strtoupper($rekening_penerimaan_sekretariat->izinnum) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_penerimaan_silabun->no_srt); ?></td>
+										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_penerimaan_sekretariat->izinnum); ?></td>
+									</tr>
+									<tr>
+										<th>Tgl.Surat</th>
+										<?php if( $rekening_penerimaan_silabun->tgl_srt != $rekening_penerimaan_sekretariat->izindate ) $cls_diff_tgsrt = 'class="bg-red dker"'; ?>
+										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_penerimaan_silabun->tgl_srt); ?></td>
+										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_penerimaan_sekretariat->izindate); ?></td>
+									</tr>
+									<tr>
+										<th>Nama Bank</th>
+										<?php if( strtoupper($rekening_penerimaan_silabun->nm_bank) != strtoupper($rekening_penerimaan_sekretariat->bankcab) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_penerimaan_silabun->nm_bank); ?></td>
+										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_penerimaan_sekretariat->bankcab); ?></td>
+									</tr>
+									<tr>
+										<th>No.Rekening</th>
+										<?php 
+											$no_rekening = preg_replace("/[^0-9]/", "", $rekening_penerimaan_silabun->no_rekening);
+											$rek_num	 = preg_replace("/[^0-9]/", "", $rekening_penerimaan_sekretariat->reknum);
+											if( $no_rekening !== $rek_num ) $cls_diff_norek = 'class="bg-red dker"'; 
+										?>
+										<td <?php echo $cls_diff_norek; ?>><?php echo $rekening_penerimaan_silabun->no_rekening; ?><br /><small>Tanpa spesial karakter: <em><?php echo $no_rekening; ?></em></small></td>
+										<td <?php echo $cls_diff_norek; ?>><?php echo $rekening_penerimaan_sekretariat->reknum; ?><br /><small>Tanpa spesial karakter: <em><?php echo $rek_num; ?></em></small></td>
+									</tr>
+									<tr>
+										<th>Nama.Rekening</th>
+										<?php if( strtoupper($rekening_penerimaan_silabun->nm_rekening) != strtoupper($rekening_penerimaan_sekretariat->reknama) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
+										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_penerimaan_silabun->nm_rekening); ?></td>
+										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_penerimaan_sekretariat->reknama); ?></td>
+									</tr>
+								</tbody>
+							</table>
+							
+							<hr />
+							<br />
+							
+							<h5 class="text-center" style="font-weight:bold;">VALIDASI LAPORAN PERTANGGUNGJAWABAN</h5><br />
 							<table class="table table-bordered table-condensed table-hovered table-striped">
 								<thead>
 									<tr>
