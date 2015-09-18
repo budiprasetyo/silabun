@@ -232,12 +232,16 @@ class M_upload extends MY_Model
 				tahun		= {$year} AND
 				bulan		= {$month}");
 		// DB Sekretarian Rekening Pengeluaran
-		$validate_rekening_pengeluaran_sekretariat = $rekening_db->query("SELECT type, izinnum, izindate, bankcab, reknum, reknama
+		$validate_rekening_pengeluaran_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
 			FROM
-				dt_rekening
+				pbn_pkn.dt_rekening a
+			LEFT JOIN 
+				pbn_ref.ref_bank b
+			ON
+				a.idbank = b.idbank
 			WHERE 
-				kdsatker = {$kd_satker} AND
-				type = '20'");
+				a.kdsatker = {$kd_satker} AND
+				a.type = '20'");
 		// DB Silabun Penerimaan
 		$validate_rekening_penerimaan_silabun = $this->db->query("SELECT kd_rekening, no_srt, tgl_srt, nm_bank, no_rekening, nm_rekening
 			FROM 
@@ -248,12 +252,16 @@ class M_upload extends MY_Model
 				tahun		= {$year} AND
 				bulan		= {$month}");
 		// DB Sekretarian Rekening Pengeluaran
-		$validate_rekening_penerimaan_sekretariat = $rekening_db->query("SELECT type, izinnum, izindate, bankcab, reknum, reknama
+		$validate_rekening_penerimaan_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
 			FROM
-				dt_rekening
+				pbn_pkn.dt_rekening a
+			LEFT JOIN
+				pbn_ref.ref_bank b
+			ON 
+				a.idbank = b.idbank
 			WHERE 
-				kdsatker = {$kd_satker} AND
-				type = '10'");
+				a.kdsatker = {$kd_satker} AND
+				a.type = '10'");
 	
 			
 		return array (
