@@ -99,7 +99,7 @@
 								<tbody>
 									<tr>
 										<th>No.Surat</th>
-										<?php if( strtoupper($rekening_pengeluaran_silabun->no_srt) != strtoupper($rekening_pengeluaran_sekretariat->izinnum) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
+										<?php if( strtoupper(trim($rekening_pengeluaran_silabun->no_srt)) != strtoupper(trim($rekening_pengeluaran_sekretariat->izinnum)) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_pengeluaran_silabun->no_srt); ?></td>
 										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_pengeluaran_sekretariat->izinnum); ?></td>
 									</tr>
@@ -110,8 +110,13 @@
 										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_pengeluaran_sekretariat->izindate); ?></td>
 									</tr>
 									<tr>
+										<th>Kode & Ref.Bank<br /><small><em>(PBN Open)</em></small></th>
+										<?php if( strtoupper(trim($rekening_pengeluaran_silabun->nm_bank)) != strtoupper(trim($rekening_pengeluaran_sekretariat->bankcab)) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
+										<td></td>
+										<td style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo '(' . strtoupper($rekening_pengeluaran_sekretariat->idbank) . ') ' . strtoupper($rekening_pengeluaran_sekretariat->nama); ?></td>
+									</tr>
+									<tr>
 										<th>Nama Bank</th>
-										<?php if( strtoupper($rekening_pengeluaran_silabun->nm_bank) != strtoupper($rekening_pengeluaran_sekretariat->bankcab) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_pengeluaran_silabun->nm_bank); ?></td>
 										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_pengeluaran_sekretariat->bankcab); ?></td>
 									</tr>
@@ -127,7 +132,7 @@
 									</tr>
 									<tr>
 										<th>Nama.Rekening</th>
-										<?php if( strtoupper($rekening_pengeluaran_silabun->nm_rekening) != strtoupper($rekening_pengeluaran_sekretariat->reknama) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
+										<?php if( strtoupper(trim($rekening_pengeluaran_silabun->nm_rekening)) != strtoupper(trim($rekening_pengeluaran_sekretariat->reknama)) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_pengeluaran_silabun->nm_rekening); ?></td>
 										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_pengeluaran_sekretariat->reknama); ?></td>
 									</tr>
@@ -676,18 +681,21 @@
 							</div>
 							<?php 
 								$sisa_up_brankas = $komponen_pengeluaran->brankas - $komponen_pengeluaran->saldo_akhir_lsbend;
-								/*
+								
 								if ($sisa_up_brankas > 50000000)
 								{
 							?>
 								<div class="row">
 									<div class="col-md-8">
+										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai melebihi Rp 50.000.000,00, mohon dikonfirmasi ke Bendahara Pengeluaran Satker.  Uang UP dalam brankas Rp <?php echo amount_format($sisa_up_brankas); ?></strong></span>
+<!--
 										<span class="text-danger" style="white-space:normal;"><strong>Uang tunai di brankas tidak boleh melebihi Rp 50.000.000,00 (PER-3/PB/2014 Bab III Pasal 7 (1)).  Uang UP dalam brankas Rp <?php echo amount_format($sisa_up_brankas); ?></strong></span>
+-->
 									</div>
 								</div>
 							<?php
 								}
-								*/
+								
 							?>
 							<div class="row">
 								<div class="col-md-6">
@@ -873,7 +881,7 @@
 								<tbody>
 									<tr>
 										<th>No.Surat</th>
-										<?php if( strtoupper($rekening_penerimaan_silabun->no_srt) != strtoupper($rekening_penerimaan_sekretariat->izinnum) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
+										<?php if( strtoupper(trim($rekening_penerimaan_silabun->no_srt)) != strtoupper(trim($rekening_penerimaan_sekretariat->izinnum)) ) $cls_diff_nosrt = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_penerimaan_silabun->no_srt); ?></td>
 										<td <?php echo $cls_diff_nosrt; ?>><?php echo strtoupper($rekening_penerimaan_sekretariat->izinnum); ?></td>
 									</tr>
@@ -884,8 +892,13 @@
 										<td <?php echo $cls_diff_tgsrt; ?>><?php echo date_convert($rekening_penerimaan_sekretariat->izindate); ?></td>
 									</tr>
 									<tr>
+										<th>Kode & Ref.Bank<br /><small><em>(PBN Open)</em></small></th>
+										<?php if( strtoupper(trim($rekening_penerimaan_silabun->nm_bank)) != strtoupper(trim($rekening_penerimaan_sekretariat->bankcab)) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
+										<td></td>
+										<td style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo '(' . $rekening_penerimaan_sekretariat->idbank . ') ' . strtoupper($rekening_penerimaan_sekretariat->nama); ?></td>
+									</tr>
+									<tr>
 										<th>Nama Bank</th>
-										<?php if( strtoupper($rekening_penerimaan_silabun->nm_bank) != strtoupper($rekening_penerimaan_sekretariat->bankcab) ) $cls_diff_nmbank = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_penerimaan_silabun->nm_bank); ?></td>
 										<td <?php echo $cls_diff_nmbank; ?> style="white-space:pre-wrap;word-wrap:break-word;word-break:break-all;"><?php echo strtoupper($rekening_penerimaan_sekretariat->bankcab); ?></td>
 									</tr>
@@ -901,7 +914,7 @@
 									</tr>
 									<tr>
 										<th>Nama.Rekening</th>
-										<?php if( strtoupper($rekening_penerimaan_silabun->nm_rekening) != strtoupper($rekening_penerimaan_sekretariat->reknama) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
+										<?php if( strtoupper(trim($rekening_penerimaan_silabun->nm_rekening)) != strtoupper(trim($rekening_penerimaan_sekretariat->reknama)) ) $cls_diff_nmrek = 'class="bg-red lter"'; ?>
 										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_penerimaan_silabun->nm_rekening); ?></td>
 										<td <?php echo $cls_diff_nmrek; ?>><?php echo strtoupper($rekening_penerimaan_sekretariat->reknama); ?></td>
 									</tr>
