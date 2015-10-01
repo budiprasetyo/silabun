@@ -241,7 +241,8 @@ class M_upload extends MY_Model
 				a.idbank = b.idbank
 			WHERE 
 				a.kdsatker = {$kd_satker} AND
-				a.type = '20'");
+				a.type = '20' AND 
+				a.active = 'y'");
 		// DB Silabun Penerimaan
 		$validate_rekening_penerimaan_silabun = $this->db->query("SELECT kd_rekening, no_srt, tgl_srt, nm_bank, no_rekening, nm_rekening
 			FROM 
@@ -251,7 +252,7 @@ class M_upload extends MY_Model
 				kd_satker 	= {$kd_satker} AND
 				tahun		= {$year} AND
 				bulan		= {$month}");
-		// DB Sekretarian Rekening Pengeluaran
+		// DB Sekretarian Rekening Penerimaan
 		$validate_rekening_penerimaan_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
 			FROM
 				pbn_pkn.dt_rekening a
@@ -261,7 +262,8 @@ class M_upload extends MY_Model
 				a.idbank = b.idbank
 			WHERE 
 				a.kdsatker = {$kd_satker} AND
-				a.type = '10'");
+				a.type = '10' AND 
+				a.active = 'y'");
 	
 			
 		return array (
