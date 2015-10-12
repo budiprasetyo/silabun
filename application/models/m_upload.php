@@ -230,7 +230,9 @@ class M_upload extends MY_Model
 				kd_kppn 	= {$kd_kppn} AND
 				kd_satker 	= {$kd_satker} AND
 				tahun		= {$year} AND
-				bulan		= {$month}");
+				bulan		= {$month}
+			ORDER BY 
+				id_lpjkrek DESC LIMIT 1");
 		// DB Sekretarian Rekening Pengeluaran
 		$validate_rekening_pengeluaran_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
 			FROM
