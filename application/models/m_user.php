@@ -404,7 +404,9 @@ class M_user extends MY_Model
 							->join('ref_kppn', 'ref_kppn.id_ref_satker = ref_satker.id_ref_satker', 'left')
 							->where('ref_satker.kd_satker', $kd_satker)
 							->or_where('ref_kppn.kd_kppn', $kd_satker)
-							->group_by('user_entity.id_ref_satker')
+							->order_by('user_entity.id_ref_satker')
+							->order_by('user_default.id_user_default', 'DESC')
+							->limit('1')
 							->get();
 							
 		if($query->num_rows > 0)
