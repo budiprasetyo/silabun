@@ -469,6 +469,7 @@
 								</table>
 								
 								<table class="table table-bordered table-condensed table-hovered table-striped">
+                                    <tbody>
 									<tr>
 										<td colspan="4" style="white-space:normal;"><strong>1. Validasi Saldo Akhir BKU</strong><br />
 											Saldo Akhir BKU = Saldo Akhir UP + Saldo Akhir LS Bendahara + Saldo Akhir Pajak + Saldo Akhir Pengeluaran Lain *)</td>
@@ -477,10 +478,10 @@
 										<td>&nbsp;</td>
 									</tr>
 									<tr>
-										<th width="15%" style="white-space:normal;">Saldo Akhir UP</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir LS Bendahara</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir Pajak</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir Pengeluaran Lain</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir UP</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir LS Bendahara</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir Pajak</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir Pengeluaran Lain</td>
 										<td rowspan="2" align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku_1); ?></td>
 										<td rowspan="2" align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
 										<td rowspan="2">
@@ -508,10 +509,10 @@
 										<td>&nbsp;</td>
 									</tr>
 									<tr>
-										<th width="15%" style="white-space:normal;">Saldo Akhir Tunai</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir Bank</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir Uang Muka</td>
-										<th width="15%" style="white-space:normal;">Saldo Akhir BPP</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir Tunai</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir Bank</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir Uang Muka</td>
+										<td width="15%" style="white-space:normal;">Saldo Akhir BPP</td>
 										<td rowspan="2" align="right" class="bg-blue dker"><?php echo amount_format($validasi_saldo_akhir_bku_2); ?></td>
 										<td rowspan="2" align="right" class="bg-orange lter"><?php echo amount_format($komponen_pengeluaran->saldo_akhir_bku); ?></td>
 										<td rowspan="2">

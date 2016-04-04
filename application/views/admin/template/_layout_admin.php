@@ -165,6 +165,12 @@
 					  <span class="link-title"> Upload</span> 
 					</a> 
 				  </li>
+                    <li>
+					<a href="<?php echo base_url(); ?>companies.php/admin/spmonline/data">
+					  <i class="glyphicon glyphicon-cloud"></i>
+					  <span class="link-title"> Ambil Data SPM Online</span> 
+					</a> 
+				  </li>
 				  <?php } ?>
 				  
 				  <!-- if entity is all -->
@@ -247,6 +253,24 @@
 					  <?php } ?>
 					</ul>
 				  </li>
+                    <?php if ($id_entities === '4') { ?>
+                     <li class="">
+					<a href="javascript:;">
+					  <i class="glyphicon glyphicon-book"></i>
+					  <span class="link-title">
+					  Setting
+					</span> 
+					  <span class="fa arrow"></span> 
+					</a> 
+					<ul style="height: inherit;">
+					  <li class="">
+						<a href="<?php echo base_url(); ?>companies.php/admin/spmonline/">
+						  <i class="fa fa-angle-right"></i>&nbsp;SPM Online</a> 
+					  </li>
+					  
+					</ul>
+				  </li>
+                    <?php } ?>
 				  <li>
 					<a href="<?php echo base_url(); ?>companies.php/admin/about">
 					  <i class="fa fa-users"></i>
