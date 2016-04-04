@@ -62,7 +62,7 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 			?>
 									<tr>
 										<td><?php echo ++$i; ?></td>
-										<td>=text(<?php echo $monitor_pengeluaran_sents->kd_satker; ?>,"000000")</td>
+										<td>=text(<?php echo $monitor_pengeluaran_sents->kd_satker; ?>;"000000")</td>
 										<td><?php echo $monitor_pengeluaran_sents->nm_satker; ?></td>
 										<td><?php echo $monitor_pengeluaran_sents->created_at; ?></td>
 									</tr>
@@ -99,7 +99,7 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 			?>
 									<tr>
 										<td><?php echo ++$i; ?></td>
-										<td>=text(<?php echo $monitor_penerimaan_sents->kd_satker; ?>,"000000")</td>
+										<td>=text(<?php echo $monitor_penerimaan_sents->kd_satker; ?>;"000000")</td>
 										<td><?php echo $monitor_penerimaan_sents->nm_satker; ?></td>
 										<td><?php echo $monitor_penerimaan_sents->created_at; ?></td>
 									</tr>
@@ -138,8 +138,8 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 			?>
 									<tr>
 										<td><?php echo ++$i; ?></td>
-										<td>=text(<?php echo $monitor_kppns_pengeluaran_sent->kd_kppn; ?>,"000")</td><td><?php echo $monitor_kppns_pengeluaran_sent->nm_kppn; ?></td>
-										<td>=text(<?php echo $monitor_kppns_pengeluaran_sent->kd_kementerian; ?>,"000")</td>
+										<td>=text(<?php echo $monitor_kppns_pengeluaran_sent->kd_kppn; ?>;"000")</td><td><?php echo $monitor_kppns_pengeluaran_sent->nm_kppn; ?></td>
+										<td>=text(<?php echo $monitor_kppns_pengeluaran_sent->kd_kementerian; ?>;"000")</td>
 										<td><?php echo $monitor_kppns_pengeluaran_sent->nm_kementerian; ?></td>
 										<td><?php echo $monitor_kppns_pengeluaran_sent->jml_lpj_kementerian; ?></td>
 									</tr>
@@ -176,8 +176,8 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_kppns_penerimaan_sent->kd_kppn; ?>,"000")</td><td><?php echo $monitor_kppns_penerimaan_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_kppns_penerimaan_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_kppns_penerimaan_sent->kd_kppn; ?>;"000")</td><td><?php echo $monitor_kppns_penerimaan_sent->nm_kppn; ?></td>
+									<td>=text(<?php echo $monitor_kppns_penerimaan_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_kppns_penerimaan_sent->nm_kementerian; ?></td>
 									<td><?php echo $monitor_kppns_penerimaan_sent->jml_lpj_kementerian; ?></td>
 								</tr>
@@ -215,11 +215,11 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_satker_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_satker_sent->nm_kementerian; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_satker; ?>,"000000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_satker; ?>;"000000")</td>
 									<td><?php echo $monitor_satker_sent->nm_satker; ?></td>
 								</tr>
 		<?php
@@ -256,11 +256,11 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_satker_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_satker_sent->nm_kementerian; ?></td>
-									<td>=text(<?php echo $monitor_satker_sent->kd_satker; ?>,"000000")</td>
+									<td>=text(<?php echo $monitor_satker_sent->kd_satker; ?>;"000000")</td>
 									<td><?php echo $monitor_satker_sent->nm_satker; ?></td>
 								</tr>
 		<?php
@@ -296,9 +296,9 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_kanwils_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_kanwils_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_kanwils_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_kanwils_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_kanwils_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_kanwils_sent->nm_kementerian; ?></td>
 									<td><?php echo $monitor_kanwils_sent->jml_lpj_kementerian; ?></td>
 								</tr>
@@ -335,9 +335,9 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_kanwils_penerimaan_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_kanwils_penerimaan_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_kanwils_penerimaan_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_kanwils_penerimaan_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_kanwils_penerimaan_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_kanwils_penerimaan_sent->nm_kementerian; ?></td>
 									<td><?php echo $monitor_kanwils_penerimaan_sent->jml_lpj_kementerian; ?></td>
 								</tr>
@@ -378,11 +378,11 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_satkers_pengeluaran_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_satkers_pengeluaran_sent->nm_kementerian; ?></td>
-									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_satker; ?>,"000000")</td>
+									<td>=text(<?php echo $monitor_satkers_pengeluaran_sent->kd_satker; ?>;"000000")</td>
 									<td><?php echo $monitor_satkers_pengeluaran_sent->nm_satker; ?></td>
 								</tr>
 		<?php
@@ -423,11 +423,11 @@ header('Content-Disposition: attachment; filename='.$filename.'.xls');
 		?>
 								<tr>
 									<td><?php echo ++$i; ?></td>
-									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_kppn; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_kppn; ?>;"000")</td>
 									<td><?php echo $monitor_satkers_penerimaan_sent->nm_kppn; ?></td>
-									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_kementerian; ?>,"000")</td>
+									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_kementerian; ?>;"000")</td>
 									<td><?php echo $monitor_satkers_penerimaan_sent->nm_kementerian; ?></td>
-									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_satker; ?>,"000000")</td>
+									<td>=text(<?php echo $monitor_satkers_penerimaan_sent->kd_satker; ?>;"000000")</td>
 									<td><?php echo $monitor_satkers_penerimaan_sent->nm_satker; ?></td>
 								</tr>
 		<?php
