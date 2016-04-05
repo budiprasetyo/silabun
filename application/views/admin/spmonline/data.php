@@ -742,53 +742,66 @@ function data_api() {
         if ( tahun == "" ){
             alert("Tahun belum diisi");
             $( "input[name=year]" ).focus();
+            return false;
         }
         if (bulan == "") {
             alert("Bulan belum diisi");
             $( "input[name=month]" ).focus();
+            return false;
 
         }
          if ($( "input[name=url]" ).val() == "") {
-                alert("Url SPM Online belum diisi. Silahkan hubungi Administrator");              
+                alert("Url SPM Online belum diisi. Silahkan hubungi Administrator");
+             return false;
 
             } else {
             var data ={ 
-                token : token_api,
-                kdkppn : kdkppn,
-                bulan : bulan ,
-                tahun : tahun 
-                    };
-            var url=$( "input[name=url]" ).val()+"/api/v1/silabi/data/"+kdkppn+"/"+bulan+"/"+tahun;               
-                $("#data-api").empty();
-                $("#data-api").append("<h6 style='color:red'> fetching Data dari "+url+".....</h6>");
-            $.getJSON(url,data,
-                function(data, textStatus, jqXHR)
-                {
-                var hasil=data;
-                $("#data-api").empty();
-                $("#hasil-data-api").empty();
-                if (hasil.error == false) {
-                     var index;
-                        for (index = 0; index < hasil.jumlah; ++index) {
-                            var y = (hasil.data_lpj[index].type_adk == 1 ? "Pengeluaran" : "Penerimaan");
-                            var action="<a onclick='show_lpj("+hasil.data_lpj[index].id+","+hasil.data_lpj[index].type_adk+","+hasil.data_lpj[index].kdkppn+",\""+token_api+"\")' class='btn btn-success' ><span class='glyphicon glyphicon-zoom-in' aria-hidden='true'></span> </a>";
-                            $("#hasil-data-api").append("<tr>");
-                            $("#hasil-data-api").append("<td>"+hasil.data_lpj[index].kdsatker+"</td>");
-                            $("#hasil-data-api").append("<td>"+hasil.data_lpj[index].nmfile+"</td>");
-                            $("#hasil-data-api").append("<td>"+y+"</td>");
-                            $("#hasil-data-api").append("<td>"+action+"</td>");
-                            $("#hasil-data-api").append("<tr>");
-                        }
-                    
-                }
-                 
-                
-             }).fail(function(jqXHR, textStatus, errorThrown) 
-                    {
-                    $("#data-api").empty();
-                      alert(textStatus+" : "+errorThrown);
-                    });
-                
+                "token" : token_api,
+                "kdkppn" : kdkppn,
+                "bulan" : bulan ,
+                "tahun" : tahun ,
+                "url" : $( "input[name=url]" ).val()+"/api/v1/silabi/data/"+kdkppn+"/"+bulan+"/"+tahun
+                    };               
+                    var url =  $( "input[name=url]" ).val()+"/api/v1/silabi/data/"+kdkppn+"/"+bulan+"/"+tahun;    
+               
+                    $.ajax({
+                    method: "POST",
+                     url: "rest_client",
+                    dataType :"json",
+                    data: data,
+                    beforeSend: function() { 
+                        $("#data-api").empty();
+                        $("#data-api").append("<h6 style='color:red'> fetching Data dari "+url+".....</h6>"); 
+                    },
+                    success: function(data) {
+                             var hasil=data;
+                                    $("#data-api").empty();
+                                    $("#hasil-data-api").empty();
+                                    if (hasil.error == false) {
+                                         var index;
+                                            for (index = 0; index < hasil.jumlah; ++index) {
+                                                var y = (hasil.data_lpj[index].type_adk == 1 ? "Pengeluaran" : "Penerimaan");
+                                                var action="<a onclick='show_lpj("+hasil.data_lpj[index].id+","+hasil.data_lpj[index].type_adk+","+hasil.data_lpj[index].kdkppn+",\""+token_api+"\")' class='btn btn-success' ><span class='glyphicon glyphicon-zoom-in' aria-hidden='true'></span> </a>";
+                                                $("#hasil-data-api").append("<tr>");
+                                                $("#hasil-data-api").append("<td>"+hasil.data_lpj[index].kdsatker+"</td>");
+                                                $("#hasil-data-api").append("<td>"+hasil.data_lpj[index].nmfile+"</td>");
+                                                $("#hasil-data-api").append("<td>"+y+"</td>");
+                                                $("#hasil-data-api").append("<td>"+action+"</td>");
+                                                $("#hasil-data-api").append("<tr>");
+                                            }
+
+                                    } else
+                                        {
+                                            alert(hasil.error);
+                                        }
+                        },
+                      error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                          $("#data-api").empty();
+                            alert("Status: " + textStatus+ errorThrown); 
+                                }  
+                    })
+                      ;
+
             }
     return false;
     
@@ -876,105 +889,113 @@ function data_api() {
             }
     function show_lpj(id,type_adk,kdkppn,token_api) {
         var data ={ token : token_api,
-                    kdkppn : pad(kdkppn,3)};
+                    kdkppn : pad(kdkppn,3),
+                  url :$( "input[name=url]" ).val()+"/api/v1/silabi/adk/"+id };
         var url=$( "input[name=url]" ).val()+"/api/v1/silabi/adk/"+id;
-          $.getJSON(url,data,
-                function(data, textStatus, jqXHR)
-                {
-              var monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
-  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-];
-                    var hasil=data;
-                    kosong_lpjk();
-                    show_tab(0);
-                if (hasil.error == false) {
-                     $("#lpjk_kdsatker").append(hasil.lpj.kdsatker+" "+hasil.lpj.nmsatker);
-                    $("#lpjk_kddept").append(hasil.lpj.kddept+" "+hasil.lpj.nmdept);
-                    $("#lpjk_kdunit").append(hasil.lpj.kdunit+" "+hasil.lpj.nmunit);
-                    $("#lpjk_kdkabkota").append(hasil.lpj.kdlokasi+"."+hasil.lpj.kdkabkota+" "+hasil.lpj.nmlokasi+". "+hasil.lpj.nmkabkota);
-                    $("#lpjk_karwas").append(hasil.lpj.nokarwas+"."+hasil.lpj.kddekon);
-                    $("#lpjk_kdjendok").append(hasil.lpj.kdjendok);
-                    $("#lpjk_nodok").append(hasil.lpj.nodok);
-                    $("#lpjk_tgdok").append(hasil.lpj.tgdok);
-                    $("#lpjk_kdkppn").append(hasil.lpj.kdkppn+" ("+hasil.lpj.nmkppn+")");
-                    $("#lpjk_thang1").append(hasil.lpj.tahun);
-                    $("#lpjk_thang2").append(hasil.lpj.tahun);
-                    $("#lpjk_sakhir_bku").append("I. Keadaan Pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp."+numberWithCommas(hasil.lpj.sakhir_bku)+" dan Nomor Bukti terakhir Nomor:"+hasil.lpj.no_bukti);
-                    $("#lpjk_sawal_bpkas").append(numberWithCommas(parseInt(hasil.lpj.sawal_bank) + parseInt(hasil.lpj.sawal_tunai)));
-                    $("#lpjk_debet_bpkas").append(numberWithCommas(parseInt(hasil.lpj.debet_bank) + parseInt(hasil.lpj.debet_tunai)));
-                    $("#lpjk_kredit_bpkas").append(numberWithCommas(parseInt(hasil.lpj.kredit_bank) + parseInt(hasil.lpj.kredit_tunai)));
-                    $("#lpjk_sakhir_bpkas").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bank) + parseInt(hasil.lpj.sakhir_tunai)));
-                $("#lpjk_sakhir_bpkas1").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bank) + parseInt(hasil.lpj.sakhir_tunai)));
-                $("#lpjk_sawal_um").append(numberWithCommas(parseInt(hasil.lpj.sawal_um) ));
-                    $("#lpjk_debet_um").append(numberWithCommas(parseInt(hasil.lpj.debet_um)));
-                    $("#lpjk_kredit_um").append(numberWithCommas(parseInt(hasil.lpj.kredit_um) ));
-                    $("#lpjk_sakhir_um").append(numberWithCommas(parseInt(hasil.lpj.sakhir_um) ));
-                 $("#lpjk_sawal_bpp").append(numberWithCommas(parseInt(hasil.lpj.sawal_bpp) ));
-                    $("#lpjk_debet_bpp").append(numberWithCommas(parseInt(hasil.lpj.debet_bpp)));
-                    $("#lpjk_kredit_bpp").append(numberWithCommas(parseInt(hasil.lpj.kredit_bpp) ));
-                    $("#lpjk_sakhir_bpp").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bpp) ));
-                 $("#lpjk_sawal_bpup").append(numberWithCommas(parseInt(hasil.lpj.sawal_up) ));
-                    $("#lpjk_debet_bpup").append(numberWithCommas(parseInt(hasil.lpj.debet_up)));
-                    $("#lpjk_kredit_bpup").append(numberWithCommas(parseInt(hasil.lpj.kredit_up) ));
-                    $("#lpjk_sakhir_bpup").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up) ));
-                $("#lpjk_sakhir_bpup1").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up) ));
-                 $("#lpjk_sawal_lsbend").append(numberWithCommas(parseInt(hasil.lpj.sawal_lsbend) ));
-                    $("#lpjk_debet_lsbend").append(numberWithCommas(parseInt(hasil.lpj.debet_lsbend)));
-                    $("#lpjk_kredit_lsbend").append(numberWithCommas(parseInt(hasil.lpj.kredit_lsbend) ));
-                    $("#lpjk_sakhir_lsbend").append(numberWithCommas(parseInt(hasil.lpj.sakhir_lsbend) ));
-                 $("#lpjk_sawal_pajak").append(numberWithCommas(parseInt(hasil.lpj.sawal_pajak) ));
-                    $("#lpjk_debet_pajak").append(numberWithCommas(parseInt(hasil.lpj.debet_pajak)));
-                    $("#lpjk_kredit_pajak").append(numberWithCommas(parseInt(hasil.lpj.kredit_pajak) ));
-                    $("#lpjk_sakhir_pajak").append(numberWithCommas(parseInt(hasil.lpj.sakhir_pajak) ));
-                 $("#lpjk_sawal_lain").append(numberWithCommas(parseInt(hasil.lpj.sawal_lain) ));
-                    $("#lpjk_debet_lain").append(numberWithCommas(parseInt(hasil.lpj.debet_lain)));
-                    $("#lpjk_kredit_lain").append(numberWithCommas(parseInt(hasil.lpj.kredit_lain) ));
-                    $("#lpjk_sakhir_lain").append(numberWithCommas(parseInt(hasil.lpj.sakhir_lain) ));
-                $("#lpjk_kuitansi_up").append("jumlah pengurangan pada BP UP sudah termasuk kuitansi UP yang belum di-SPM-GU-kan sebesar Rp "+numberWithCommas(hasil.lpj.kuitansi_up));
-                  $("#lpjk_kuitansi_up1").append(numberWithCommas(hasil.lpj.kuitansi_up));
-                $("#lpjk_brankas").append(numberWithCommas(hasil.lpj.brankas));
-        $("#lpjk_rekening_bank").append(numberWithCommas(hasil.lpj.rekening_bank));
-        $("#lpjk_jumlah_kas").append(numberWithCommas(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank)));
-                $("#lpjk_jumlah_kas1").append(numberWithCommas(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank)));
-                $("#lpjk_selisih_kas").append(numberWithCommas((parseInt(hasil.lpj.sakhir_bank)+parseInt(hasil.lpj.sakhir_tunai))-(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank))));
-                $("#lpjk_jumlah_up").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up)+parseInt(hasil.lpj.kuitansi_up)));
-                $("#lpjk_saldo_up_uakpa").append(numberWithCommas(hasil.lpj.saldo_up_uakpa));
-                $("#lpjk_selisih_up").append(numberWithCommas(parseInt(hasil.lpj.saldo_up_uakpa)-(parseInt(hasil.lpj.sakhir_up)+parseInt(hasil.lpj.kuitansi_up))));
-         $("#lpjk_ket_selisih_up").append("2. "+hasil.lpj.ket_selisih_up);
-         $("#lpjk_ket_selisih_kas").append("1. "+hasil.lpj.ket_selisih_kas);
-                  $("#lpjk_nm_kpa").append(hasil.lpj.nm_kpa);
-        $("#lpjk_nm_bend").append(hasil.lpj.nm_bend);
-        $("#lpjk_nip_bend").append(hasil.lpj.nip_bend);
-        $("#lpjk_nip_kpa").append(hasil.lpj.nip_kpa);
-                $("#lpjk_bulan").append('Bulan :'+monthNames[parseInt(hasil.lpj.bulan)-1]);
-                    // untuk data rekening
-                    if (hasil.jumlah_rekening > 0) {
-                        var index;
-                        for (index = 0; index < hasil.jumlah_rekening; ++index) {
-                                
-                            $("#no_count").append(parseInt(index+1));
-                            $("#no_rekening").append(hasil.rekening[index].no_rekening);
-                            $("#nm_rekening").append(hasil.rekening[index].nm_rekening);
-                            $("#nm_bank").append(hasil.rekening[index].nm_bank);
-                            $("#kd_rekening").append(hasil.rekening[index].kd_rekening);
-                            $("#no_surat").append(hasil.rekening[index].no_surat);
-                            $("#tgl_surat").append(hasil.rekening[index].tgl_surat);
-                            $("#saldo").append(hasil.rekening[index].saldo);
-                            }
-                         
-                    }
-                    
-                } // akhir if hasil.error
-                   
-                    $('#myModal').modal('show');
-                
-                 
-                
-             }).fail(function(jqXHR, textStatus, errorThrown) 
-                    {
-                    $("#data-api").empty();
-                      alert(textStatus+" : "+errorThrown);
-                    });
+        $.ajax({
+    beforeSend: function() { 
+        $("#data-api").empty();
+        $("#data-api").append("<h6 style='color:red'> fetching Data dari "+url+".....</h6>"); 
+    },
+    type: "POST",  
+    url: "rest_client",
+    dataType :"json",
+    data: data, 
+            
+    success: function(data){  
+                       var monthNames = ["Januari", "Februari", "Maret", "April", "Mei", "Juni",
+                  "Juli", "Agustus", "September", "Oktober", "November", "Desember"
+                ];
+                                    var hasil=data;
+                                    kosong_lpjk();
+                                    show_tab(0);
+                                if (hasil.error == false) {
+                                     $("#lpjk_kdsatker").append(hasil.lpj.kdsatker+" "+hasil.lpj.nmsatker);
+                                    $("#lpjk_kddept").append(hasil.lpj.kddept+" "+hasil.lpj.nmdept);
+                                    $("#lpjk_kdunit").append(hasil.lpj.kdunit+" "+hasil.lpj.nmunit);
+                                    $("#lpjk_kdkabkota").append(hasil.lpj.kdlokasi+"."+hasil.lpj.kdkabkota+" "+hasil.lpj.nmlokasi+". "+hasil.lpj.nmkabkota);
+                                    $("#lpjk_karwas").append(hasil.lpj.nokarwas+"."+hasil.lpj.kddekon);
+                                    $("#lpjk_kdjendok").append(hasil.lpj.kdjendok);
+                                    $("#lpjk_nodok").append(hasil.lpj.nodok);
+                                    $("#lpjk_tgdok").append(hasil.lpj.tgdok);
+                                    $("#lpjk_kdkppn").append(hasil.lpj.kdkppn+" ("+hasil.lpj.nmkppn+")");
+                                    $("#lpjk_thang1").append(hasil.lpj.tahun);
+                                    $("#lpjk_thang2").append(hasil.lpj.tahun);
+                                    $("#lpjk_sakhir_bku").append("I. Keadaan Pembukuan bulan pelaporan dengan saldo akhir pada BKU sebesar Rp."+numberWithCommas(hasil.lpj.sakhir_bku)+" dan Nomor Bukti terakhir Nomor:"+hasil.lpj.no_bukti);
+                                    $("#lpjk_sawal_bpkas").append(numberWithCommas(parseInt(hasil.lpj.sawal_bank) + parseInt(hasil.lpj.sawal_tunai)));
+                                    $("#lpjk_debet_bpkas").append(numberWithCommas(parseInt(hasil.lpj.debet_bank) + parseInt(hasil.lpj.debet_tunai)));
+                                    $("#lpjk_kredit_bpkas").append(numberWithCommas(parseInt(hasil.lpj.kredit_bank) + parseInt(hasil.lpj.kredit_tunai)));
+                                    $("#lpjk_sakhir_bpkas").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bank) + parseInt(hasil.lpj.sakhir_tunai)));
+                                $("#lpjk_sakhir_bpkas1").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bank) + parseInt(hasil.lpj.sakhir_tunai)));
+                                $("#lpjk_sawal_um").append(numberWithCommas(parseInt(hasil.lpj.sawal_um) ));
+                                    $("#lpjk_debet_um").append(numberWithCommas(parseInt(hasil.lpj.debet_um)));
+                                    $("#lpjk_kredit_um").append(numberWithCommas(parseInt(hasil.lpj.kredit_um) ));
+                                    $("#lpjk_sakhir_um").append(numberWithCommas(parseInt(hasil.lpj.sakhir_um) ));
+                                 $("#lpjk_sawal_bpp").append(numberWithCommas(parseInt(hasil.lpj.sawal_bpp) ));
+                                    $("#lpjk_debet_bpp").append(numberWithCommas(parseInt(hasil.lpj.debet_bpp)));
+                                    $("#lpjk_kredit_bpp").append(numberWithCommas(parseInt(hasil.lpj.kredit_bpp) ));
+                                    $("#lpjk_sakhir_bpp").append(numberWithCommas(parseInt(hasil.lpj.sakhir_bpp) ));
+                                 $("#lpjk_sawal_bpup").append(numberWithCommas(parseInt(hasil.lpj.sawal_up) ));
+                                    $("#lpjk_debet_bpup").append(numberWithCommas(parseInt(hasil.lpj.debet_up)));
+                                    $("#lpjk_kredit_bpup").append(numberWithCommas(parseInt(hasil.lpj.kredit_up) ));
+                                    $("#lpjk_sakhir_bpup").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up) ));
+                                $("#lpjk_sakhir_bpup1").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up) ));
+                                 $("#lpjk_sawal_lsbend").append(numberWithCommas(parseInt(hasil.lpj.sawal_lsbend) ));
+                                    $("#lpjk_debet_lsbend").append(numberWithCommas(parseInt(hasil.lpj.debet_lsbend)));
+                                    $("#lpjk_kredit_lsbend").append(numberWithCommas(parseInt(hasil.lpj.kredit_lsbend) ));
+                                    $("#lpjk_sakhir_lsbend").append(numberWithCommas(parseInt(hasil.lpj.sakhir_lsbend) ));
+                                 $("#lpjk_sawal_pajak").append(numberWithCommas(parseInt(hasil.lpj.sawal_pajak) ));
+                                    $("#lpjk_debet_pajak").append(numberWithCommas(parseInt(hasil.lpj.debet_pajak)));
+                                    $("#lpjk_kredit_pajak").append(numberWithCommas(parseInt(hasil.lpj.kredit_pajak) ));
+                                    $("#lpjk_sakhir_pajak").append(numberWithCommas(parseInt(hasil.lpj.sakhir_pajak) ));
+                                 $("#lpjk_sawal_lain").append(numberWithCommas(parseInt(hasil.lpj.sawal_lain) ));
+                                    $("#lpjk_debet_lain").append(numberWithCommas(parseInt(hasil.lpj.debet_lain)));
+                                    $("#lpjk_kredit_lain").append(numberWithCommas(parseInt(hasil.lpj.kredit_lain) ));
+                                    $("#lpjk_sakhir_lain").append(numberWithCommas(parseInt(hasil.lpj.sakhir_lain) ));
+                                $("#lpjk_kuitansi_up").append("jumlah pengurangan pada BP UP sudah termasuk kuitansi UP yang belum di-SPM-GU-kan sebesar Rp "+numberWithCommas(hasil.lpj.kuitansi_up));
+                                  $("#lpjk_kuitansi_up1").append(numberWithCommas(hasil.lpj.kuitansi_up));
+                                $("#lpjk_brankas").append(numberWithCommas(hasil.lpj.brankas));
+                        $("#lpjk_rekening_bank").append(numberWithCommas(hasil.lpj.rekening_bank));
+                        $("#lpjk_jumlah_kas").append(numberWithCommas(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank)));
+                                $("#lpjk_jumlah_kas1").append(numberWithCommas(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank)));
+                                $("#lpjk_selisih_kas").append(numberWithCommas((parseInt(hasil.lpj.sakhir_bank)+parseInt(hasil.lpj.sakhir_tunai))-(parseInt(hasil.lpj.brankas)+parseInt(hasil.lpj.rekening_bank))));
+                                $("#lpjk_jumlah_up").append(numberWithCommas(parseInt(hasil.lpj.sakhir_up)+parseInt(hasil.lpj.kuitansi_up)));
+                                $("#lpjk_saldo_up_uakpa").append(numberWithCommas(hasil.lpj.saldo_up_uakpa));
+                                $("#lpjk_selisih_up").append(numberWithCommas(parseInt(hasil.lpj.saldo_up_uakpa)-(parseInt(hasil.lpj.sakhir_up)+parseInt(hasil.lpj.kuitansi_up))));
+                         $("#lpjk_ket_selisih_up").append("2. "+hasil.lpj.ket_selisih_up);
+                         $("#lpjk_ket_selisih_kas").append("1. "+hasil.lpj.ket_selisih_kas);
+                                  $("#lpjk_nm_kpa").append(hasil.lpj.nm_kpa);
+                        $("#lpjk_nm_bend").append(hasil.lpj.nm_bend);
+                        $("#lpjk_nip_bend").append(hasil.lpj.nip_bend);
+                        $("#lpjk_nip_kpa").append(hasil.lpj.nip_kpa);
+                                $("#lpjk_bulan").append('Bulan :'+monthNames[parseInt(hasil.lpj.bulan)-1]);
+                                    // untuk data rekening
+                                    if (hasil.jumlah_rekening > 0) {
+                                        var index;
+                                        for (index = 0; index < hasil.jumlah_rekening; ++index) {
+
+                                            $("#no_count").append(parseInt(index+1));
+                                            $("#no_rekening").append(hasil.rekening[index].no_rekening);
+                                            $("#nm_rekening").append(hasil.rekening[index].nm_rekening);
+                                            $("#nm_bank").append(hasil.rekening[index].nm_bank);
+                                            $("#kd_rekening").append(hasil.rekening[index].kd_rekening);
+                                            $("#no_surat").append(hasil.rekening[index].no_surat);
+                                            $("#tgl_surat").append(hasil.rekening[index].tgl_surat);
+                                            $("#saldo").append(hasil.rekening[index].saldo);
+                                            }
+
+                                    }
+
+                                } // akhir if hasil.error
+                                   $("#data-api").empty();
+                                    $('#myModal').modal('show');  
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#data-api").empty();
+                        alert("Status: " + textStatus+ errorThrown);
+                    }       
+                });
+         
         
     }
     function show_tab(id) {

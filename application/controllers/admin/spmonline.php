@@ -74,6 +74,25 @@ class SpmOnline extends Admin_Controller {
        
         
     }
+    public function rest_client() {
+    
+     $url =$this->input->post("url");  
+        $url=$url.'?'.'token='.$this->input->post("token").'&kdkppn='.$this->input->post("kdkppn").'&bulan='.$this->input->post("bulan").'&tahun='.$this->input->post("tahun");
+       
+    $curl_handle = curl_init($url);
+    curl_setopt($curl_handle, CURLOPT_URL, $url);
+    curl_setopt($curl_handle, CURLOPT_RETURNTRANSFER, 1);
+   
+     
+   
+     
+    $buffer = curl_exec($curl_handle);
+       
+    curl_close($curl_handle);
+     
+   
+        echo  $buffer;
+    }
     
 }
 ?>
