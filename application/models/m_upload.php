@@ -311,7 +311,7 @@ class M_upload extends MY_Model
 		@kastunai, @kasbank, @setor, @belumsetor, @saldoakhirbku, no_bukti, @saldoawal, @debet, @kredit, 
 		@saldoakhir, @brankas, @rekeningbank, @haksaldoawal, @hakterima, @haksetor, @setoruakpa, @uakpa, 
 		@selisihkas, ket_selisih_kas, ket_selisih_uakpa, @tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend,
-		currency, @create)
+		@currencytrim, @create)
 		SET saldo_rekening = REPLACE(@saldorekening, ',', '.'),
 			kas_tunai = REPLACE(@kastunai, ',', '.'),
 			kas_bank = REPLACE(@kasbank, ',', '.'),
@@ -332,6 +332,7 @@ class M_upload extends MY_Model
 			selisih_kas = REPLACE(@selisihkas, ',', '.'),
 			tgl_ba = STR_TO_DATE(@tglba, '%d-%m-%Y'),
 			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
+			currency = TRIM(@currencytrim),
 			created_at = now()", array($path));
 		
 		return $query;
