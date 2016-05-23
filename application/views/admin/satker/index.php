@@ -76,7 +76,7 @@
 						?>
 							<tr style="font-size:11px;">
 							  <td><?php echo $i++; ?></td>
-							  <td style="font-size:13px;text-align: center;"><?php echo btn_edit('admin/satker/edit/' . $year. '/' . $month . '/' . $satker->id_ref_satker); ?></td>
+							  <td style="font-size:13px;text-align: center;"><?php echo btn_edit('admin/satker/edit/' . $year. '/' . $month . '/' . $satker->id_ref_satker . '/' . $satker->id_ref_history_satker); ?></td>
 							  <td>
 								  <div class="btn-group">
 									<?php 
