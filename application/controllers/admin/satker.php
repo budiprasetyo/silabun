@@ -85,6 +85,8 @@ class Satker extends Admin_Controller
 		$back_link = $this->uri->segment(2);
 		// id
 		$id		= $this->uri->segment(6) == TRUE ? $this->uri->segment(6) : null;
+		// foreign key
+		$foreign_key 		= $this->uri->segment(7) == TRUE ? $this->uri->segment(7) : null;
 		// year
 		$this->data['year']	= $this->uri->segment(4);
 		// month
@@ -141,11 +143,12 @@ class Satker extends Admin_Controller
 			// save data to ref_satker
 			$id_satker = $this->m_satker->save($data, $id);
 			
-			
 			$this->m_satker->_table_name = 'ref_history_satker';
-			$this->m_satker->_primary_key = 'id_ref_history_satker';
+			$this->m_satker->_primary_key = 'id_ref_satker';
+			$this->m_satker->_foreign_key = 'id_ref_history_satker'; // actually this is the primary key
 			$this->m_satker->_timestamps = TRUE;
-			$ref_history_satker['id_ref_satker']				= $id_satker;
+			
+			$id_foreign_history_satker['id_ref_satker']			= $id_satker;
 			$ref_history_satker['aktif'] 						= $aktif;
 			$ref_history_satker['lpj_status_pengeluaran'] 		= $lpj_status_pengeluaran;
 			$ref_history_satker['lpj_status_penerimaan'] 		= $lpj_status_penerimaan;
@@ -153,12 +156,11 @@ class Satker extends Admin_Controller
 			$ref_history_satker['bulan']						= $this->data['month'];
 			
 			// save data to ref_history_satker
-			$this->m_satker->save($ref_history_satker, $ref_history_satker['id_ref_satker']);
+			$this->m_satker->save($ref_history_satker, $id_foreign_history_satker['id_ref_satker'], $foreign_key);
 			//~ $this->m_satker->save($ref_history_satker, $id);
 			
 			// redirect to satker
 			redirect('admin/satker');
-			
 			
 		}
 		
