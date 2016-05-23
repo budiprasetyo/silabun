@@ -49,6 +49,12 @@ class MY_Model extends CI_Model
 	protected $_primary_key 	= '';
 	
 	/**
+	* Foreign key field
+	* @var string
+	*/
+	protected $_foreign_key 	= '';
+	
+	/**
 	* The filter that is used on the primary key. Since most primary keys are
 	* autoincrement integers, this defaults to intval. On non-integers, you would
 	* typically use something like xss_clean of htmlentities.
@@ -176,7 +182,7 @@ class MY_Model extends CI_Model
     }
 	
 	
-	public function save($data, $id = NULL)
+	public function save($data, $id = NULL, $foreign_key = NULL)
 	{
 		// set timestamp 
 		if ($this->_timestamps == TRUE) 
@@ -198,6 +204,11 @@ class MY_Model extends CI_Model
 			$id = $filter($id);
 			$this->db->set($data);
 			$this->db->where($this->_primary_key, $id);
+			
+			if ( $foreign_key !== NULL ) {
+				$this->db->where($this->_foreign_key, $foreign_key);
+			}
+			
 			$this->db->update($this->_table_name);
 		}
 		 
