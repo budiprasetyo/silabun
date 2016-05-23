@@ -29,6 +29,7 @@ class M_satker extends MY_Model
 {
 	public $_table_name 		= 'ref_satker';
 	public $_primary_key 		= 'id_ref_satker';
+	public $_foreign_key 		= NULL;
 	protected $_primary_filter 	= 'intval';
 	protected $_order_by 		= 'id_ref_satker';
 	public $_created_at			= 'created_at';
@@ -110,6 +111,7 @@ class M_satker extends MY_Model
 							->select('ref_satker.nm_satker')
 							->select('ref_satker.no_karwas')
 							->select('ref_history_satker.aktif')
+							->select('ref_history_satker.id_ref_history_satker')
 							->select('ref_history_satker.lpj_status_pengeluaran')
 							->select('ref_history_satker.lpj_status_penerimaan')
 							->from('ref_satker')
