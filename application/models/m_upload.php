@@ -3,25 +3,25 @@
 
 /*
  * m_upload.php
- * 
+ *
  * Copyright 2014 metamorph <metamorph@code-machine>
- * 
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
  * MA 02110-1301, USA.
- * 
- * 
+ *
+ *
  */
 
 
@@ -38,18 +38,18 @@ class M_upload extends MY_Model
 						'rules'	=> 'trim|required|max_length[11]'
 					)
 	);
-	
+
 	// define must be paired with rules
 	public function get_new()
 	{
 		// define and instantiate
 		$upload = new stdClass();
-		
+
 		$upload->upload_lpj		= '';
 		return $upload;
 	}
-	
-	
+
+
 	public function get_uploaded($id_ref_kppn, $year, $month)
 	{
 		$query_pengeluaran = $this->db->select('ref_satker.id_ref_unit')
@@ -69,7 +69,7 @@ class M_upload extends MY_Model
 						  ->order_by('dsp_status_kirim_pengeluaran.id_ref_satker')
 						  ->order_by('dsp_status_kirim_pengeluaran.pos_kirim')
 						  ->get();
-	
+
 		$query_penerimaan = $this->db->select('ref_satker.id_ref_unit')
 						  ->select('ref_satker.kd_satker')
 						  ->select('ref_satker.no_karwas')
@@ -87,7 +87,7 @@ class M_upload extends MY_Model
 						  ->order_by('dsp_status_kirim_penerimaan.id_ref_satker')
 						  ->order_by('dsp_status_kirim_penerimaan.pos_kirim')
 						  ->get();
-		
+
 		$query_kirim_pengeluaran = $this->db->select('dsp_ba_lpjk.kd_satker')
 									->select('dsp_ba_lpjk.tahun')
 									->select('dsp_ba_lpjk.bulan')
@@ -99,7 +99,7 @@ class M_upload extends MY_Model
 									->where('dsp_ba_lpjk.bulan', $month)
 									->order_by('dsp_ba_lpjk.updated_at', 'desc')
 									->get();
-		
+
 		$query_kirim_penerimaan = $this->db->select('dsp_ba_lpjp.kd_satker')
 									->select('dsp_ba_lpjp.tahun')
 									->select('dsp_ba_lpjp.bulan')
@@ -114,33 +114,33 @@ class M_upload extends MY_Model
 									->group_by('dsp_ba_lpjp.bulan')
 									->order_by('dsp_ba_lpjp.updated_at', 'desc')
 									->get();
-		
+
 		return array(
 			'query_pengeluaran'			=> $query_pengeluaran,
 			'query_penerimaan'			=> $query_penerimaan,
 			'query_kirim_pengeluaran'	=> $query_kirim_pengeluaran,
 			'query_kirim_penerimaan'	=> $query_kirim_penerimaan
 		);
-		
+
 		$query_pengeluaran->free_result();
-		
+
 	}
-	
+
 	public function validate_adk($kd_kppn, $kd_satker, $year, $month, $kd_buku = null)
 	{
 		// another database, kepegawaian's rekening DB
 		$rekening_db = $this->load->database('rekening', TRUE);
-		
+
 		if ($kd_buku != null)
 		{
 			$kd_buku_penerimaan = " AND kd_buku = '{$kd_buku}' ";
 		}
-		else 
+		else
 		{
 			$kd_buku_penerimaan = "";
 		}
-		
-		$validate_pengeluaran = $this->db->query("SELECT 
+
+		$validate_pengeluaran = $this->db->query("SELECT
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.no_bukti,
 			a.saldo_awal_tunai, a.debet_tunai, a.kredit_tunai, a.saldo_akhir_tunai,
 			a.saldo_awal_bank, a.debet_bank, a.kredit_bank, a.saldo_akhir_bank,
@@ -154,17 +154,17 @@ class M_upload extends MY_Model
 			a.brankas, a.rekening_bank, a.saldo_up_uakpa, a.ket_selisih_kas, a.ket_selisih_up
 				FROM
 			dsp_ba_lpjk a
-				LEFT JOIN 
+				LEFT JOIN
 			ref_satker b
 				ON a.kd_satker = b.kd_satker
-				WHERE 
+				WHERE
 			a.kd_kppn 	= '" .$kd_kppn. "' AND
 			a.kd_satker	= '" .$kd_satker. "' AND
 			a.tahun		= '" .$year. "' AND
-			a.bulan		= '" .$month. "' 
+			a.bulan		= '" .$month. "'
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan");
-			
+
 		$validate_penerimaan = $this->db->query("SELECT
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
 			a.saldo_awal, a.debet, a.kredit, a.saldo_akhir,
@@ -185,10 +185,10 @@ class M_upload extends MY_Model
 
 		$int_month = (int) $month - 1;
 		$month_before = sprintf("%02s", $int_month);
-		
+
 		// get data lpj pengeluaran 1 month before
 		$validate_pengeluaran_1m = $this->db->query("SELECT
-		kd_kppn, kd_satker, tahun, bulan, 
+		kd_kppn, kd_satker, tahun, bulan,
 		saldo_akhir_tunai, saldo_akhir_bank, saldo_akhir_bku, saldo_akhir_um,
 		saldo_akhir_bpp, saldo_akhir_up, saldo_akhir_lsbend, saldo_akhir_pajak,
 		saldo_akhir_lain
@@ -201,7 +201,7 @@ class M_upload extends MY_Model
 		bulan = {$month_before}
 				GROUP BY
 		kd_kppn, kd_satker, tahun, bulan");
-		
+
 		// get data lpj penerimaan 1 month before
 		$validate_penerimaan_1m = $this->db->query("SELECT
 			a.kd_kppn, a.kd_satker, b.nm_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku,
@@ -220,41 +220,41 @@ class M_upload extends MY_Model
 			a.bulan		= {$month_before} {$kd_buku_penerimaan}
 				GROUP BY
 			a.kd_kppn, a.kd_satker, a.tahun, a.bulan, a.kd_buku, a.nm_buku");
-			
+
 		// validate rekening
 		// DB Silabun Pengeluaran
 		$validate_rekening_pengeluaran_silabun = $this->db->query("SELECT kd_rekening, no_srt, tgl_srt, nm_bank, no_rekening, nm_rekening
-			FROM 
+			FROM
 				t_lpjkrek
-			WHERE 
+			WHERE
 				kd_kppn 	= {$kd_kppn} AND
 				kd_satker 	= {$kd_satker} AND
 				tahun		= {$year} AND
 				bulan		= {$month}
-			ORDER BY 
+			ORDER BY
 				id_lpjkrek DESC LIMIT 1");
 		// DB Sekretarian Rekening Pengeluaran
 		$validate_rekening_pengeluaran_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
 			FROM
 				pbn_pkn.dt_rekening a
-			LEFT JOIN 
+			LEFT JOIN
 				pbn_ref.ref_bank b
 			ON
 				a.idbank = b.idbank
-			WHERE 
+			WHERE
 				a.kdsatker = {$kd_satker} AND
-				a.type = '20' AND 
+				a.type = '20' AND
 				a.active = 'y'");
 		// DB Silabun Penerimaan
 		$validate_rekening_penerimaan_silabun = $this->db->query("SELECT kd_rekening, no_srt, tgl_srt, nm_bank, no_rekening, nm_rekening
-			FROM 
+			FROM
 				t_lpjprek
-			WHERE 
+			WHERE
 				kd_kppn 	= {$kd_kppn} AND
 				kd_satker 	= {$kd_satker} AND
 				tahun		= {$year} AND
 				bulan		= {$month}
-			ORDER BY 
+			ORDER BY
 				id_lpjprek DESC LIMIT 1");
 		// DB Sekretarian Rekening Penerimaan
 		$validate_rekening_penerimaan_sekretariat = $rekening_db->query("SELECT a.type, a.izinnum, a.izindate, a.bankcab, a.reknum, a.reknama, b.idbank, b.nama
@@ -262,14 +262,14 @@ class M_upload extends MY_Model
 				pbn_pkn.dt_rekening a
 			LEFT JOIN
 				pbn_ref.ref_bank b
-			ON 
+			ON
 				a.idbank = b.idbank
-			WHERE 
+			WHERE
 				a.kdsatker = {$kd_satker} AND
-				a.type = '10' AND 
+				a.type = '10' AND
 				a.active = 'y'");
-	
-			
+
+
 		return array (
 			'validate_pengeluaran'		=> $validate_pengeluaran,
 			'validate_penerimaan'		=> $validate_penerimaan,
@@ -282,34 +282,34 @@ class M_upload extends MY_Model
 			'validate_rekening_penerimaan_sekretariat'	=> $validate_rekening_penerimaan_sekretariat
 		);
 	}
-	
+
 	public function import_csv($path, $tables)
 	{
-		
+
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'", array($path));
-		
+
 		return $query;
 	}
-	
+
 	public function import_csv_rekening($path, $tables)
 	{
-		
-		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n' 
+
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY ';' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\r\\n'
 		(id_dsp, kdsatker, nokarwas, kdrek, norek, nmrek, nmbank, nosrt, @tglsrt, saldo, kdbpp, kdkppn)
 		SET tgsrt = STR_TO_DATE(@tglsrt, '%d-%m-%Y')", array($path));
-		
+
 		return $query;
-		
+
 	}
-	
+
 	public function import_csv_lpjp($path, $tables)
 	{
-		
+
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
-		(no_ba, @tglba, tipe_ba, bulan, tahun, kd_kementerian, kd_unit, kd_kabkota, kd_lokasi, 
+		(no_ba, @tglba, tipe_ba, bulan, tahun, kd_kementerian, kd_unit, kd_kabkota, kd_lokasi,
 		kd_satker, no_karwas, update_ke, status, kd_kppn, no_rekening, @saldorekening, kd_buku, nm_buku,
-		@kastunai, @kasbank, @setor, @belumsetor, @saldoakhirbku, no_bukti, @saldoawal, @debet, @kredit, 
-		@saldoakhir, @brankas, @rekeningbank, @haksaldoawal, @hakterima, @haksetor, @setoruakpa, @uakpa, 
+		@kastunai, @kasbank, @setor, @belumsetor, @saldoakhirbku, no_bukti, @saldoawal, @debet, @kredit,
+		@saldoakhir, @brankas, @rekeningbank, @haksaldoawal, @hakterima, @haksetor, @setoruakpa, @uakpa,
 		@selisihkas, ket_selisih_kas, ket_selisih_uakpa, @tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend,
 		@currencytrim, @create)
 		SET saldo_rekening = REPLACE(@saldorekening, ',', '.'),
@@ -334,10 +334,10 @@ class M_upload extends MY_Model
 			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
 			currency = TRIM(@currencytrim),
 			created_at = now()", array($path));
-		
+
 		return $query;
 	}
-	
+
 	public function import_csv_rekening_lpjp($path, $tables)
 	{
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
@@ -347,11 +347,11 @@ class M_upload extends MY_Model
 			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
 			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			kd_satker = @kdsatker,
-			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
+			id_ref_satker = (SELECT id_ref_satker FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			nm_satker = (SELECT nm_satker FROM ref_satker 
+			nm_satker = (SELECT nm_satker FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			id_ref_kanwil = (SELECT b.id_ref_kanwil 
+			id_ref_kanwil = (SELECT b.id_ref_kanwil
 						FROM ref_satker a
 						LEFT JOIN ref_kppn b
 						ON a.id_ref_kppn = b.id_ref_kppn
@@ -359,13 +359,13 @@ class M_upload extends MY_Model
 						GROUP BY 1),
 			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			kd_kppn = (SELECT a.kd_kppn 
+			kd_kppn = (SELECT a.kd_kppn
 						FROM ref_kppn a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_kppn = b.id_ref_kppn
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
-			nm_kppn = (SELECT a.nm_kppn 
+			nm_kppn = (SELECT a.nm_kppn
 						FROM ref_kppn a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_kppn = b.id_ref_kppn
@@ -388,14 +388,14 @@ class M_upload extends MY_Model
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
 			id_ref_kementerian = (SELECT a.id_ref_kementerian
-						FROM ref_unit a 
+						FROM ref_unit a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_unit = b.id_ref_unit
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
 			kd_kementerian = (SELECT a.kd_kementerian
 						FROM ref_kementerian a
-						LEFT JOIN ref_unit b 
+						LEFT JOIN ref_unit b
 						ON a.id_ref_kementerian = b.id_ref_kementerian
 						LEFT JOIN ref_satker c
 						ON b.id_ref_unit = c.id_ref_unit
@@ -403,19 +403,19 @@ class M_upload extends MY_Model
 						GROUP BY 1),
 			nm_kementerian = (SELECT a.nm_kementerian
 						FROM ref_kementerian a
-						LEFT JOIN ref_unit b 
+						LEFT JOIN ref_unit b
 						ON a.id_ref_kementerian = b.id_ref_kementerian
 						LEFT JOIN ref_satker c
 						ON b.id_ref_unit = c.id_ref_unit
 						WHERE c.kd_satker = @kdsatker
 						GROUP BY 1)", array($path));
-			
+
 		return $query;
 	}
-	
+
 	public function import_csv_lpjk($path, $tables)
 	{
-		
+
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
 		(jenis, no_ba, @tgba, kd_kementerian, kd_unit, kd_lokasi, kd_kabkota, kd_satker, kd_bpp,
 		no_karwas, kd_dekon, kd_jendok, no_dok, @tgdok, tahun, kd_kppn, no_bukti, no_rekening,
@@ -429,18 +429,18 @@ class M_upload extends MY_Model
 		@tglakhirba, nip_kpa, nm_kpa, nip_bend, nm_bend, nip_bend2, nm_bend2, encode, valc, @tglcreate,
 		user_nip, @tgltransaksiakhir, @create)
 		SET tgl_ba = STR_TO_DATE(@tgba, '%d-%m-%Y'),
-			tgl_dok = STR_TO_DATE(@tgdok, '%d-%m-%Y'), 
+			tgl_dok = STR_TO_DATE(@tgdok, '%d-%m-%Y'),
 			tgl_akhir_ba = STR_TO_DATE(@tglakhirba, '%d-%m-%Y'),
 			tgl_create = STR_TO_DATE(@tglcreate, '%d-%m-%Y'),
 			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			created_at = now()", array($path));
-		
+
 		return $query;
 	}
-	
+
 	public function import_csv_rekening_lpjk($path, $tables)
 	{
-		
+
 		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '\\t' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
 		(@kdsatker, no_karwas, no_ba, @tglba, tipe_ba, tahun, bulan, kd_rekening, update_ke,
 		no_rekening, nm_rekening, nm_bank, no_srt, @tglsrt, saldo, @tgltransaksiakhir)
@@ -448,11 +448,11 @@ class M_upload extends MY_Model
 			tgl_srt = STR_TO_DATE(@tglsrt, '%d-%m-%Y'),
 			tgl_transaksi_akhir = STR_TO_DATE(@tgltransaksiakhir, '%d-%m-%Y'),
 			kd_satker = @kdsatker,
-			id_ref_satker = (SELECT id_ref_satker FROM ref_satker 
+			id_ref_satker = (SELECT id_ref_satker FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			nm_satker = (SELECT nm_satker FROM ref_satker 
+			nm_satker = (SELECT nm_satker FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			id_ref_kanwil = (SELECT b.id_ref_kanwil 
+			id_ref_kanwil = (SELECT b.id_ref_kanwil
 						FROM ref_satker a
 						LEFT JOIN ref_kppn b
 						ON a.id_ref_kppn = b.id_ref_kppn
@@ -460,13 +460,13 @@ class M_upload extends MY_Model
 						GROUP BY 1),
 			id_ref_kppn = (SELECT id_ref_kppn FROM ref_satker
 						WHERE kd_satker = @kdsatker),
-			kd_kppn = (SELECT a.kd_kppn 
+			kd_kppn = (SELECT a.kd_kppn
 						FROM ref_kppn a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_kppn = b.id_ref_kppn
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
-			nm_kppn = (SELECT a.nm_kppn 
+			nm_kppn = (SELECT a.nm_kppn
 						FROM ref_kppn a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_kppn = b.id_ref_kppn
@@ -489,14 +489,14 @@ class M_upload extends MY_Model
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
 			id_ref_kementerian = (SELECT a.id_ref_kementerian
-						FROM ref_unit a 
+						FROM ref_unit a
 						LEFT JOIN ref_satker b
 						ON a.id_ref_unit = b.id_ref_unit
 						WHERE b.kd_satker = @kdsatker
 						GROUP BY 1),
 			kd_kementerian = (SELECT a.kd_kementerian
 						FROM ref_kementerian a
-						LEFT JOIN ref_unit b 
+						LEFT JOIN ref_unit b
 						ON a.id_ref_kementerian = b.id_ref_kementerian
 						LEFT JOIN ref_satker c
 						ON b.id_ref_unit = c.id_ref_unit
@@ -504,25 +504,45 @@ class M_upload extends MY_Model
 						GROUP BY 1),
 			nm_kementerian = (SELECT a.nm_kementerian
 						FROM ref_kementerian a
-						LEFT JOIN ref_unit b 
+						LEFT JOIN ref_unit b
 						ON a.id_ref_kementerian = b.id_ref_kementerian
 						LEFT JOIN ref_satker c
 						ON b.id_ref_unit = c.id_ref_unit
 						WHERE c.kd_satker = @kdsatker
 						GROUP BY 1)
 						", array($path));
-			
+
 		return $query;
 	}
-	
+
+	public function import_csv_sakti($path, $tables)
+	{
+
+		$query = $this->db->query("LOAD DATA INFILE ? REPLACE INTO TABLE ".$tables." FIELDS TERMINATED BY '|' OPTIONALLY ENCLOSED BY '\"' LINES TERMINATED BY '\\n'
+		(jenis, no_ba, tgl_ba, kd_kementerian, kd_unit, kd_lokasi, kd_kabkota, kd_satker, kd_bpp,
+		no_karwas, kd_dekon, kd_jendok, no_dok, tgl_dok, tahun, kd_kppn, no_bukti, no_rekening,
+		saldo_awal_tunai, debet_tunai, kredit_tunai, saldo_akhir_tunai, saldo_awal_bank, debet_bank,
+		kredit_bank, saldo_akhir_bank, saldo_awal_bku, debet_bku, kredit_bku, saldo_awal_um, debet_um,
+		kredit_um, saldo_akhir_um, saldo_awal_bpp, debet_bpp, kredit_bpp, saldo_akhir_bpp, saldo_awal_up,
+		debet_up, kredit_up, saldo_akhir_up, saldo_awal_lsbend, debet_lsbend, kredit_lsbend,
+		saldo_akhir_lsbend, saldo_awal_pajak, debet_pajak, kredit_pajak, saldo_akhir_pajak, saldo_akhir_bku,
+		saldo_awal_lain, debet_lain, kredit_lain, saldo_akhir_lain, saldo_up, kuitansi_up, brankas,
+		rekening_bank, saldo_up_uakpa, selisih_up, selisih_kas, ket_selisih_kas, ket_selisih_up, bulan,
+		tgl_akhir_ba, nip_kpa, nm_kpa, nip_bend, nm_bend, nip_bend2, nm_bend2, encode, valc, tgl_create,
+		user_nip, tgl_transaksi_akhir, @create)
+		SET created_at = now()", array($path));
+
+		return $query;
+	}
+
 	public function get_status_sent_satker($id_ref_kppn, $year, $month)
 	{
 		$query_pengeluaran_unsent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`,`dsp_status_kirim_pengeluaran`.`pos_kirim`,
 					 count(*) as jml_lpj
 				FROM `ref_satker`
-				LEFT JOIN `dsp_status_kirim_pengeluaran` 
-				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
+				LEFT JOIN `dsp_status_kirim_pengeluaran`
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker`
 				WHERE `dsp_status_kirim_pengeluaran`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_pengeluaran`.`tahun` is null
 				AND `dsp_status_kirim_pengeluaran`.`bulan` is null
@@ -530,12 +550,12 @@ class M_upload extends MY_Model
 				AND `ref_satker`.`lpj_status_pengeluaran` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
-					
+
 		$query_pengeluaran_sent = $this->db->query("SELECT `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`, count(*) as jml_lpj
 				FROM `ref_satker`
-				LEFT JOIN `dsp_status_kirim_pengeluaran` 
-				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker` 
+				LEFT JOIN `dsp_status_kirim_pengeluaran`
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_pengeluaran`.`id_ref_satker`
 				WHERE `dsp_status_kirim_pengeluaran`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_pengeluaran`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_pengeluaran`.`bulan` = '".$month."'
@@ -543,16 +563,16 @@ class M_upload extends MY_Model
 				AND `ref_satker`.`lpj_status_pengeluaran` = 1
 				GROUP BY  `dsp_status_kirim_pengeluaran`.`tahun`,
 					`dsp_status_kirim_pengeluaran`.`bulan`");
-		
+
 		$query_pengeluaran_unsent->num_rows > 0 ? $query_pengeluaran_unsent_row = $query_pengeluaran_unsent->row() : $query_pengeluaran_unsent_row = 0;
 		$query_pengeluaran_sent->num_rows > 0 ? $query_pengeluaran_sent_row = $query_pengeluaran_sent->row() : $query_pengeluaran_sent_row = 0;
-		
+
 		$query_penerimaan_unsent = $this->db->query("SELECT `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`,`dsp_status_kirim_penerimaan`.`pos_kirim`,
 					 count(*) as jml_lpj
 				FROM `ref_satker`
-				LEFT JOIN `dsp_status_kirim_penerimaan` 
-				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker` 
+				LEFT JOIN `dsp_status_kirim_penerimaan`
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker`
 				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_penerimaan`.`tahun` is null
 				AND `dsp_status_kirim_penerimaan`.`bulan` is null
@@ -560,12 +580,12 @@ class M_upload extends MY_Model
 				AND `ref_satker`.`lpj_status_penerimaan` = 1
 				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`");
-					
+
 		$query_penerimaan_sent = $this->db->query("SELECT `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`, count(*) as jml_lpj
 				FROM `ref_satker`
-				LEFT JOIN `dsp_status_kirim_penerimaan` 
-				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker` 
+				LEFT JOIN `dsp_status_kirim_penerimaan`
+				ON `ref_satker`.`id_ref_satker` = `dsp_status_kirim_penerimaan`.`id_ref_satker`
 				WHERE `ref_satker`.`id_ref_kppn` = ".$id_ref_kppn."
 				AND `dsp_status_kirim_penerimaan`.`tahun` = '".$year."'
 				AND `dsp_status_kirim_penerimaan`.`bulan` = '".$month."'
@@ -573,16 +593,16 @@ class M_upload extends MY_Model
 				AND `ref_satker`.`lpj_status_penerimaan` = 1
 				GROUP BY  `dsp_status_kirim_penerimaan`.`tahun`,
 					`dsp_status_kirim_penerimaan`.`bulan`");
-					
+
 		$query_penerimaan_unsent->num_rows > 0 ? $query_penerimaan_unsent_row = $query_penerimaan_unsent->row() : $query_penerimaan_unsent_row = 0;
 		$query_penerimaan_sent->num_rows > 0 ? $query_penerimaan_sent_row = $query_penerimaan_sent->row() : $query_penerimaan_sent_row = 0;
-		
+
 		return array(
 			'query_pengeluaran_unsent' => $query_pengeluaran_unsent_row,
 			'query_pengeluaran_sent' => $query_pengeluaran_sent_row,
 			'query_penerimaan_unsent' => $query_penerimaan_unsent_row,
 			'query_penerimaan_sent' => $query_penerimaan_sent_row,
 		);
-		
+
 	}
 }
