@@ -748,18 +748,27 @@ class Upload extends Admin_Controller
 				$movingpath = realpath() . sys_get_temp_dir();
 				// Get only filenames, used for unlink file from tmp :)
 				$files = substr(strrchr($file,'/'),1);
-				var_dump($movingpath);
-				echo '<br />';
-				var_dump($files);
 
 				unlink($movingpath . '*.txt');
 
-				$importlpjk = $this->m_upload->import_csv_sakti($movingpath . $files, 'dsp_ba_lpjk');
+				$importlpjk_sakti = $this->m_upload->import_csv_sakti($movingpath . $files, 'dsp_ba_lpjk');
+				if($importlpjk_sakti)
+				{
+					$this->data['message_title'] = 'Informasi Load & Insert Data';
+					$this->data['message'] = 'load dan insert data LPJ Pengeluaran berhasil';
+					$this->load->view('admin/components/message', $this->data);
+				}
+				else
+				{
+					$this->data['message_title'] = 'Informasi Load & Insert Data';
+					$this->data['message'] = 'load dan insert data LPJ Pengeluaran gagal';
+					$this->load->view('admin/components/message', $this->data);
+				}
 			}
 		}
 
 		// redirect to index page
-		//$this->output->set_header('refresh:2; url=index');
+		$this->output->set_header('refresh:2; url=index');
 
 	}
 
