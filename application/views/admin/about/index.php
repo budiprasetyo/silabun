@@ -13,27 +13,31 @@
               </ul>
             <hr />
             <h4 id="author">Author</h4>
-            <p>Copyleft 2014 all rights reversed Direktorat Sistem Perbendaharaan</p>
+            <p>Copyleft <?php echo date(Y); ?> all rights reversed Direktorat Sistem Informasi dan Teknologi Perbendaharaan</p>
             <ul>
-				<li>Developer: <a href="http://askubuntu.com/users/97999/metamorph" target="_blank">Budi Prasetyo a.k.a. metamorph</a> <i class="glyphicon glyphicon-phone"></i>+62811383477 [only SMS]</li>
-				<li>Service Desk: <a href="https://www.facebook.com/hoobsalbot" target="_blank">Ivan Setiawan a.k.a. hoobsalbot</a> <i class="glyphicon glyphicon-phone"></i>+628562130825</li>
+				<li>Developer:
+					<ul>
+						<li><a href="http://askubuntu.com/users/97999/metamorph" target="_blank">Budi Prasetyo a.k.a. metamorph</a></li>
+						<li><a href="https://www.facebook.com/parno.soerosentiqoe" target="_blank">Parno a.k.a. soerosentiqoe</a></li>
+					</ul>
+				<li>Service Desk: <a href="http://www.djpbn.kemenkeu.go.id/portal/id/hai-djpbn.html" target="_blank">HAI DJPBN</a>
 				<li>eMail: <a href="https://mail.google.com" target="_blank">silabunweb@gmail.com</a></li>
             </ul>
             <hr />
             <h4 id="release-history">Release History</h4>
             <?php
-				 
+
 				$dir = "/var/www/dsp-lpj-local/";
 				$output = array();
 				chdir($dir);
 				exec("git log",$output);
 				$histories = array();
-				
+
 				foreach($output as $line){
-					
+
 					if(strpos($line, 'commit') === 0){
 						if(!empty($commit)){
-							array_push($histories, $commit);	
+							array_push($histories, $commit);
 							unset($commit);
 						}
 						$commit['hash'] = substr($line, strlen('commit'));
@@ -44,17 +48,17 @@
 					else if(strpos($line, 'Date') === 0){
 						$commit['date'] = substr($line, strlen('Date:'));
 					}
-					else{	
+					else{
 						if(isset($commit['message']))
 							$commit['message'] .= $line;
 						else
 							$commit['message'] = $line;					}
 				}
-				
+
 				if(!empty($commit)) {
 					array_push($history, $commit);
 				}
-				
+
 				//~ var_dump($histories);
 			?>
 			<table class="table table-bordered table-condensed table-hover table-striped sortfield">
@@ -68,7 +72,7 @@
 			</thead>
 			<tbody>
 				<?php
-					foreach ($histories as $history) 
+					foreach ($histories as $history)
 					{
 				?>
 				<tr>
@@ -77,7 +81,7 @@
 					<td><?php echo $history['author']; ?></td>
 					<td style="white-space:normal;"><?php echo $history['message']; ?></td>
 				</tr>
-				<?php 
+				<?php
 					}
 				?>
 			</tbody>
@@ -97,4 +101,3 @@
 		</div>
 	</div>
 </div>
-			
