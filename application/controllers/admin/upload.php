@@ -751,7 +751,7 @@ class Upload extends Admin_Controller
 
 				unlink($movingpath . '*.txt');
 
-				$importlpjk_sakti = $this->m_upload->import_csv_sakti($movingpath . $files, 'dsp_ba_lpjk');
+				$importlpjk_sakti = $this->m_upload->import_csv_sakti($movingpath .'/'. $files, 'dsp_ba_lpjk');
 				if($importlpjk_sakti)
 				{
 					$this->data['message_title'] = 'Informasi Load & Insert Data';
