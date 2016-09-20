@@ -441,11 +441,12 @@ class Upload extends Admin_Controller
 
 					}
 					// If ADK from SAKTI
-					else if(substr($data['file_name'], 0, 7) === 'silabun'
-						&& $data['file_ext'] === '.txt'){
+					else if((substr($data['file_name'], 0, 7) === 'silabun' || substr($data['file_name'], 0, 8) === 'rekening')
+						&& $data['file_ext'] === '.txt' ){
 
 						exec("rm -r " . $movingpath . "*.txt");
 						exec("rm -r " . $movingpath . "silabun.*");
+						exec("rm -r " . $movingpath . "rekening.*");
 
 						move_uploaded_file($_FILES['upload_lpj']['tmp_name'], $movingpath . $adk_filename);
 
@@ -458,6 +459,8 @@ class Upload extends Admin_Controller
 						}
 
 					}
+					
+
 					// prohibited format
 					else if ($data['file_ext'] !== 'lpj'
 							&& $data['file_ext'] !== 'ZIP')
@@ -748,10 +751,13 @@ class Upload extends Admin_Controller
 				$movingpath = realpath() . sys_get_temp_dir();
 				// Get only filenames, used for unlink file from tmp :)
 				$files = substr(strrchr($file,'/'),1);
-
 				unlink($movingpath . '*.txt');
-
-				$importlpjk_sakti = $this->m_upload->import_csv_sakti($movingpath .'/'. $files, 'dsp_ba_lpjk');
+				
+				 if (substr($files,0,7) === 'silabun' ){
+					 $importlpjk_sakti = $this->m_upload->import_csv_sakti($movingpath .'/'. $files, 'dsp_ba_lpjk');
+				} else {
+					$importlpjk_sakti = $this->m_upload->import_csv_sakti_rekening($movingpath .'/'. $files, 't_lpjkrek');
+				}
 				if($importlpjk_sakti)
 				{
 					$this->data['message_title'] = 'Informasi Load & Insert Data';
@@ -766,7 +772,7 @@ class Upload extends Admin_Controller
 				}
 			}
 		}
-
+		
 		// redirect to index page
 		$this->output->set_header('refresh:2; url=index');
 
